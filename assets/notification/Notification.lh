@@ -1,0 +1,37 @@
+{
+  "_$ver": 1,
+  "_$id": "j51tgl9e",
+  "_$type": "Box",
+  "name": "Box",
+  "width": 1136,
+  "height": 640,
+  "_mouseState": 2,
+  "left": 0,
+  "right": 0,
+  "top": 0,
+  "bottom": 0,
+  "_$comp": [
+    {
+      "_$type": "27c947b8-9a27-4f7d-b810-aaa074c3337c",
+      "scriptPath": "../src/Notification.ts"
+    }
+  ],
+  "_$child": [
+    {
+      "_$id": "iau8ggzl",
+      "_$type": "Button",
+      "name": "addBtn",
+      "x": 27,
+      "y": 39,
+      "width": 120,
+      "height": 40,
+      "_mouseState": 2,
+      "skin": "res://d4cfd6a8-0d0a-475b-ac93-d85eaa646936",
+      "label": "ADD",
+      "labelSize": 20,
+      "labelColors": "#ffffff,#ffffff,#ffffff",
+      "labelAlign": "center",
+      "labelVAlign": "middle"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "_$ver": 1,
+  "_$id": "n2za3ufc",
+  "_$type": "Box",
+  "name": "Box",
+  "width": 400,
+  "height": 400,
+  "_$comp": [
+    {
+      "_$type": "348db17a-2808-470a-ac6c-83c32404a2a3",
+      "scriptPath": "../src/VideoPlayer.ts"
+    }
+  ]
+}

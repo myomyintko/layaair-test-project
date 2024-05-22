@@ -1,0 +1,14 @@
+{
+  "_$ver": 1,
+  "_$id": "rybthwkg",
+  "_$type": "Box",
+  "name": "Box",
+  "width": 400,
+  "height": 400,
+  "_$comp": [
+    {
+      "_$type": "5a3d4dcf-6b26-45b7-a731-bf6827c7579a",
+      "scriptPath": "../src/videojs/VideoJSPlayer.ts"
+    }
+  ]
+}

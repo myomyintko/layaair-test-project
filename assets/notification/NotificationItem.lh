@@ -1,0 +1,41 @@
+{
+  "_$ver": 1,
+  "_$id": "xns000fc",
+  "_$type": "Box",
+  "name": "NotificationItem",
+  "width": 300,
+  "height": 60,
+  "_$child": [
+    {
+      "_$id": "ymmgrulr",
+      "_$type": "Image",
+      "name": "Image",
+      "width": 300,
+      "height": 60,
+      "left": 0,
+      "right": 0,
+      "top": 0,
+      "bottom": 0,
+      "skin": "res://56105873-ff55-4923-91ef-faf2760cbc03",
+      "color": "#ffffff"
+    },
+    {
+      "_$id": "1hvm8yno",
+      "_$type": "Label",
+      "name": "payoutLbl",
+      "x": 100,
+      "y": 7,
+      "width": 100,
+      "height": 46,
+      "centerX": 0,
+      "centerY": 0,
+      "text": "Payout",
+      "fontSize": 30,
+      "color": "#FFFFFF",
+      "align": "center",
+      "valign": "middle",
+      "leading": 0,
+      "padding": "0,0,0,0"
+    }
+  ]
+}

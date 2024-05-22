@@ -1,0 +1,50 @@
+{
+  "_$ver": 1,
+  "_$id": "amjx3g2z",
+  "_$type": "Box",
+  "name": "wrapper",
+  "width": 46,
+  "height": 46,
+  "_$comp": [
+    {
+      "_$type": "d278215d-5019-4a82-a905-8fc3544790bb",
+      "scriptPath": "../src/CountDown.ts"
+    }
+  ],
+  "_$child": [
+    {
+      "_$id": "xwprqbov",
+      "_$type": "Image",
+      "name": "base",
+      "width": 46,
+      "height": 46,
+      "left": 0,
+      "right": 0,
+      "top": 0,
+      "bottom": 0,
+      "skin": "res://432f9a86-1251-4cf7-87a4-dafaf03a6f2d",
+      "color": "#ffffff",
+      "_$comp": [
+        {
+          "_$type": "Animator2D",
+          "controllerLayers": []
+        }
+      ],
+      "_$child": [
+        {
+          "_$id": "di8q39x9",
+          "_$type": "Animation",
+          "name": "aniCtrl",
+          "x": 23,
+          "y": 23,
+          "width": 46,
+          "height": 46,
+          "anchorX": 0.5,
+          "anchorY": 0.5,
+          "interval": 50,
+          "loop": null
+        }
+      ]
+    }
+  ]
+}

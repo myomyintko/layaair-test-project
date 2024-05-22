@@ -1,0 +1,46 @@
+{
+  "_$ver": 1,
+  "_$id": "gmauf8kw",
+  "_$type": "Box",
+  "name": "Box",
+  "width": 400,
+  "height": 400,
+  "_mouseState": 2,
+  "_$comp": [
+    {
+      "_$type": "a6d70fbc-4107-4e8e-95f4-f9ab2a4d758d",
+      "scriptPath": "../src/StatemanTest.ts"
+    }
+  ],
+  "_$child": [
+    {
+      "_$id": "eces8kyl",
+      "_$type": "Button",
+      "name": "btn",
+      "x": 146,
+      "y": 214,
+      "width": 120,
+      "height": 40,
+      "_mouseState": 2,
+      "skin": "res://d4cfd6a8-0d0a-475b-ac93-d85eaa646936",
+      "label": "Title",
+      "labelSize": 20,
+      "labelAlign": "center",
+      "labelVAlign": "middle"
+    },
+    {
+      "_$id": "hp4cuzt1",
+      "_$type": "Label",
+      "name": "name",
+      "x": 119,
+      "y": 101,
+      "width": 120,
+      "height": 28,
+      "text": "Label",
+      "fontSize": 20,
+      "color": "#FFFFFF",
+      "valign": "top",
+      "padding": "0,0,0,0"
+    }
+  ]
+}

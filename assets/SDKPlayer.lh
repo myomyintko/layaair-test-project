@@ -1,0 +1,15 @@
+{
+  "_$ver": 1,
+  "_$id": "aye21qmb",
+  "_$type": "Box",
+  "name": "Box",
+  "width": 400,
+  "height": 400,
+  "_$comp": [
+    {
+      "_$type": "8ccd6265-45d2-4949-9caf-bfe2891dfe06",
+      "scriptPath": "../src/customSDKPlayer/SDKPlayer.ts",
+      "text": ""
+    }
+  ]
+}

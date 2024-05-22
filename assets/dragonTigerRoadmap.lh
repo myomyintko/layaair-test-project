@@ -1,0 +1,418 @@
+{
+  "_$ver": 1,
+  "_$id": "cu91nwmk",
+  "_$type": "Box",
+  "name": "Box",
+  "x": 2,
+  "y": 220,
+  "width": 356,
+  "height": 200,
+  "_mouseState": 2,
+  "centerX": 0,
+  "centerY": 0,
+  "_$comp": [
+    {
+      "_$type": "c4e8f851-2f2c-49da-94b6-40808890a752",
+      "scriptPath": "../src/dt_roadmap/DragonTigerRoadmap.ts"
+    }
+  ],
+  "_$child": [
+    {
+      "_$id": "q3xsqgdj",
+      "_$type": "Box",
+      "name": "roadmap",
+      "width": 356,
+      "height": 128,
+      "left": 0,
+      "top": 0,
+      "_$child": [
+        {
+          "_$id": "mrs28rt3",
+          "_$type": "Box",
+          "name": "bead_plate_box",
+          "width": 178,
+          "height": 128,
+          "left": 0,
+          "top": 0,
+          "bottom": 0,
+          "_$child": [
+            {
+              "_$id": "97e214rx",
+              "_$type": "Image",
+              "name": "Image",
+              "width": 178,
+              "height": 128,
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0,
+              "skin": "res://d464df07-0942-45bd-9e2b-71157ac75ecd",
+              "color": "#ffffff"
+            },
+            {
+              "_$id": "n6t1557m",
+              "_$type": "Panel",
+              "name": "panel",
+              "width": 178,
+              "height": 128,
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0,
+              "_$child": [
+                {
+                  "_$id": "itm0q813",
+                  "_$type": "Sprite",
+                  "name": "sprite",
+                  "width": 178,
+                  "height": 128
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "_$id": "y12i1dsp",
+          "_$type": "Box",
+          "name": "big_road_box",
+          "x": 178,
+          "width": 178,
+          "height": 64,
+          "right": 0,
+          "top": 0,
+          "_$child": [
+            {
+              "_$id": "gw440dwy",
+              "_$type": "Image",
+              "name": "Image",
+              "width": 178,
+              "height": 64,
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0,
+              "skin": "res://f20beed1-928f-43f4-8d80-701d3377e5ca",
+              "color": "#ffffff"
+            },
+            {
+              "_$id": "ganhsbou",
+              "_$type": "Panel",
+              "name": "panel",
+              "width": 178,
+              "height": 64,
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0,
+              "_$child": [
+                {
+                  "_$id": "e6tm5bug",
+                  "_$type": "Sprite",
+                  "name": "sprite",
+                  "x": 1,
+                  "width": 176,
+                  "height": 64
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "_$id": "j16k9ig3",
+          "_$type": "Box",
+          "name": "three_road_box",
+          "x": 178,
+          "y": 64,
+          "width": 178,
+          "height": 64,
+          "right": 0,
+          "bottom": 0,
+          "_$child": [
+            {
+              "_$id": "xzxqinsd",
+              "_$type": "Image",
+              "name": "Image",
+              "width": 178,
+              "height": 64,
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0,
+              "skin": "res://f20beed1-928f-43f4-8d80-701d3377e5ca",
+              "color": "#ffffff"
+            },
+            {
+              "_$id": "jf4pl80x",
+              "_$type": "Box",
+              "name": "big_eye_box",
+              "width": 178,
+              "height": 32,
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "_$child": [
+                {
+                  "_$id": "1102qz3w",
+                  "_$type": "Panel",
+                  "name": "panel",
+                  "width": 178,
+                  "height": 32,
+                  "left": 0,
+                  "right": 0,
+                  "top": 0,
+                  "bottom": 0,
+                  "_$child": [
+                    {
+                      "_$id": "xlzxon5x",
+                      "_$type": "Sprite",
+                      "name": "sprite",
+                      "width": 178,
+                      "height": 32
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "_$id": "gegb2k7g",
+              "_$type": "Box",
+              "name": "small_box",
+              "y": 32,
+              "width": 89,
+              "height": 32,
+              "left": 0,
+              "bottom": 0,
+              "_$child": [
+                {
+                  "_$id": "wb553twz",
+                  "_$type": "Panel",
+                  "name": "panel",
+                  "width": 89,
+                  "height": 32,
+                  "left": 0,
+                  "right": 0,
+                  "top": 0,
+                  "bottom": 0,
+                  "_$child": [
+                    {
+                      "_$id": "kkkj5451",
+                      "_$type": "Sprite",
+                      "name": "sprite",
+                      "width": 89,
+                      "height": 32
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "_$id": "6jw65bgi",
+              "_$type": "Box",
+              "name": "cockroach_box",
+              "x": 89,
+              "y": 32,
+              "width": 89,
+              "height": 32,
+              "right": 0,
+              "bottom": 0,
+              "_$child": [
+                {
+                  "_$id": "xsu6bkdh",
+                  "_$type": "Panel",
+                  "name": "panel",
+                  "width": 89,
+                  "height": 32,
+                  "left": 0,
+                  "right": 0,
+                  "top": 0,
+                  "bottom": 0,
+                  "_$child": [
+                    {
+                      "_$id": "fh2hg0x2",
+                      "_$type": "Sprite",
+                      "name": "sprite",
+                      "x": -2,
+                      "width": 89,
+                      "height": 32
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_$id": "q7vu1jqe",
+      "_$type": "Box",
+      "name": "control",
+      "x": 4,
+      "y": 137,
+      "width": 348,
+      "height": 63,
+      "_mouseState": 2,
+      "left": 4,
+      "right": 4,
+      "bottom": 0,
+      "_$child": [
+        {
+          "_$id": "je934bck",
+          "_$type": "Button",
+          "name": "dragon_btn",
+          "width": 83.09999999999997,
+          "height": 27.70000000000001,
+          "_mouseState": 2,
+          "_filters": [
+            {
+              "_$type": "ColorFilter",
+              "_color": "rgba(14, 85, 178, 1)",
+              "_brightness": 100,
+              "_contrast": 30,
+              "_saturation": -100,
+              "_hue": 100
+            }
+          ],
+          "left": 0,
+          "top": 0,
+          "skin": "res://d4cfd6a8-0d0a-475b-ac93-d85eaa646936",
+          "label": "Dragon",
+          "labelSize": 20,
+          "labelAlign": "center",
+          "labelVAlign": "middle"
+        },
+        {
+          "_$id": "d3zhfm0b",
+          "_$type": "Button",
+          "name": "tiger_btn",
+          "x": 88,
+          "width": 83.09999999999997,
+          "height": 27.70000000000001,
+          "_mouseState": 2,
+          "_filters": [
+            {
+              "_$type": "ColorFilter",
+              "_color": "rgba(240, 30, 27, 1)",
+              "_brightness": 35.211,
+              "_contrast": 30,
+              "_saturation": -100,
+              "_hue": 100
+            }
+          ],
+          "top": 0,
+          "skin": "res://d4cfd6a8-0d0a-475b-ac93-d85eaa646936",
+          "label": "Tiger",
+          "labelSize": 20,
+          "labelAlign": "center",
+          "labelVAlign": "middle"
+        },
+        {
+          "_$id": "zbrjk56z",
+          "_$type": "Button",
+          "name": "tie_btn",
+          "x": 176,
+          "width": 83.09999999999997,
+          "height": 27.70000000000001,
+          "_mouseState": 2,
+          "_filters": [
+            {
+              "_$type": "ColorFilter",
+              "_color": "rgba(26, 158, 64, 1)",
+              "_brightness": 100,
+              "_contrast": 30,
+              "_saturation": -100,
+              "_hue": 100
+            }
+          ],
+          "top": 0,
+          "skin": "res://d4cfd6a8-0d0a-475b-ac93-d85eaa646936",
+          "label": "Tie",
+          "labelSize": 20,
+          "labelAlign": "center",
+          "labelVAlign": "middle"
+        },
+        {
+          "_$id": "94l2slr7",
+          "_$type": "Button",
+          "name": "clear_btn",
+          "x": 264,
+          "width": 83.09999999999997,
+          "height": 27.70000000000001,
+          "_mouseState": 2,
+          "_filters": [
+            {
+              "_$type": "ColorFilter",
+              "_color": "rgba(142, 142, 142, 1)",
+              "_brightness": 100,
+              "_contrast": 30,
+              "_saturation": -100,
+              "_hue": 100
+            }
+          ],
+          "right": 1,
+          "top": 0,
+          "skin": "res://d4cfd6a8-0d0a-475b-ac93-d85eaa646936",
+          "label": "Clear",
+          "labelSize": 20,
+          "labelAlign": "center",
+          "labelVAlign": "middle"
+        },
+        {
+          "_$id": "32vqg8yv",
+          "_$type": "Button",
+          "name": "tdp_btn",
+          "x": 2,
+          "y": 33,
+          "width": 83.09999999999997,
+          "height": 27.70000000000001,
+          "visible": false,
+          "_mouseState": 2,
+          "_filters": [
+            {
+              "_$type": "ColorFilter",
+              "_color": "rgba(14, 85, 178, 1)",
+              "_brightness": 100,
+              "_contrast": 30,
+              "_saturation": -100,
+              "_hue": 100
+            }
+          ],
+          "left": 2,
+          "bottom": 2,
+          "skin": "res://d4cfd6a8-0d0a-475b-ac93-d85eaa646936",
+          "label": "TBP",
+          "labelSize": 20,
+          "labelAlign": "center",
+          "labelVAlign": "middle"
+        },
+        {
+          "_$id": "mu440kkd",
+          "_$type": "Button",
+          "name": "ttp_btn",
+          "x": 88,
+          "y": 35,
+          "width": 83.09999999999997,
+          "height": 27.70000000000001,
+          "visible": false,
+          "_mouseState": 2,
+          "_filters": [
+            {
+              "_$type": "ColorFilter",
+              "_color": "rgba(240, 30, 27, 1)",
+              "_brightness": 35.211,
+              "_contrast": 30,
+              "_saturation": -100,
+              "_hue": 100
+            }
+          ],
+          "bottom": 0,
+          "skin": "res://d4cfd6a8-0d0a-475b-ac93-d85eaa646936",
+          "label": "TPP",
+          "labelSize": 20,
+          "labelAlign": "center",
+          "labelVAlign": "middle"
+        }
+      ]
+    }
+  ]
+}

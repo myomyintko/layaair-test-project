@@ -1,0 +1,126 @@
+{
+  "frames": {
+    "00.png": {
+      "frame": {
+        "idx": 0,
+        "x": 194,
+        "y": 480,
+        "w": 192,
+        "h": 237
+      },
+      "sourceSize": {
+        "w": 192,
+        "h": 237
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "01.png": {
+      "frame": {
+        "idx": 0,
+        "x": 194,
+        "y": 0,
+        "w": 192,
+        "h": 238
+      },
+      "sourceSize": {
+        "w": 192,
+        "h": 238
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "02.png": {
+      "frame": {
+        "idx": 0,
+        "x": 194,
+        "y": 240,
+        "w": 192,
+        "h": 238
+      },
+      "sourceSize": {
+        "w": 192,
+        "h": 238
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "03.png": {
+      "frame": {
+        "idx": 0,
+        "x": 0,
+        "y": 243,
+        "w": 192,
+        "h": 238
+      },
+      "sourceSize": {
+        "w": 192,
+        "h": 238
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "04.png": {
+      "frame": {
+        "idx": 0,
+        "x": 388,
+        "y": 0,
+        "w": 192,
+        "h": 238
+      },
+      "sourceSize": {
+        "w": 192,
+        "h": 238
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "05.png": {
+      "frame": {
+        "idx": 0,
+        "x": 0,
+        "y": 0,
+        "w": 192,
+        "h": 241
+      },
+      "sourceSize": {
+        "w": 192,
+        "h": 241
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "06.png": {
+      "frame": {
+        "idx": 0,
+        "x": 388,
+        "y": 240,
+        "w": 192,
+        "h": 238
+      },
+      "sourceSize": {
+        "w": 192,
+        "h": 238
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0
+      }
+    }
+  },
+  "meta": {
+    "scale": 1
+  }
+}

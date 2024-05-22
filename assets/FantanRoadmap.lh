@@ -1,0 +1,163 @@
+{
+  "_$ver": 1,
+  "_$id": "pl5bd05i",
+  "_$type": "Box",
+  "name": "Box",
+  "x": -20,
+  "y": 70,
+  "width": 400,
+  "height": 500,
+  "_mouseState": 2,
+  "centerX": 0,
+  "centerY": 0,
+  "_$comp": [
+    {
+      "_$type": "b3c90461-4ddd-4eb3-960d-cb0c5471ab40",
+      "scriptPath": "../src/ft_roadmap/RoadmapContainer.ts"
+    }
+  ],
+  "_$child": [
+    {
+      "_$id": "3npi8w8f",
+      "_$prefab": "f947a913-1987-46e0-ada6-559b4d2cef44",
+      "name": "roadmap",
+      "active": true,
+      "x": 10,
+      "y": 20,
+      "visible": true,
+      "top": 20,
+      "centerX": 0,
+      "bgColor": null
+    },
+    {
+      "_$id": "unzrbo4q",
+      "_$type": "Box",
+      "name": "control",
+      "x": 67,
+      "y": 294,
+      "width": 267,
+      "height": 186,
+      "_mouseState": 2,
+      "bottom": 20,
+      "centerX": 0,
+      "_$child": [
+        {
+          "_$id": "02nwbjzu",
+          "_$type": "Button",
+          "name": "btn1",
+          "width": 120,
+          "height": 40,
+          "_mouseState": 2,
+          "_filters": [
+            {
+              "_$type": "ColorFilter",
+              "_color": "rgba(115, 115, 115, 1)",
+              "_brightness": 100,
+              "_contrast": 30,
+              "_saturation": -100,
+              "_hue": 100
+            }
+          ],
+          "skin": "res://d4cfd6a8-0d0a-475b-ac93-d85eaa646936",
+          "label": "1",
+          "labelSize": 20,
+          "labelColors": "#ffffff,#ffffff,#ffffff",
+          "labelAlign": "center",
+          "labelVAlign": "middle"
+        },
+        {
+          "_$id": "ysyvff6n",
+          "_$type": "Button",
+          "name": "btn2",
+          "x": 147,
+          "width": 120,
+          "height": 40,
+          "_mouseState": 2,
+          "_filters": [
+            {
+              "_$type": "ColorFilter",
+              "_color": "rgba(10, 87, 38, 1)",
+              "_brightness": 100,
+              "_contrast": 30,
+              "_saturation": -100,
+              "_hue": 100
+            }
+          ],
+          "skin": "res://d4cfd6a8-0d0a-475b-ac93-d85eaa646936",
+          "label": "2",
+          "labelSize": 20,
+          "labelColors": "#ffffff,#ffffff,#ffffff",
+          "labelAlign": "center",
+          "labelVAlign": "middle"
+        },
+        {
+          "_$id": "cr02a57a",
+          "_$type": "Button",
+          "name": "btn3",
+          "y": 57,
+          "width": 120,
+          "height": 40,
+          "_mouseState": 2,
+          "_filters": [
+            {
+              "_$type": "ColorFilter",
+              "_color": "rgba(220, 173, 59, 1)",
+              "_brightness": 100,
+              "_contrast": 30,
+              "_saturation": -100,
+              "_hue": 100
+            }
+          ],
+          "skin": "res://d4cfd6a8-0d0a-475b-ac93-d85eaa646936",
+          "label": "3",
+          "labelSize": 20,
+          "labelColors": "#000000,#000000,#000000",
+          "labelAlign": "center",
+          "labelVAlign": "middle"
+        },
+        {
+          "_$id": "oyiv2iau",
+          "_$type": "Button",
+          "name": "btn4",
+          "x": 147,
+          "y": 57,
+          "width": 120,
+          "height": 40,
+          "_mouseState": 2,
+          "_filters": [
+            {
+              "_$type": "ColorFilter",
+              "_color": "rgba(173, 55, 54, 1)",
+              "_brightness": 100,
+              "_contrast": 30,
+              "_saturation": -100,
+              "_hue": 100
+            }
+          ],
+          "skin": "res://d4cfd6a8-0d0a-475b-ac93-d85eaa646936",
+          "label": "4",
+          "labelSize": 20,
+          "labelColors": "#000000,#000000,#000000",
+          "labelAlign": "center",
+          "labelVAlign": "middle"
+        },
+        {
+          "_$id": "n1qshr3f",
+          "_$type": "Button",
+          "name": "btn_reset",
+          "x": 1,
+          "y": 146,
+          "width": 266,
+          "height": 40,
+          "_mouseState": 2,
+          "centerX": 0,
+          "skin": "res://d4cfd6a8-0d0a-475b-ac93-d85eaa646936",
+          "label": "Reset",
+          "labelSize": 20,
+          "labelAlign": "center",
+          "labelVAlign": "middle"
+        }
+      ]
+    }
+  ]
+}

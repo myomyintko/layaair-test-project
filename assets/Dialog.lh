@@ -1,0 +1,52 @@
+{
+  "_$ver": 1,
+  "_$id": "65hgvolp",
+  "_$type": "Dialog",
+  "name": "Dialog",
+  "width": 600,
+  "height": 119,
+  "_mouseState": 2,
+  "isPopupCenter": false,
+  "_$child": [
+    {
+      "_$id": "f78cp1bk",
+      "_$type": "Image",
+      "name": "Image",
+      "width": 600,
+      "height": 119,
+      "centerX": 0,
+      "centerY": 0,
+      "skin": "res://56105873-ff55-4923-91ef-faf2760cbc03",
+      "color": "#ffffff"
+    },
+    {
+      "_$id": "4y29xots",
+      "_$type": "Label",
+      "name": "Label",
+      "x": 219,
+      "y": 42,
+      "width": 182,
+      "height": 28,
+      "text": "lksdjfkldsjfkldsj",
+      "fontSize": 20,
+      "color": "#FFFFFF",
+      "valign": "top",
+      "padding": "0,0,0,0"
+    },
+    {
+      "_$id": "z29sqv0s",
+      "_$type": "Button",
+      "name": "closeBtn",
+      "x": 557,
+      "y": -5,
+      "width": 54,
+      "height": 40,
+      "_mouseState": 2,
+      "skin": "res://d4cfd6a8-0d0a-475b-ac93-d85eaa646936",
+      "label": "X",
+      "labelSize": 20,
+      "labelAlign": "center",
+      "labelVAlign": "middle"
+    }
+  ]
+}

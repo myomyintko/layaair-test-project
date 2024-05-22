@@ -1,0 +1,21 @@
+{
+  "name": "VideoPlayerTesting",
+  "startupScene": "res://d34d008a-1ffa-424a-9e45-0492769d3811",
+  "includedScenes": [
+    "res://d34d008a-1ffa-424a-9e45-0492769d3811"
+  ],
+  "alwaysIncluded": [
+    "resources"
+  ],
+  "web": {
+    "useSafeFileExtensions": true,
+    "keepTextureSourceFile": true
+  },
+  "android": {
+    "version": "release-v3.0.0",
+    "standalone": true,
+    "url": "http://192.168.88.141:8000/index.js",
+    "screenOrientation": "portrait",
+    "keepTextureSourceFile": true
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "resolution": {
+    "designWidth": 360,
+    "scaleMode": "full",
+    "backgroundColor": "rgba(0, 0, 0, 1)"
+  },
+  "2D": {
+    "useRetinalCanvas": true,
+    "isAlpha": true
+  },
+  "3D": {
+    "enableDynamicBatch": false,
+    "enableUniformBufferObject": false,
+    "enableMultiLight": false,
+    "lightClusterCount": {
+      "x": 12,
+      "y": 12,
+      "z": 12
+    }
+  },
+  "physics2D": {
+    "allowSleeping": false,
+    "gravity": {
+      "y": 9.8
+    }
+  },
+  "modules": {
+    "laya.d3": true,
+    "laya.ui": true,
+    "laya.ani": true
+  },
+  "splash": {
+    "enabled": false,
+    "fit": "center"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "_$ver": 1,
+  "_$id": "qb7xhuee",
+  "_$type": "Box",
+  "name": "Box",
+  "width": 400,
+  "height": 400,
+  "_$comp": [
+    {
+      "_$type": "ae5d7a65-b497-4bd1-a78e-2284b2bba586",
+      "scriptPath": "../src/FlvPlayer.ts",
+      "text": ""
+    }
+  ]
+}

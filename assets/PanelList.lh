@@ -1,0 +1,78 @@
+{
+  "_$ver": 1,
+  "_$id": "m9oicqal",
+  "_$type": "Box",
+  "name": "Box",
+  "width": 1136,
+  "height": 640,
+  "_mouseState": 2,
+  "left": 0,
+  "right": 0,
+  "top": 0,
+  "bottom": 0,
+  "_$comp": [
+    {
+      "_$type": "57f5fd94-df79-4c68-a6f3-43fa7b8d55da",
+      "scriptPath": "../src/Panel.ts"
+    }
+  ],
+  "_$child": [
+    {
+      "_$id": "lthhbfs3",
+      "_$type": "Panel",
+      "name": "Panel",
+      "y": 60,
+      "width": 1136,
+      "height": 580,
+      "left": 0,
+      "right": 0,
+      "top": 60,
+      "bottom": 0,
+      "bgColor": "rgba(117, 117, 117, 1)"
+    },
+    {
+      "_$id": "wevh44k9",
+      "_$type": "Button",
+      "name": "addFirst",
+      "x": 8,
+      "y": 8,
+      "width": 120,
+      "height": 40,
+      "_mouseState": 2,
+      "_filters": [
+        {
+          "_$type": "ColorFilter",
+          "_color": "rgba(155, 0, 0, 1)",
+          "_brightness": 100,
+          "_contrast": 28.712,
+          "_saturation": 23.431,
+          "_hue": 85.807
+        }
+      ],
+      "left": 8,
+      "top": 8,
+      "skin": "res://d4cfd6a8-0d0a-475b-ac93-d85eaa646936",
+      "label": "Add First",
+      "labelSize": 20,
+      "labelAlign": "center",
+      "labelVAlign": "middle"
+    },
+    {
+      "_$id": "fgcj96bs",
+      "_$type": "Button",
+      "name": "addLast",
+      "x": 132,
+      "y": 8,
+      "width": 120,
+      "height": 40,
+      "_mouseState": 2,
+      "left": 132,
+      "top": 8,
+      "skin": "res://d4cfd6a8-0d0a-475b-ac93-d85eaa646936",
+      "label": "Add Last",
+      "labelSize": 20,
+      "labelAlign": "center",
+      "labelVAlign": "middle"
+    }
+  ]
+}
