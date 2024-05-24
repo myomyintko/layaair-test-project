@@ -1,7 +1,8 @@
+import _get from 'lodash/get';
+
 interface IdentityDictionary {
     [key: string]: 'banker' | 'player' | 'tie';
 }
-
 
 export default class RoadmapUtilities {
     identityDictionary: IdentityDictionary;
@@ -86,16 +87,72 @@ export default class RoadmapUtilities {
         return this.matrix[prevRow][prevCol] || null;
     }
 
-    findValueInMatrix(matrix: any[][], value: number): { rowIndex: number, colIndex: number } | null {
-        for (let rowIndex = 0; rowIndex < matrix.length; rowIndex++) {
-            const row = matrix[rowIndex];
-            for (let colIndex = 0; colIndex < row.length; colIndex++) {
-                const col = row[colIndex];
-                if (col.index === value) {
-                    return { rowIndex, colIndex };
+    getCoordinatesByIndex(matrix: any[][], index: number): [number, number] | false {
+        for (let rowIdx = 0; rowIdx < matrix.length; rowIdx++) {
+            const row = matrix[rowIdx];
+
+            for (let colIdx = 0; colIdx < row.length; colIdx++) {
+                const col = row[colIdx];
+                if ((col).index === index) {
+                    return [rowIdx, colIdx];
                 }
             }
         }
-        return null;
+
+        return false;
+    }
+
+    getColumnLength(matrix: any[][], columnIdx: number): number {
+        const coordinates: [number, number] = [0, columnIdx];
+        const column = matrix[coordinates[0]][coordinates[1]];
+        const rootIdentity = this.identityDictionary[column.value.filter((value: string) => value !== "t")[0]];
+
+        /**
+         * If initial column is empty, return 0
+         */
+        if (!column) {
+            return 0;
+        }
+
+        /**
+         * Starting with one which includes the root node
+         */
+        let traversalCount = 1;
+        let lastIndex = column.index;
+        let isEnd = false;
+
+        while (!isEnd) {
+            /**
+             * Check bottom if have the same identity and is the next index
+             */
+            const bottomCol = _get(matrix, [coordinates[0] + 1, coordinates[1]], {});
+            if (
+                bottomCol.index === lastIndex + 1 &&
+                rootIdentity === this.identityDictionary[bottomCol.value.filter((value: string) => value !== "t")[0]]
+            ) {
+                lastIndex = bottomCol.index;
+                traversalCount++;
+                coordinates[0]++;
+                continue;
+            }
+
+            /**
+             * Check right if have the same identity and is the next index
+             */
+            const rightCol = _get(matrix, [coordinates[0], coordinates[1] + 1], {});
+            if (
+                rightCol.index === lastIndex + 1 &&
+                rootIdentity === this.identityDictionary[rightCol.value.filter((value: string) => value !== "t")[0]]
+            ) {
+                lastIndex = rightCol.index;
+                traversalCount++;
+                coordinates[1]++;
+                continue;
+            }
+
+            isEnd = true;
+        }
+
+        return traversalCount;
     }
 }

@@ -10,7 +10,7 @@ interface Options {
 }
 
 interface Cell {
-  value: string;
+  value: string[];
   index: number;
   tie_count: number;
 }
@@ -26,18 +26,9 @@ export default class BigRoad extends RoadmapUtilities {
   constructor(_options: Options) {
     super();
 
-    /**
-     * Define options
-     */
-    const options: Options = _defaultsDeep(_options, {
-      results: [],
-      rows: 6,
-      cols: 26
-    });
-
-    this.results = options.results || [];
-    this.rows = options.rows || 6;
-    this.cols = options.cols || 26;
+    this.results = _options.results || [];
+    this.rows = _options.rows || 6;
+    this.cols = _options.cols || 26;
 
     /**
      * Define initial values
@@ -101,107 +92,8 @@ export default class BigRoad extends RoadmapUtilities {
     return [0, lastColIdx + 1];
   }
 
-  // push(key: string): void {
-  //   const identity = this.identityDictionary[key];
-
-  //   if (!identity) {
-  //     console.warn(`${key} is not a valid key.`);
-  //     return;
-  //   }
-
-  //   const isTie = this.tieIdentities.includes(key);
-
-  //   const [nextRow, nextCol] = this.getNextCoordinate(identity);
-  //   const [prevRow, prevCol] = [...this.previousCoordinates];
-
-  //   const prevColValue = _get(this.matrix[prevRow][prevCol], 'value');
-  //   const isAnotherTie = isTie && this.tieIdentities.includes(prevColValue);
-
-  //   /**
-  //    * If previous col is tie and the current identity
-  //    * is also tie
-  //    */
-  //   if (isAnotherTie) {
-  //     (this.matrix[prevRow][prevCol] as Cell).tie_count++;
-  //     return;
-  //   }
-
-  //   this.previousCoordinates = [nextRow, nextCol];
-  //   this.previousIdentity = identity;
-
-  //   this.matrix[nextRow][nextCol] = {
-  //     value: key,
-  //     index: this.index++,
-  //     tie_count: isTie ? 1 : 0
-  //   };
-
-  //   if (this.hasFullRow) {
-  //     this.matrix = this.truncateFirstColumn();
-  //     this.previousCoordinates = [nextRow, nextCol - 1];
-  //   }
-  // }
-
-  // push(key: string): void {
-  //   const identity = this.identityDictionary[key];
-
-  //   if (!identity) {
-  //     console.warn(`${key} is not a valid key.`);
-  //     return;
-  //   }
-
-  //   const isTie = this.tieIdentities.includes(key);
-
-  //   const [nextRow, nextCol] = this.getNextCoordinate(identity);
-  //   const [prevRow, prevCol] = [...this.previousCoordinates];
-
-  //   const prevColValue = _get(this.matrix[prevRow][prevCol], 'value');
-  //   const isPrevTie = Array.isArray(prevColValue);
-  //   const isAnotherTie = isTie && isPrevTie;
-
-  //   /**
-  //    * If current key is tie and the previous value is also a tie,
-  //    * update the previous coordinate.
-  //    */
-  //   if (isAnotherTie) {
-  //     prevColValue.push(key);
-  //     (this.matrix[prevRow][prevCol] as Cell).tie_count++;
-  //     return;
-  //   }
-
-  //   /**
-  //    * If current key is a tie but the previous value is not a tie,
-  //    * update the previous coordinate by making the value an array.
-  //    */
-  //   if (isTie && !isPrevTie) {
-  //     this.matrix[prevRow][prevCol] = {
-  //       value: [prevColValue, key],
-  //       index: this.index,
-  //       tie_count: 1
-  //     };
-  //     return;
-  //   }
-
-  //   /**
-  //    * If the current key is not a tie but the previous value is a tie,
-  //    * add the current key to the previous coordinate's value.
-  //    */
-  //   if (!isTie && isPrevTie) {
-  //     prevColValue.push(key);
-  //     return;
-  //   }
-
-  //   // Update the coordinates and identity for non-tie cases or new entries
-  //   this.previousCoordinates = [nextRow, nextCol];
-  //   this.previousIdentity = identity;
-
-  //   this.matrix[nextRow][nextCol] = {
-  //     value: [key],
-  //     index: this.index++,
-  //     tie_count: isTie ? 1 : 0
-  //   };
-  // }
-
   push(key: string): void {
+
     const identity = this.identityDictionary[key];
 
     if (!identity) {
@@ -210,46 +102,58 @@ export default class BigRoad extends RoadmapUtilities {
     }
 
     const isTie = this.tieIdentities.includes(key);
-
     const [nextRow, nextCol] = this.getNextCoordinate(identity);
-    const [prevRow, prevCol] = [...this.previousCoordinates];
+    const [prevRow, prevCol] = this.previousCoordinates;
 
-    const prevColValue = _get(this.matrix[prevRow][prevCol], 'value');
-    const isPrevTie = Array.isArray(prevColValue);
+    const prevColCell = this.matrix[prevRow][prevCol] as Cell
+    const prevColValue = _get(prevColCell, 'value');
 
-    /**
-     * If current key is a tie and the previous value is also a tie,
-     * update the previous coordinate.
-     */
-    if (isTie && isPrevTie) {
-      prevColValue.push(key);
-      (this.matrix[prevRow][prevCol] as Cell).tie_count++;
-      return;
+    let isPrevTie: boolean = false;
+    if (prevColValue) {
+      isPrevTie = this.tieIdentities.includes(prevColValue[prevColValue.length - 1]);
     }
 
-    /**
-     * If current key is a tie but the previous value is not a tie,
-     * update the previous coordinate by making the value an array.
-     */
-    if (isTie && !isPrevTie) {
-      this.matrix[prevRow][prevCol] = {
-        value: [prevColValue, key],
-        index: this.index,
-        tie_count: 1
-      };
-      return;
-    }
-
-    /**
-     * If the current key is not a tie but the previous value is a tie,
-     * add the current key to the previous coordinate's value.
-     */
+    // Handle case where previous is a tie and current is not
     if (!isTie && isPrevTie) {
-      prevColValue.push(key);
+      if (nextRow !== 0 || nextCol !== 0) {
+        this.previousCoordinates = [nextRow, nextCol];
+        this.previousIdentity = identity
+        this.matrix[nextRow][nextCol] = {
+          value: [key],
+          index: this.index++,
+          tie_count: isTie ? 1 : 0
+        };
+      } else {
+        prevColCell.value.push(key);
+        this.previousIdentity = identity
+      }
+      return
+    }
+
+    // Handle case where current is a tie and previous is not
+    if (isTie && !isPrevTie) {
+      if (prevColCell) {
+        prevColCell.value.push(key);
+        prevColCell.tie_count++;
+      } else {
+        this.previousCoordinates = [nextRow, nextCol];
+        this.matrix[nextRow][nextCol] = {
+          value: [key],
+          index: this.index++,
+          tie_count: isTie ? 1 : 0
+        };
+      }
       return;
     }
 
-    // For all other cases, move to the next coordinates and update the identity
+    // Handle case where current and previous are tie
+    if (isTie && isPrevTie) {
+      prevColCell.value.push(key);
+      prevColCell.tie_count++;
+      return;
+    }
+
+    // Handle other case
     this.previousCoordinates = [nextRow, nextCol];
     this.previousIdentity = identity;
 
@@ -258,7 +162,46 @@ export default class BigRoad extends RoadmapUtilities {
       index: this.index++,
       tie_count: isTie ? 1 : 0
     };
+
+    if (this.hasFullRow) {
+      this.matrix = this.truncateFirstColumn();
+      this.previousCoordinates = [nextRow, nextCol - 1];
+    }
   }
 
+  pop(): void {
+    if (this.index === 0) {
+      console.warn("No elements to pop.");
+      return;
+    }
 
+    const [row, column] = this.previousCoordinates
+
+    let cellData = this.matrix[row][column];
+
+    if (Array.isArray(cellData.value) && cellData.value.length > 1) {
+      cellData.value.pop();
+      cellData.tie_count--;
+      this.previousIdentity = this.identityDictionary[cellData.value[cellData.value.length - 1]];
+    } else {
+      this.matrix[row][column] = 0;
+      this.index--;
+
+      if (this.index > 0) {
+        const lastCoordinates = this.getCoordinatesByIndex(this.matrix, this.index - 1);
+        if (lastCoordinates) {
+          const [lastRow, lastColumn] = lastCoordinates;
+          this.previousCoordinates = [lastRow, lastColumn];
+          const lastIdentityKey = this.matrix[lastRow][lastColumn].value;
+          this.previousIdentity = this.identityDictionary[lastIdentityKey];
+        } else {
+          this.previousCoordinates = [0, 0];
+          this.previousIdentity = null;
+        }
+      } else {
+        this.previousCoordinates = [0, 0];
+        this.previousIdentity = null;
+      }
+    }
+  }
 }

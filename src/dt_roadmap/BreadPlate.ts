@@ -95,4 +95,29 @@ export default class BreadPlate extends RoadmapUtilities {
       this.previousCoordinates = [row, column - 1];
     }
   }
+
+  pop(): void {
+    if (this.index === 0) {
+      console.warn("No elements to pop.");
+      return;
+    }
+
+    let [row, column] = this.previousCoordinates;
+    if (this.index > 0) {
+      this.matrix[row][column] = 0;
+      this.index--;
+      const lastCoordinates = this.getCoordinatesByIndex(this.matrix, this.index - 1);
+      if (lastCoordinates) {
+        const lastRow = lastCoordinates[0]
+        const lastCol = lastCoordinates[1]
+        this.previousCoordinates = [lastRow, lastCol]
+
+        const lastIdentityKey = this.matrix[lastRow][lastCol].value;
+        this.previousIdentity = this.identityDictionary[lastIdentityKey];
+      }
+    } else {
+      this.previousCoordinates = [0, 0]
+      this.previousIdentity = null;
+    }
+  }
 }

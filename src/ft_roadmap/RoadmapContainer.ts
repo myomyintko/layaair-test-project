@@ -141,9 +141,6 @@ export class RoadmapContainer extends Laya.Script {
         this.roadmap.push(value)
         this.froadmap.push(value)
         this.renderRoadmapUI()
-
-        console.log(this.froadmap);
-
     }
 
     renderRoadmapUI(): void {

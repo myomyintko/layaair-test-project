@@ -18,27 +18,22 @@ interface Options {
     results: any[];
     config: {
         breadplate: {
-            show_options: boolean;
             rows: number;
             cols: number;
         };
         bigroad: {
-            show_options: boolean;
             rows: number;
             cols: number;
         };
         bigeyeboy: {
-            show_options: boolean;
             rows: number;
             cols: number;
         };
         smallroad: {
-            show_options: boolean;
             rows: number;
             cols: number;
         };
         cockroachPig: {
-            show_options: boolean;
             rows: number;
             cols: number;
         };
@@ -49,27 +44,22 @@ export default class Roadmap {
     results: any[];
     config: {
         breadplate: {
-            show_options: boolean;
             rows: number;
             cols: number;
         };
         bigroad: {
-            show_options: boolean;
             rows: number;
             cols: number;
         };
         bigeyeboy: {
-            show_options: boolean;
             rows: number;
             cols: number;
         };
         smallroad: {
-            show_options: boolean;
             rows: number;
             cols: number;
         };
         cockroachPig: {
-            show_options: boolean;
             rows: number;
             cols: number;
         };
@@ -160,5 +150,14 @@ export default class Roadmap {
 
         this.cockroachPig.bigRoadMatrix = this.bigroad.matrix;
         this.cockroachPig.traverseBigRoadScheme();
+    }
+
+    pop(): void {
+        this.results.pop()
+        this.breadplate.pop()
+        this.bigroad.pop()
+        this.bigeyeboy.pop()
+        this.smallroad.pop()
+        this.cockroachPig.pop()
     }
 }

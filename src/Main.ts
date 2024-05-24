@@ -41,7 +41,7 @@ export class Main extends Laya.Script {
         // this.owner.scrollRect = new Laya.Rectangle(0, 0, this.owner.width, this.owner.height)
         // this.owner.graphics.drawRect(0, 0, this.owner.width, this.owner.height, "#000000")
         // this.playVideo()
-        this.loadSVG()
+        // this.loadSVG()
     }
 
     loadSVG(): void {

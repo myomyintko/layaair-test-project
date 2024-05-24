@@ -3,6 +3,7 @@ const { regClass, property } = Laya;
 import Roadmap from "./Roadmap";
 import Box = Laya.Box
 import Btn = Laya.Button
+import Image = Laya.Image
 
 @regClass()
 export class DragonTigerRoadmap extends Laya.Script {
@@ -113,19 +114,51 @@ export class DragonTigerRoadmap extends Laya.Script {
             this.bigEyeRoadSprite.graphics.clear()
             this.smallRoadSprite.graphics.clear()
             this.cockroachRoadSprite.graphics.clear()
+            this.resetPredictions()
         })
+    }
 
-        const tdpBtn = controlBox.getChildByName("tdp_btn") as Btn
-        tdpBtn.clickHandler = new Laya.Handler(this, () => {
-            this.roadmap.push("k")
-            this.renderRoadmapUI()
-        })
+    initPredictions(): void {
+        const predictionsBox = this.owner.getChildByName("predictions") as Box;
 
-        const ttpBtn = controlBox.getChildByName("ttp_btn") as Btn
-        ttpBtn.clickHandler = new Laya.Handler(this, () => {
-            this.roadmap.push("i")
-            this.renderRoadmapUI()
-        })
+        const setSkin = (item: Image, color: string | null, type: string): void => {
+            if (color === "red") {
+                item.skin = `resources/dt/red${type}.png`;
+            } else if (color === "blue") {
+                item.skin = `resources/dt/blue${type}.png`;
+            } else {
+                item.skin = null;
+            }
+        };
+
+        const initRoadmapValues = (boxName: string, newResult: string): void => {
+            const box = predictionsBox.getChildByName(boxName) as Box;
+            const valueItems = [0, 1, 2].map(i => box.getChildByName("Box").getChildByName(`item${i}`) as Image);
+
+            this.roadmap.push(newResult)
+            setSkin(valueItems[0], this.roadmap.bigeyeboy.previousColor, "");
+            setSkin(valueItems[1], this.roadmap.smallroad.previousColor, "_full");
+            setSkin(valueItems[2], this.roadmap.cockroachPig.previousColor, "_stick");
+
+            this.roadmap.pop()
+        };
+
+        initRoadmapValues("tiger", "b");
+        initRoadmapValues("dragon", "p");
+    }
+
+    resetPredictions(): void {
+        const predictionsBox = this.owner.getChildByName("predictions") as Box;
+
+        const initRoadmapValues = (boxName: string) => {
+            const box = predictionsBox.getChildByName(boxName) as Box
+            const valueItems = [0, 1, 2].map(i => box.getChildByName("Box").getChildByName(`item${i}`) as Image);
+            valueItems[0].skin = null
+            valueItems[1].skin = null
+            valueItems[2].skin = null
+        }
+        initRoadmapValues("dragon")
+        initRoadmapValues("tiger")
     }
 
     initRoadmapData(): void {
@@ -133,27 +166,22 @@ export class DragonTigerRoadmap extends Laya.Script {
             results: [],
             config: {
                 breadplate: {
-                    show_options: false,
                     rows: 6,
                     cols: 100,
                 },
                 bigroad: {
-                    show_options: false,
                     rows: 6,
                     cols: 100,
                 },
                 bigeyeboy: {
-                    show_options: false,
                     rows: 6,
                     cols: 100,
                 },
                 smallroad: {
-                    show_options: false,
                     rows: 6,
                     cols: 100,
                 },
                 cockroachPig: {
-                    show_options: false,
                     rows: 6,
                     cols: 100,
                 },
@@ -167,8 +195,10 @@ export class DragonTigerRoadmap extends Laya.Script {
         this.renderBigEyeRoadData()
         this.renderSmallRoadmData()
         this.renderCockroachRoadmData()
+        this.initPredictions()
 
-        console.log(this.roadmap);
+        console.clear()
+        console.log(this.roadmap.bigeyeboy)
     }
 
     renderBeadPlateData(): void {
@@ -230,48 +260,37 @@ export class DragonTigerRoadmap extends Laya.Script {
 
         const cell = matrix[rowIndex][colIndex]
         if (cell && cell.value) {
-            let centerX, centerY
+
+            let centerX, centerY, imgUrl
             centerX = colIndex * cmdWidth + cmdWidth / 2 - boxWidth * 0.5;
             centerY = rowIndex * cmdHeight + cmdHeight / 2 - boxWidth * 0.4;
 
-            let imgUrls: string[] = [], tieCount = 0
-            for (let i = 0; i < cell.value.length; i++) {
-                const item = cell.value[i]
-                switch (item) {
-                    case "p":
-                        imgUrls.push("resources/dt/blue-circle.png")
-                        break;
-                    case "b":
-                        imgUrls.push("resources/dt/red-circle.png")
-                        break;
-                    case "t":
-                        imgUrls.push("resources/dt/tie-stick.png")
-                        tieCount++
-                        break
-                    // case "k":
-                    //     imgUrl = "resources/dt/blue-circle-stick.png"
-                    //     break
-                    // case "i":
-                    //     imgUrl = "resources/dt/blue-circle-stick.png"
-                    //     break
-                    default:
-                        break
-                }
+            const cellName = Array.from(new Set(cell.value)).sort().join('')
+            switch (cellName) {
+                case "p":
+                    imgUrl = "resources/dt/blue.png"
+                    break;
+                case "b":
+                    imgUrl = "resources/dt/red.png"
+                    break;
+                case "pt":
+                    imgUrl = "resources/dt/blue_tie.png"
+                    break
+                case "bt":
+                    imgUrl = "resources/dt/red_tie.png"
+                    break
+                default:
+                    break
             }
 
-            Laya.loader.load(imgUrls).then(resp => {
-                if (tieCount >= 2) {
-                    resp = resp.slice(0, resp.length - tieCount)
-                    // this.bigRoadSprite.graphics.fillText(tieCount.toString(), centerX, centerY, "8px Arial", "#000000", "center")
-                }
-
-                resp.forEach((res: any) => {
+            if (imgUrl) {
+                Laya.loader.load(imgUrl).then(res => {
                     this.bigRoadSprite.graphics.drawImage(res, centerX, centerY, boxWidth * 0.7, boxWidth * 0.7);
-                })
-            });
+                });
+            }
         }
 
-        // this.bigRoadSprite.autoSize = true
+        this.bigRoadSprite.autoSize = true
         Laya.timer.frameOnce(1, this, () => {
             this.bigRoadPanel.refresh();
             this.bigRoadPanel.scrollTo(cmdWidth * colIndex, 0);
@@ -294,10 +313,10 @@ export class DragonTigerRoadmap extends Laya.Script {
             let imgUrl: string;
             switch (cell.value) {
                 case "blue":
-                    imgUrl = "resources/dt/blue_circle_small.png";
+                    imgUrl = "resources/dt/blue_small.png";
                     break;
                 case "red":
-                    imgUrl = "resources/dt/red_circle_small.png";
+                    imgUrl = "resources/dt/red_small.png";
                     break;
                 default:
                     break
@@ -334,10 +353,10 @@ export class DragonTigerRoadmap extends Laya.Script {
             let imgUrl: string;
             switch (cell.value) {
                 case "blue":
-                    imgUrl = "resources/dt/blue-full.png";
+                    imgUrl = "resources/dt/blue_full.png";
                     break;
                 case "red":
-                    imgUrl = "resources/dt/red-full.png";
+                    imgUrl = "resources/dt/red_full.png";
                     break;
                 default:
                     break
@@ -373,10 +392,10 @@ export class DragonTigerRoadmap extends Laya.Script {
             let imgUrl: string;
             switch (cell.value) {
                 case "blue":
-                    imgUrl = "resources/dt/blue-stick.png";
+                    imgUrl = "resources/dt/blue_stick.png";
                     break;
                 case "red":
-                    imgUrl = "resources/dt/red-stick.png";
+                    imgUrl = "resources/dt/red_stick.png";
                     break;
                 default:
                     break
@@ -394,18 +413,5 @@ export class DragonTigerRoadmap extends Laya.Script {
             this.cockroachRoadPanel.refresh();
             this.cockroachRoadPanel.scrollTo(boxWidth * colIndex, 0);
         });
-    }
-
-    findValueInMatrix(matrix: any[][], value: number): { rowIndex: number, colIndex: number } | null {
-        for (let rowIndex = 0; rowIndex < matrix.length; rowIndex++) {
-            const row = matrix[rowIndex];
-            for (let colIndex = 0; colIndex < row.length; colIndex++) {
-                const col = row[colIndex];
-                if (col.index === value) {
-                    return { rowIndex, colIndex };
-                }
-            }
-        }
-        return null;
     }
 }

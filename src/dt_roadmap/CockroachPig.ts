@@ -9,20 +9,11 @@ interface Options {
     bigRoadMatrix: any[][];
     rows: number;
     cols: number;
-    bigroadConfig?: {
-        rows: number;
-        cols: number;
-    };
 }
 
 export default class CockroachPig extends RoadmapUtilities {
-    results: any[];
     rows: number;
     cols: number;
-    bigroadConfig: {
-        rows: number;
-        cols: number;
-    };
     bigRoadMatrix: any[][];
     previousCoordinates: [number, number];
     previousColor: string | null;
@@ -32,29 +23,9 @@ export default class CockroachPig extends RoadmapUtilities {
     constructor(_options: Options) {
         super();
 
-        const options: Options = _defaultsDeep(_options, {
-            results: [],
-            rows: 6,
-            cols: 9,
-            bigroadConfig: {
-                rows: 6,
-                cols: 26
-            }
-        });
-
-        this.rows = options.rows || 6;
-        this.cols = options.cols || 9;
-        this.bigroadConfig = options.bigroadConfig || { rows: 6, cols: 26 };
-
-        this.bigRoadMatrix = (() => {
-            const bigroad = new BigRoad({
-                results: this.results,
-                rows: this.bigroadConfig.rows,
-                cols: this.bigroadConfig.cols
-            });
-
-            return bigroad.matrix;
-        })();
+        this.rows = _options.rows || 6;
+        this.cols = _options.cols || 9;
+        this.bigRoadMatrix = _options.bigRoadMatrix || []
 
         this.traverseBigRoadScheme();
     }
@@ -83,34 +54,34 @@ export default class CockroachPig extends RoadmapUtilities {
         const D2: [number, number] = [1, 3];
         const E1: [number, number] = [0, 4];
 
-        const c2HasValue = this.bigRoadMatrix[D2[0]][D2[1]];
-        const d1HasValue = this.bigRoadMatrix[E1[0]][E1[1]];
+        const d2HasValue = this.bigRoadMatrix[D2[0]][D2[1]];
+        const e1HasValue = this.bigRoadMatrix[E1[0]][E1[1]];
 
-        if (!c2HasValue && !d1HasValue) {
+        if (!d2HasValue && !e1HasValue) {
             return;
-        }        
+        }
 
-        let [initialRow, initialCol] = c2HasValue ? D2 : E1;
+        let [initialRow, initialCol] = d2HasValue ? D2 : E1;
 
         while (true) {
             const col = this.bigRoadMatrix[initialRow][initialCol];
             const isFirstRow = initialRow === 0;
 
-            const nextCoordinates = this.getBigRoadCoordinatesByIndex(col.index + 1);
+            const nextCoordinates = this.getCoordinatesByIndex(this.bigRoadMatrix, col.index + 1);
 
             /**
-             * If first row, check the lengths of previous 2 columns
+             * If first row, check the lengths of previous 4 columns
              */
             if (isFirstRow) {
                 /**
                  * Get the column exactly to the right
                  */
-                const prevColALength = this.getColumnLength(initialCol - 1);
+                const prevColALength = this.getColumnLength(this.bigRoadMatrix, initialCol - 1);
 
                 /**
-                 * Get the 3rd column to the right
+                 * Get the 4th column to the right
                  */
-                const prevColBLength = this.getColumnLength(initialCol - 4);
+                const prevColBLength = this.getColumnLength(this.bigRoadMatrix, initialCol - 4);
 
                 this.push(prevColALength === prevColBLength ? 'red' : 'blue', {
                     big_road_index: col.index
@@ -131,8 +102,17 @@ export default class CockroachPig extends RoadmapUtilities {
             const leftColLower = this.bigRoadMatrix[initialRow][initialCol - 3];
             const leftColUpper = this.bigRoadMatrix[initialRow - 1][initialCol - 3];
 
-            const leftColLowerIdentity = this.identityDictionary[_get(leftColLower, 'value')];
-            const leftColUpperIdentity = this.identityDictionary[_get(leftColUpper, 'value')];
+            let leftColLowerValue, leftColUpperValue
+            if (leftColLower) {
+                leftColLowerValue = leftColLower.value.filter((value: string) => value !== "t")[0]
+            }
+
+            if (leftColUpper) {
+                leftColUpperValue = leftColUpper.value.filter((value: string) => value !== "t")[0]
+            }
+
+            const leftColLowerIdentity = this.identityDictionary[leftColLowerValue];
+            const leftColUpperIdentity = this.identityDictionary[leftColUpperValue];
 
             const isMatch = [
                 /**
@@ -158,75 +138,6 @@ export default class CockroachPig extends RoadmapUtilities {
                 break;
             }
         }
-    }
-
-    getBigRoadCoordinatesByIndex(index: number): [number, number] | false {
-        for (let rowIdx = 0; rowIdx < this.bigRoadMatrix.length; rowIdx++) {
-            const row = this.bigRoadMatrix[rowIdx];
-
-            for (let colIdx = 0; colIdx < row.length; colIdx++) {
-                const col = row[colIdx];
-                if (col.index === index) {
-                    return [rowIdx, colIdx];
-                }
-            }
-        }
-
-        return false;
-    }
-
-    getColumnLength(columnIdx: number): number {
-        const coordinates = [0, columnIdx];
-        const column = this.bigRoadMatrix[coordinates[0]][coordinates[1]];
-        const rootIdentity = this.identityDictionary[column.value];
-
-        /**
-         * If initial column is empty, return 0
-         */
-        if (!column) {
-            return 0;
-        }
-
-        /**
-         * Starting with one which includes the root node
-         */
-        let traversalCount = 1;
-        let lastIndex = column.index;
-        let isEnd = false;
-
-        while (!isEnd) {
-            /**
-             * Check bottom if have the same identity and is the next index
-             */
-            const bottomCol = _get(this.bigRoadMatrix, [coordinates[0] + 1, coordinates[1]], {});
-            if (
-                bottomCol.index === lastIndex + 1 &&
-                rootIdentity === this.identityDictionary[bottomCol.value]
-            ) {
-                lastIndex = bottomCol.index;
-                traversalCount++;
-                coordinates[0]++;
-                continue;
-            }
-
-            /**
-             * Check right if have the same identity and is the next index
-             */
-            const rightCol = _get(this.bigRoadMatrix, [coordinates[0], coordinates[1] + 1], {});
-            if (
-                rightCol.index === lastIndex + 1 &&
-                rootIdentity === this.identityDictionary[rightCol.value]
-            ) {
-                lastIndex = rightCol.index;
-                traversalCount++;
-                coordinates[1]++;
-                continue;
-            }
-
-            isEnd = true;
-        }
-
-        return traversalCount;
     }
 
     getNextCoordinates(color: string): [number, number] {
@@ -302,4 +213,28 @@ export default class CockroachPig extends RoadmapUtilities {
             this.previousCoordinates = [row, column - 1];
         }
     }
+
+    pop(): void {
+        if (this.index === 0) {
+            console.warn("No elements to pop.");
+            return;
+        }
+
+        let [row, column] = this.previousCoordinates;
+        if (this.index > 0) {
+            this.matrix[row][column] = 0;
+            this.index--;
+            const lastCoordinates = this.getCoordinatesByIndex(this.matrix, this.index - 1);
+            if (lastCoordinates) {
+                const lastRow = lastCoordinates[0]
+                const lastCol = lastCoordinates[1]
+                this.previousCoordinates = [lastRow, lastCol]
+                this.previousColor = this.matrix[lastRow][lastCol].value;
+            }
+        } else {
+            this.previousCoordinates = [0, 0]
+            this.previousColor = null;
+        }
+    }    
 }
+
