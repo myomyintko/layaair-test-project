@@ -202,7 +202,7 @@ export class DragonTigerRoadmap extends Laya.Script {
     }
 
     renderBeadPlateData(): void {
-        const cmdWidth = this.beadPlateRoadBox.width / 10;
+        const cmdWidth = this.beadPlateRoadBox.width / 6;
         const cmdHeight = this.beadPlateRoadBox.height / 6;
         const drawWidth = Math.min(cmdWidth, cmdHeight)
 
@@ -250,7 +250,7 @@ export class DragonTigerRoadmap extends Laya.Script {
     }
 
     renderBigRoadData(): void {
-        const cmdWidth = this.bigRoadBox.width / 20;
+        const cmdWidth = this.bigRoadBox.width / 16;
         const cmdHeight = this.bigRoadBox.height / 6;
         const boxWidth = Math.min(cmdWidth, cmdHeight)
 
@@ -298,7 +298,7 @@ export class DragonTigerRoadmap extends Laya.Script {
     }
 
     renderBigEyeRoadData(): void {
-        const cmdWidth = this.bigEyeRoadBox.width / 40;
+        const cmdWidth = this.bigEyeRoadBox.width / 20;
         const cmdHeight = this.bigEyeRoadBox.height / 6;
         const boxWidth = Math.min(cmdWidth, cmdHeight)
 
@@ -308,7 +308,7 @@ export class DragonTigerRoadmap extends Laya.Script {
         const cell = matrix[rowIndex][colIndex]
         if (cell && cell.value) {
             const centerX = colIndex * cmdWidth + cmdWidth / 2 - boxWidth * 0.4;
-            const centerY = rowIndex * boxWidth + boxWidth / 2 - boxWidth * 0.4;
+            const centerY = rowIndex * boxWidth + boxWidth / 2 - boxWidth * 0.2;
 
             let imgUrl: string;
             switch (cell.value) {
@@ -325,7 +325,7 @@ export class DragonTigerRoadmap extends Laya.Script {
             if (imgUrl) {
 
                 Laya.loader.load(imgUrl).then(res => {
-                    this.bigEyeRoadSprite.graphics.drawImage(res, centerX, centerY, boxWidth * 0.7, boxWidth * 0.7);
+                    this.bigEyeRoadSprite.graphics.drawImage(res, centerX, centerY, boxWidth * 0.8, boxWidth * 0.8);
                 });
             }
         }
@@ -338,7 +338,7 @@ export class DragonTigerRoadmap extends Laya.Script {
     }
 
     renderSmallRoadmData(): void {
-        const cmdWidth = this.smallRoadBox.width / 20;
+        const cmdWidth = this.smallRoadBox.width / 10;
         const cmdHeight = this.smallRoadBox.height / 6;
         const boxWidth = Math.min(cmdWidth, cmdHeight)
 
@@ -377,7 +377,7 @@ export class DragonTigerRoadmap extends Laya.Script {
     }
 
     renderCockroachRoadmData(): void {
-        const cmdWidth = this.cockroachRoadBox.width / 20;
+        const cmdWidth = this.cockroachRoadBox.width / 10;
         const cmdHeight = this.cockroachRoadBox.height / 6;
         const boxWidth = Math.min(cmdWidth, cmdHeight)
 
