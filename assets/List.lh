@@ -1,0 +1,103 @@
+{
+  "_$ver": 1,
+  "_$id": "znfw18mk",
+  "_$type": "Box",
+  "name": "Box",
+  "x": 760,
+  "y": 520,
+  "width": 400,
+  "height": 40,
+  "_mouseState": 2,
+  "centerX": 0,
+  "centerY": 0,
+  "_$comp": [
+    {
+      "_$type": "06735300-577f-4e8e-82a4-3daa30c5bc61",
+      "scriptPath": "../src/List.ts"
+    }
+  ],
+  "_$child": [
+    {
+      "_$id": "9p8l8go8",
+      "_$type": "List",
+      "name": "List",
+      "x": 40,
+      "width": 320,
+      "height": 40,
+      "_mouseState": 2,
+      "left": 40,
+      "right": 40,
+      "top": 0,
+      "bottom": 0,
+      "itemTemplate": {
+        "_$ref": "te91pyno",
+        "_$tmpl": "itemRender"
+      },
+      "repeatX": 7,
+      "repeatY": 1,
+      "elasticEnabled": true,
+      "spaceX": 7,
+      "scrollType": 1,
+      "selectEnable": true,
+      "_$child": [
+        {
+          "_$id": "te91pyno",
+          "_$type": "Box",
+          "name": "Box",
+          "width": 40,
+          "height": 40,
+          "top": 0,
+          "bottom": 0,
+          "_$child": [
+            {
+              "_$id": "oo4w6d2i",
+              "_$type": "Image",
+              "name": "Image",
+              "width": 40,
+              "height": 40,
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0,
+              "skin": "res://de6cfa20-4862-414e-90d0-d7240937a86b",
+              "color": "#ffffff"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_$id": "svednakv",
+      "_$type": "Button",
+      "name": "leftBtn",
+      "width": 40,
+      "height": 40,
+      "_mouseState": 2,
+      "left": 0,
+      "centerY": 0,
+      "skin": "",
+      "label": "<<",
+      "labelSize": 20,
+      "labelColors": "#ffffff,#ffffff,#ffffff",
+      "labelAlign": "center",
+      "labelVAlign": "middle"
+    },
+    {
+      "_$id": "qg8fguir",
+      "_$type": "Button",
+      "name": "rightBtn",
+      "x": 360,
+      "width": 40,
+      "height": 40,
+      "_mouseState": 2,
+      "right": 0,
+      "centerY": 0,
+      "skin": "",
+      "label": ">>",
+      "labelSize": 20,
+      "labelColors": "#ffffff,#ffffff,#ffffff",
+      "labelAlign": "center",
+      "labelVAlign": "middle"
+    }
+  ]
+}

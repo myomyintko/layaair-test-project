@@ -3,17 +3,17 @@ import _defaultsDeep from 'lodash/defaultsDeep';
 import RoadmapUtilities from './RoadmapUtilities';
 
 interface Options {
-  results?: string[];
+  results?: number[];
   rows?: number;
   cols?: number;
 }
 
 export default class BreadPlate extends RoadmapUtilities {
-  results: string[];
+  results: number[];
   rows: number;
   cols: number;
   previousCoordinates: [number, number];
-  previousIdentity: string | null;
+  previousIdentity: number | null;
   index: number;
   matrix: any[][];
 
@@ -72,13 +72,14 @@ export default class BreadPlate extends RoadmapUtilities {
     return [0, prevColumn + 1];
   }
 
-  push(key: string): void {
-    const identity = this.identityDictionary[key];
+  push(key: number): void {
+    // const identity = this.identityDictionary[key];
+    const identity = key;
 
-    if (!identity) {
-      console.warn(`${key} is not a valid key.`);
-      return;
-    }
+    // if (!identity) {
+    //   console.warn(`${key} is not a valid key.`);
+    //   return;
+    // }
 
     const [row, column] = this.getNextCoordinates();
 
@@ -113,7 +114,7 @@ export default class BreadPlate extends RoadmapUtilities {
         this.previousCoordinates = [lastRow, lastCol]
 
         const lastIdentityKey = this.matrix[lastRow][lastCol].value;
-        this.previousIdentity = this.identityDictionary[lastIdentityKey];
+        // this.previousIdentity = this.identityDictionary[lastIdentityKey];
       }
     } else {
       this.previousCoordinates = [0, 0]

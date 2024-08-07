@@ -15,12 +15,12 @@
   ],
   "_$child": [
     {
-      "_$id": "bir4q1wj",
+      "_$id": "hvvs1tj3",
       "_$prefab": "c0f8f399-eed2-47ee-a845-cf7c5645a47b",
       "name": "dragonTigerRoadmap",
       "active": true,
-      "x": 2,
-      "y": 220,
+      "x": 660,
+      "y": 415,
       "visible": true,
       "centerX": 0,
       "centerY": 0

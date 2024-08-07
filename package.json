@@ -10,7 +10,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/lodash": "^4.17.0"
+    "@types/lodash": "^4.17.0",
+    "@types/node": "^20.14.2"
   },
   "dependencies": {
     "@persevie/statemanjs": "^1.6.0",

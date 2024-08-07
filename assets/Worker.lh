@@ -1,0 +1,30 @@
+{
+  "_$ver": 1,
+  "_$id": "bo77r972",
+  "_$type": "Box",
+  "name": "Box",
+  "width": 400,
+  "height": 400,
+  "_$comp": [
+    {
+      "_$type": "d51db721-7613-43a8-abf9-7e83b4ba6dca",
+      "scriptPath": "../src/worker/WorkerPrefab.ts"
+    }
+  ],
+  "_$child": [
+    {
+      "_$id": "dsw9ia2z",
+      "_$type": "Label",
+      "name": "Label",
+      "x": 146,
+      "y": 192,
+      "width": 120,
+      "height": 28,
+      "text": "Label",
+      "fontSize": 20,
+      "color": "#FFFFFF",
+      "valign": "top",
+      "padding": "0,0,0,0"
+    }
+  ]
+}

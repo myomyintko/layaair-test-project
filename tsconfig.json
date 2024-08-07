@@ -10,6 +10,7 @@
       "skipLibCheck": true,
       "moduleResolution": "node",
       "allowSyntheticDefaultImports": true,
+      "allowJs": true,
       "lib": [
         "ESNext",
         "dom"

@@ -1,0 +1,15 @@
+{
+  "_$ver": 1,
+  "_$id": "zx03v70i",
+  "_$type": "Box",
+  "name": "Box",
+  "width": 400,
+  "height": 400,
+  "_$comp": [
+    {
+      "_$type": "6c23a36f-4861-4a31-94a8-d1d1ea6958c6",
+      "scriptPath": "../src/test/index.ts",
+      "text": ""
+    }
+  ]
+}

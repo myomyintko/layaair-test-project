@@ -1,6 +1,7 @@
 {
   "resolution": {
-    "designWidth": 360,
+    "designWidth": 1920,
+    "designHeight": 1080,
     "scaleMode": "full",
     "backgroundColor": "rgba(0, 0, 0, 1)"
   },
@@ -32,5 +33,6 @@
   "splash": {
     "enabled": false,
     "fit": "center"
-  }
+  },
+  "vConsole": true
 }

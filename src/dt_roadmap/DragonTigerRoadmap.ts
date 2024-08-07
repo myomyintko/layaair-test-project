@@ -5,6 +5,13 @@ import Box = Laya.Box
 import Btn = Laya.Button
 import Image = Laya.Image
 
+const banker = 0b1
+const player = 0b10
+const tie = 0b100
+const bankerPair = 0b1000
+const playerPair = 0b10000
+const bankerSix = 0b100000
+
 @regClass()
 export class DragonTigerRoadmap extends Laya.Script {
     beadPlateRoadBox: Box
@@ -26,9 +33,12 @@ export class DragonTigerRoadmap extends Laya.Script {
     cockroachRoadPanel: Laya.Panel;
     cockroachRoadSprite: Laya.Sprite;
 
+    tempArray: number[]
+
     onEnable(): void {
         this.initRoadMapBoxs()
-        this.initControlBtns()
+        // this.initControlBtns()
+        this.initInputBox()
     }
 
     initRoadMapBoxs(): void {
@@ -116,6 +126,30 @@ export class DragonTigerRoadmap extends Laya.Script {
             this.cockroachRoadSprite.graphics.clear()
             this.resetPredictions()
         })
+
+        const bpppBtn = controlBox.getChildByName("bppp_btn") as Btn
+        bpppBtn.clickHandler = new Laya.Handler(this, () => {
+            this.roadmap.push("w")
+            this.renderRoadmapUI()
+        })
+
+    }
+
+    initInputBox(): void {
+        const input = this.owner.getChildByName("inputBox").getChildByName("input") as Laya.Input
+        const submitBtn = this.owner.getChildByName("inputBox").getChildByName("submit_btn") as Btn
+
+        submitBtn.clickHandler = new Laya.Handler(this, () => {
+            // this.roadmap.push(input.text)
+            this.roadmap.push(player+playerPair)
+            this.renderRoadmapUI()
+            this.roadmap.push(banker+playerPair+bankerPair)
+            // this.tempArray.push()
+            this.renderRoadmapUI()
+            this.roadmap.push(bankerSix+bankerPair)
+            this.renderRoadmapUI()
+            input.text = ""
+        })
     }
 
     initPredictions(): void {
@@ -197,11 +231,33 @@ export class DragonTigerRoadmap extends Laya.Script {
         this.renderCockroachRoadmData()
         this.initPredictions()
 
-        console.clear()
-        console.log(this.roadmap.bigeyeboy)
+        // console.clear()
+        console.log(this.roadmap)
     }
 
     renderBeadPlateData(): void {
+
+        // const cmdWidth = this.beadPlateRoadBox.width / 6;
+        // const cmdHeight = this.beadPlateRoadBox.height / 6;
+        // const drawWidth = Math.min(cmdWidth, cmdHeight)
+
+        // this.tempArray.forEach((item: number, index: number) => {
+        //     const centerX = colIndex * cmdWidth + cmdWidth / 2 - drawWidth * 0.4;
+        //     const centerY = rowIndex * cmdHeight + cmdHeight / 2 - drawWidth * 0.4;
+        //     let imgUrl: string;
+
+        //     if (item & player) {
+        //         console.log('is player')
+        //         imgUrl = "resources/dt/dragon.png"
+        //     }
+
+        //     if (imgUrl) {
+        //         Laya.loader.load(imgUrl).then(res => {
+        //             this.beadPlateSprite.graphics.drawImage(res, centerX, centerY, drawWidth * 0.7, drawWidth * 0.7);
+        //         });
+        //     }
+        // })
+
         const cmdWidth = this.beadPlateRoadBox.width / 6;
         const cmdHeight = this.beadPlateRoadBox.height / 6;
         const drawWidth = Math.min(cmdWidth, cmdHeight)
@@ -213,27 +269,47 @@ export class DragonTigerRoadmap extends Laya.Script {
         if (cell && cell.value) {
             const centerX = colIndex * cmdWidth + cmdWidth / 2 - drawWidth * 0.4;
             const centerY = rowIndex * cmdHeight + cmdHeight / 2 - drawWidth * 0.4;
-
+            console.log(cell, cell.value)
             let imgUrl: string;
-            switch (cell.value) {
-                case "p":
-                    imgUrl = "resources/dt/dragon.png";
-                    break;
-                case "b":
-                    imgUrl = "resources/dt/tiger.png";
-                    break;
-                case "t":
-                    imgUrl = "resources/dt/tie.png";
-                    break;
-                case "k":
-                    imgUrl = "resources/dt/tie-blue.png"
-                    break;
-                case "i":
-                    imgUrl = "resources/dt/tie-red.png"
-                    break;
-                default:
-                    break
+            const resultNumber = Math.floor(cell.value)
+            console.log(resultNumber)
+            if(resultNumber & player) {
+                imgUrl = "resources/dt/dragon.png";
             }
+            if(resultNumber & banker) {
+                imgUrl = "resources/dt/tiger.png";
+            }
+            if(resultNumber & tie) {
+                imgUrl = "resources/dt/tie.png";
+            }
+            if(resultNumber & bankerSix) {
+                imgUrl = "resources/baccarat_icon/sprite31.png";
+            }
+            if(resultNumber & bankerPair) {
+                imgUrl = "resources/baccarat_icon/sprite32.png";
+            }
+            // switch (cell.value) {
+            //     case "p":
+            //         imgUrl = "resources/dt/dragon.png";
+            //         break;
+            //     case "b":
+            //         imgUrl = "resources/dt/tiger.png";
+            //         break;
+            //     case "t":
+            //         imgUrl = "resources/dt/tie.png";
+            //         break;
+            //     case "k":
+            //         imgUrl = "resources/dt/tie-blue.png"
+            //         break;
+            //     case "i":
+            //         imgUrl = "resources/dt/tie-red.png"
+            //         break;
+            //     case "w":
+            //         imgUrl = "resources/baccarat_icon/sprite31.png"
+            //         break
+            //     default:
+            //         break
+            // }
 
             if (imgUrl) {
                 Laya.loader.load(imgUrl).then(res => {
@@ -279,6 +355,8 @@ export class DragonTigerRoadmap extends Laya.Script {
                 case "bt":
                     imgUrl = "resources/dt/red_tie.png"
                     break
+                case "w":
+                    imgUrl = "resources/baccarat_icon/sprite31.png"
                 default:
                     break
             }
