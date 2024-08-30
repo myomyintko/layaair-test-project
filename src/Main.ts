@@ -11,16 +11,16 @@ export class Main extends Laya.Script {
     panel: Laya.Panel;
     videoNode: Laya.VideoNode;
 
-    onEnable(): void {
-        const HSlider = this.owner.getChildByName("HSlider") as Laya.HSlider
-        const SOUND_URL = "resources/Take_a_Break.wav"
-        Laya.SoundManager.useAudioMusic = true
-        Laya.SoundManager.autoReleaseSound = true
-        Laya.SoundManager.playMusic(SOUND_URL, 0)
+    // onEnable(): void {
+    //     const HSlider = this.owner.getChildByName("HSlider") as Laya.HSlider
+    //     const SOUND_URL = "resources/Take_a_Break.wav"
+    //     Laya.SoundManager.useAudioMusic = true
+    //     Laya.SoundManager.autoReleaseSound = true
+    //     Laya.SoundManager.playMusic(SOUND_URL, 0)
         
-        HSlider.on(Laya.Event.CHANGE, () => {
-            const volume = HSlider.value / 100;
-            Laya.SoundManager.setMusicVolume(volume)
-        })
-    }
+    //     HSlider.on(Laya.Event.CHANGE, () => {
+    //         const volume = HSlider.value / 100;
+    //         Laya.SoundManager.setMusicVolume(volume)
+    //     })
+    // }
 }

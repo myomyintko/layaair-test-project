@@ -1,25 +1,27 @@
 {
-    "compilerOptions": {
-      "module": "es6",
-      "target": "es6",
-      "strict": true,
-      "strictNullChecks": false,
-      "noEmitHelpers": true,
-      "sourceMap": false,
-      "experimentalDecorators": true,
-      "skipLibCheck": true,
-      "moduleResolution": "node",
-      "allowSyntheticDefaultImports": true,
-      "allowJs": true,
-      "lib": [
-        "ESNext",
-        "dom"
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ESNext",
+    "strict": true,
+    "strictNullChecks": false,
+    "noEmitHelpers": true,
+    "sourceMap": false,
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@app/*": [
+        "src/*"
       ]
     },
-    "include": [
-      "./assets",
-      "./src",
-      "./engine",
-      "./node_modules"
-    ]
-  }
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+  },
+  "include": [
+    "./assets",
+    "./src",
+    "./engine"
+  ]
+}
