@@ -229,9 +229,9 @@ export class BacRoadmap extends BacRoadmapBase {
             roadmapPanel.hScrollBar.value += drawWidth
         })
 
-        // controlWrapper.addChild(prevContainer);
-        // controlWrapper.addChild(nextContainer);
-        // roadmapBox.addChild(controlWrapper)
+        controlWrapper.addChild(prevContainer);
+        controlWrapper.addChild(nextContainer);
+        roadmapBox.addChild(controlWrapper)
     }
 
     private AddOneResultToArr2(arr: any, ask: number) {
@@ -389,18 +389,19 @@ export class BacRoadmap extends BacRoadmapBase {
         for (let i = 0; i < arr.length; i += row) {
             matrix.push(arr.slice(i, i + row));
         }
-
-        this.fillTexture(matrix, row, col, panel, callback, isAsk)
+        const lastX = matrix.length - 1;
+        const lastY = matrix[lastX].length - 1
+        this.fillTexture(matrix, row, col, panel, callback, isAsk,lastX,lastY)
     }
 
     GetHistoryFragment2(arr: number[][], col: number, row: number, panel: Laya.Panel, callback: (cmd: Laya.DrawImageCmd, result: number) => void, isAsk: boolean = false): void {
         const matrix = Array.from({ length: arr.length }, () => Array(row).fill(0));
-        let available = row
+        let available = row, x = -1, y = -1
         arr.forEach((row, i) => {
             available = matrix[i].filter(element => element === 0).length - 1
             row.forEach((col, j) => {
-                let x = i
-                let y = j
+                x = i
+                y = j
                 if (j > available) {
                     x = i + (j - available)
                     y = available
@@ -409,10 +410,10 @@ export class BacRoadmap extends BacRoadmapBase {
                 matrix[x][y] = col
             })
         })
-        this.fillTexture(matrix, row, col, panel, callback, isAsk)
+        this.fillTexture(matrix, row, col, panel, callback, isAsk, x, y)
     }
 
-    private fillTexture(matrix: number[][], row: number, col: number, panel: Laya.Panel, callback: (cmd: Laya.DrawImageCmd, result: number) => void, isAsk: boolean = false): void {
+    private fillTexture(matrix: number[][], row: number, col: number, panel: Laya.Panel, callback: (cmd: Laya.DrawImageCmd, result: number) => void, isAsk: boolean = false, lastX: number, lastY: number): void {
         try {
             const sprite = panel.getChildAt(0) as Laya.Sprite;
             sprite.graphics.clear();
@@ -421,12 +422,10 @@ export class BacRoadmap extends BacRoadmapBase {
             const cmdWidth = panelParent.width / col;
             const cmdHeight = panelParent.height / row;
             const drawWidth = Math.min(cmdHeight, cmdWidth);
-            let maxIndex = 0;
             let lastCmd: Laya.DrawImageCmd | null = null;
             panel.set_width(cmdWidth * (col - 1))
 
             matrix.forEach((col: number[], colIndex: number) => {
-                maxIndex = Math.max(maxIndex, colIndex);
                 col.forEach((cell, cellIndex) => {
                     if (cell) {
                         const cmd = new Laya.DrawImageCmd();
@@ -436,7 +435,9 @@ export class BacRoadmap extends BacRoadmapBase {
                         cmd.y = cellIndex * cmdHeight + cmdHeight / 2 - (drawWidth / 2.5);
                         callback(cmd, cell);
                         sprite.graphics.addCmd(cmd);
-                        lastCmd = cmd
+                        if (colIndex === lastX && cellIndex === lastY) {
+                            lastCmd = cmd
+                        }
                     }
                 });
             });
@@ -465,17 +466,14 @@ export class BacRoadmap extends BacRoadmapBase {
                 start()
             }
 
-            sprite.width = maxIndex * cmdWidth
-            Laya.timer.frameOnce(10, this, () => {
+            sprite.width = matrix.length * cmdWidth
+            Laya.timer.frameOnce(1, this, () => {
                 try {
-                    console.log(panel.width,sprite.width)
-                    // sprite.size((maxIndex * cmdWidth), panel.height);
                     panel.refresh();
                     const scrollBar = panel.hScrollBar;
                     if (scrollBar) {
                         scrollBar.value = scrollBar.max;
                     }
-                    // console.log(maxIndex+1,scrollBar.value,scrollBar.min,scrollBar.max)
                 } catch (error) {
                     console.log(error)
                 }
@@ -483,5 +481,5 @@ export class BacRoadmap extends BacRoadmapBase {
         } catch (error) {
             console.log(error)
         }
-    }    
+    }
 }
