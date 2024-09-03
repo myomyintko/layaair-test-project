@@ -44,19 +44,23 @@ interface bacResultImgs {
 }
 
 const bacResultImgData: bacResultImgs = {
+    // banker
     bacData1ResultDom1: "resources/game_icons/type61.png",
     bacData1ResultDom9: "resources/game_icons/type62.png",
     bacData1ResultDom17: "resources/game_icons/type63.png",
     bacData1ResultDom25: "resources/game_icons/type64.png",
+    // player
     bacData1ResultDom2: "resources/game_icons/type65.png",
     bacData1ResultDom10: "resources/game_icons/type66.png",
     bacData1ResultDom18: "resources/game_icons/type67.png",
     bacData1ResultDom26: "resources/game_icons/type68.png",
+    // tie
     bacData1ResultDom4: "resources/game_icons/type69.png",
     bacData1ResultDom12: "resources/game_icons/type70.png",
     bacData1ResultDom20: "resources/game_icons/type71.png",
     bacData1ResultDom28: "resources/game_icons/type72.png",
 
+    // banker
     bacData2ResultDom1: "resources/game_icons/type01.png",
     bacData2ResultDom9: "resources/game_icons/type02.png",
     bacData2ResultDom17: "resources/game_icons/type03.png",
@@ -65,6 +69,8 @@ const bacResultImgData: bacResultImgs = {
     bacData2ResultDom13: "resources/game_icons/type06.png",
     bacData2ResultDom21: "resources/game_icons/type07.png",
     bacData2ResultDom29: "resources/game_icons/type08.png",
+
+    // player
     bacData2ResultDom2: "resources/game_icons/type09.png",
     bacData2ResultDom10: "resources/game_icons/type10.png",
     bacData2ResultDom18: "resources/game_icons/type11.png",
@@ -89,10 +95,12 @@ const basePathMap: { [key: number]: string } = {
     9: "cr6",
     17: "cr11",
     25: "cr16",
+
     2: "cr2",
     10: "cr7",
     18: "cr12",
     26: "cr17",
+
     4: "cr3",
     12: "cr8",
     20: "cr13",
@@ -108,27 +116,33 @@ const bacResult6ImgData = (result: number, point: number) => {
 export class BacRoadmap extends BacRoadmapBase {
     private defaultUI: "icon" | "point" = "icon"
     private currentUI = this.defaultUI
+    private roadmapRows: number = 6
+    private breadPlateCols: number = 6
+    private bigRoadCols: number = 16
+    private bigEyeRoadCols: number = 20
+    private smallRoadCols: number = 10
+    private cockroachRoadCols: number = 10
 
     onEnable(): void {
-        Laya.loader.load("resources/game_icons.atlas").then(async (res) => {
+        Laya.loader.load("resources/game_icons.atlas").then((res) => {
             this.setupRoadmapUI()
             if (this.currentUI === "icon") {
-                await this.GetHistoryFragment1(historyData.dataArr1, 6, 6, this.bead_plate_road_panel, this.SetHistoryItem1)
-            } else if(this.currentUI==="point"){
-                await this.GetHistoryFragment1(historyData.dataArr6, 6, 6, this.bead_plate_road_panel, this.SetHistoryItem6)
+                this.GetHistoryFragment1(historyData.dataArr1, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem1)
+            } else if (this.currentUI === "point") {
+                this.GetHistoryFragment1(historyData.dataArr6, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem6)
             }
-            await this.GetHistoryFragment2(historyData.dataArr2, 16, 6, this.big_road_panel, this.SetHistoryItem2)
-            await this.GetHistoryFragment2(historyData.dataArr3, 20, 6, this.big_eye_road_panel, this.SetHistoryItem3)
-            await this.GetHistoryFragment2(historyData.dataArr4, 10, 6, this.small_road_panel, this.SetHistoryItem4)
-            await this.GetHistoryFragment2(historyData.dataArr5, 10, 6, this.cockroach_road_panel, this.SetHistoryItem5)
+            this.GetHistoryFragment2(historyData.dataArr2, this.bigRoadCols, this.roadmapRows, this.big_road_panel, this.SetHistoryItem2)
+            this.GetHistoryFragment2(historyData.dataArr3, this.bigEyeRoadCols, this.roadmapRows, this.big_eye_road_panel, this.SetHistoryItem3)
+            this.GetHistoryFragment2(historyData.dataArr4, this.smallRoadCols, this.roadmapRows, this.small_road_panel, this.SetHistoryItem4)
+            this.GetHistoryFragment2(historyData.dataArr5, this.cockroachRoadCols, this.roadmapRows, this.cockroach_road_panel, this.SetHistoryItem5)
             this.setWenluData()
 
-            this.switchBtn.clickHandler = new Laya.Handler(this, async () => {
+            this.switchBtn.clickHandler = new Laya.Handler(this, () => {
                 this.currentUI = this.currentUI === "icon" ? "point" : "icon"
                 if (this.currentUI === "point") {
-                    await this.GetHistoryFragment1(historyData.dataArr6, 6, 6, this.bead_plate_road_panel, this.SetHistoryItem6)
+                    this.GetHistoryFragment1(historyData.dataArr6, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem6)
                 } else if (this.currentUI === "icon") {
-                    await this.GetHistoryFragment1(historyData.dataArr1, 6, 6, this.bead_plate_road_panel, this.SetHistoryItem1)
+                    this.GetHistoryFragment1(historyData.dataArr1, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem1)
                 }
             })
         })
@@ -137,34 +151,87 @@ export class BacRoadmap extends BacRoadmapBase {
     private setupRoadmapUI(): void {
         // bead plate road
         this.bead_plate_road_panel.scrollType = Laya.ScrollType.Horizontal
-        this.bead_plate_road_panel.mouseEnabled = false
+        this.bead_plate_road_panel.elasticEnabled = true
+        this.bead_plate_road_panel.mouseEnabled = true
         const { width: beadPlateRoadWidth, height: beadPlateRoadHeight } = this.bead_plate_road_panel
         this.bead_plate_road_sprite.size(beadPlateRoadWidth, beadPlateRoadHeight)
-        this.bead_plate_road_sprite.autoSize = false
+        this.setupControl(this.bead_plate_road_panel, this.roadmapRows, this.breadPlateCols)
 
         // big road
         this.big_road_panel.scrollType = Laya.ScrollType.Horizontal
-        this.big_road_panel.mouseEnabled = false
+        this.big_road_panel.elasticEnabled = true
+        this.big_road_panel.mouseEnabled = true
         const { width: bigRoadWidth, height: bigRoadHeight } = this.big_road_panel
         this.bead_plate_road_sprite.size(bigRoadWidth, bigRoadHeight)
+        this.setupControl(this.big_road_panel, this.roadmapRows, this.bigRoadCols)
 
         // big eye road
         this.big_eye_road_panel.scrollType = Laya.ScrollType.Horizontal
-        this.big_eye_road_panel.mouseEnabled = false
+        this.big_eye_road_panel.elasticEnabled = true
+        this.big_eye_road_panel.mouseEnabled = true
         const { width: bigEyeRoadWidth, height: bigEyeRoadHeight } = this.big_eye_road_panel
         this.bead_plate_road_sprite.size(bigEyeRoadWidth, bigEyeRoadHeight)
+        this.setupControl(this.big_eye_road_panel, this.roadmapRows, this.bigEyeRoadCols)
 
         // small road
         this.small_road_panel.scrollType = Laya.ScrollType.Horizontal
-        this.small_road_panel.mouseEnabled = false
+        this.small_road_panel.elasticEnabled = true
+        this.small_road_panel.mouseEnabled = true
         const { width: smallRoadWidth, height: smallRoadHeight } = this.small_road_panel
         this.bead_plate_road_sprite.size(smallRoadWidth, smallRoadHeight)
+        this.setupControl(this.small_road_panel, this.roadmapRows, this.smallRoadCols)
 
         // cockroach road
         this.cockroach_road_panel.scrollType = Laya.ScrollType.Horizontal
-        this.cockroach_road_panel.mouseEnabled = false
+        this.cockroach_road_panel.elasticEnabled = true
+        this.cockroach_road_panel.mouseEnabled = true
         const { width: cockroachRoadWidth, height: cockroachRoadHeight } = this.cockroach_road_panel
         this.bead_plate_road_sprite.size(cockroachRoadWidth, cockroachRoadHeight)
+        this.setupControl(this.cockroach_road_panel, this.roadmapRows, this.cockroachRoadCols)
+    }
+
+    private setupControl(roadmapPanel: Laya.Panel, rows: number, cols: number): void {
+        const roadmapBox = roadmapPanel.parent as Laya.Box
+        const { width, height } = roadmapPanel
+        const controlWrapper = new Laya.Box(true);
+        controlWrapper.size(width, height)
+        controlWrapper.name = "control-container";
+
+        const createControlButton = (iconPath: string): Laya.Box => {
+            const icon = new Laya.Image(iconPath);
+            icon.alpha = 0.3;
+            icon.centerX = 0;
+            icon.centerY = 0;
+            icon.color = "#000000"
+
+            const container = new Laya.Box(true);
+            container.width = roadmapBox.width / 2;
+            container.height = roadmapBox.height;
+            container.centerY = 0;
+            container.addChild(icon);
+            return container;
+        };
+
+        const cmdWidth = roadmapPanel.width / cols;
+        const cmdHeight = roadmapPanel.height / rows;
+        const drawWidth = Math.min(cmdHeight, cmdWidth);
+
+        const prevContainer = createControlButton("resources/arrow-leftside.png");
+        prevContainer.left = 0
+        prevContainer.on(Laya.Event.CLICK, () => {
+            roadmapPanel.refresh()
+            roadmapPanel.hScrollBar.value -= drawWidth
+        })
+        const nextContainer = createControlButton("resources/arrow-rightside.png");
+        nextContainer.right = 0
+        nextContainer.on(Laya.Event.CLICK, () => {
+            roadmapPanel.refresh()
+            roadmapPanel.hScrollBar.value += drawWidth
+        })
+
+        // controlWrapper.addChild(prevContainer);
+        // controlWrapper.addChild(nextContainer);
+        // roadmapBox.addChild(controlWrapper)
     }
 
     private AddOneResultToArr2(arr: any, ask: number) {
@@ -182,7 +249,7 @@ export class BacRoadmap extends BacRoadmapBase {
 
     private setWenluData(): void {
         const wenluXianRoadBox = this.wenlu_Xian.getChildByName("road_box") as Laya.Box
-        wenluXianRoadBox.on(Laya.Event.CLICK, this, async () => {
+        wenluXianRoadBox.on(Laya.Event.CLICK, this, () => {
             Laya.timer.clearAll(this)
             const dataArr1PlayerAsk = historyData.dataArr1.slice()
             dataArr1PlayerAsk.push(2)
@@ -194,14 +261,14 @@ export class BacRoadmap extends BacRoadmapBase {
             dataArr6PlayerAsk.push(200)
 
             if (this.currentUI === "icon") {
-                await this.GetHistoryFragment1(dataArr1PlayerAsk, 6, 6, this.bead_plate_road_panel, this.SetHistoryItem1,true)
-            } else if(this.currentUI==="point"){
-                await this.GetHistoryFragment1(dataArr6PlayerAsk, 6, 6, this.bead_plate_road_panel, this.SetHistoryItem6,true)
+                this.GetHistoryFragment1(dataArr1PlayerAsk, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem1, true)
+            } else if (this.currentUI === "point") {
+                this.GetHistoryFragment1(dataArr6PlayerAsk, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem6, true)
             }
-            await this.GetHistoryFragment2(dataArr2PlayerAsk, 16, 6, this.big_road_panel, this.SetHistoryItem2, true)
-            await this.GetHistoryFragment2(dataArr3PlayerAsk, 20, 6, this.big_eye_road_panel, this.SetHistoryItem3, true)
-            await this.GetHistoryFragment2(dataArr4PlayerAsk, 10, 6, this.small_road_panel, this.SetHistoryItem4, true)
-            await this.GetHistoryFragment2(dataArr5PlayerAsk, 10, 6, this.cockroach_road_panel, this.SetHistoryItem5, true)
+            this.GetHistoryFragment2(dataArr2PlayerAsk, this.bigRoadCols, this.roadmapRows, this.big_road_panel, this.SetHistoryItem2, true)
+            this.GetHistoryFragment2(dataArr3PlayerAsk, this.bigEyeRoadCols, this.roadmapRows, this.big_eye_road_panel, this.SetHistoryItem3, true)
+            this.GetHistoryFragment2(dataArr4PlayerAsk, this.smallRoadCols, this.roadmapRows, this.small_road_panel, this.SetHistoryItem4, true)
+            this.GetHistoryFragment2(dataArr5PlayerAsk, this.cockroachRoadCols, this.roadmapRows, this.cockroach_road_panel, this.SetHistoryItem5, true)
         })
 
         const playerAsk3 = wenluXianRoadBox.getChildByName("wenlu3") as Laya.Image
@@ -212,7 +279,7 @@ export class BacRoadmap extends BacRoadmapBase {
         playerAsk5.skin = historyData.playerAsk5 === 1 ? "resources/game_icons/type83.png" : "resources/game_icons/type84.png"
 
         const wenluZhuangRoadBox = this.wenlu_Zhuang.getChildByName("road_box") as Laya.Box
-        wenluZhuangRoadBox.on(Laya.Event.CLICK, this, async () => {
+        wenluZhuangRoadBox.on(Laya.Event.CLICK, this, () => {
             Laya.timer.clearAll(this)
 
             const dataArr1BankerAsk = historyData.dataArr1.slice()
@@ -225,14 +292,14 @@ export class BacRoadmap extends BacRoadmapBase {
             dataArr6BankerAsk.push(100)
 
             if (this.currentUI === "icon") {
-                await this.GetHistoryFragment1(dataArr1BankerAsk, 6, 6, this.bead_plate_road_panel, this.SetHistoryItem1,true)
-            } else if(this.currentUI==="point"){
-                await this.GetHistoryFragment1(dataArr6BankerAsk, 6, 6, this.bead_plate_road_panel, this.SetHistoryItem6,true)
+                this.GetHistoryFragment1(dataArr1BankerAsk, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem1, true)
+            } else if (this.currentUI === "point") {
+                this.GetHistoryFragment1(dataArr6BankerAsk, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem6, true)
             }
-            await this.GetHistoryFragment2(dataArr2BankerAsk, 16, 6, this.big_road_panel, this.SetHistoryItem2, true)
-            await this.GetHistoryFragment2(dataArr3BankerAsk, 20, 6, this.big_eye_road_panel, this.SetHistoryItem3, true)
-            await this.GetHistoryFragment2(dataArr4BankerAsk, 10, 6, this.small_road_panel, this.SetHistoryItem4, true)
-            await this.GetHistoryFragment2(dataArr5BankerAsk, 10, 6, this.cockroach_road_panel, this.SetHistoryItem5, true)
+            this.GetHistoryFragment2(dataArr2BankerAsk, this.bigRoadCols, this.roadmapRows, this.big_road_panel, this.SetHistoryItem2, true)
+            this.GetHistoryFragment2(dataArr3BankerAsk, this.bigEyeRoadCols, this.roadmapRows, this.big_eye_road_panel, this.SetHistoryItem3, true)
+            this.GetHistoryFragment2(dataArr4BankerAsk, this.smallRoadCols, this.roadmapRows, this.small_road_panel, this.SetHistoryItem4, true)
+            this.GetHistoryFragment2(dataArr5BankerAsk, this.cockroachRoadCols, this.roadmapRows, this.cockroach_road_panel, this.SetHistoryItem5, true)
         })
 
         const bankerAsk3 = wenluZhuangRoadBox.getChildByName("wenlu3") as Laya.Image
@@ -292,6 +359,13 @@ export class BacRoadmap extends BacRoadmapBase {
         if (cmd) {
             const resultStr = result.toString()
             const g = parseInt(resultStr.slice(0, resultStr.length - 2)) & 31
+            if ([100, 200].includes(result)) {
+                const imgUrl = bacResultImgData["bacData1ResultDom" + (g & 31) as keyof bacResultImgs]
+                if (imgUrl) {
+                    cmd.texture = Laya.loader.getRes(imgUrl)
+                }
+                return
+            }
             let imgUrl: string
             switch (g) {
                 case 1:
@@ -304,23 +378,22 @@ export class BacRoadmap extends BacRoadmapBase {
                     imgUrl = bacResult6ImgData(g, parseInt(resultStr.slice(-2, -1)))
                     break
             }
-            console.log(imgUrl, result, g)
             if (imgUrl) {
                 cmd.texture = Laya.loader.getRes(imgUrl)
             }
         }
     }
 
-    async GetHistoryFragment1(arr: number[], col: number, row: number, panel: Laya.Panel, callback: (cmd: Laya.DrawImageCmd, result: number) => void, isAsk: boolean = false): Promise<void> {
+    GetHistoryFragment1(arr: number[], col: number, row: number, panel: Laya.Panel, callback: (cmd: Laya.DrawImageCmd, result: number) => void, isAsk: boolean = false): void {
         const matrix = [];
         for (let i = 0; i < arr.length; i += row) {
             matrix.push(arr.slice(i, i + row));
         }
 
-        await this.fillTexture(matrix, row, col, panel, callback, isAsk)
+        this.fillTexture(matrix, row, col, panel, callback, isAsk)
     }
 
-    async GetHistoryFragment2(arr: number[][], col: number, row: number, panel: Laya.Panel, callback: (cmd: Laya.DrawImageCmd, result: number) => void, isAsk: boolean = false): Promise<void> {
+    GetHistoryFragment2(arr: number[][], col: number, row: number, panel: Laya.Panel, callback: (cmd: Laya.DrawImageCmd, result: number) => void, isAsk: boolean = false): void {
         const matrix = Array.from({ length: arr.length }, () => Array(row).fill(0));
         let available = row
         arr.forEach((row, i) => {
@@ -336,77 +409,79 @@ export class BacRoadmap extends BacRoadmapBase {
                 matrix[x][y] = col
             })
         })
-        await this.fillTexture(matrix, row, col, panel, callback, isAsk)
+        this.fillTexture(matrix, row, col, panel, callback, isAsk)
     }
 
-    private fillTexture(matrix: number[][], row: number, col: number, panel: Laya.Panel, callback: (cmd: Laya.DrawImageCmd, result: number) => void, isAsk: boolean = false): Promise<void> {
-        return new Promise<void>((resolve, reject) => {
-            try {
-                const sprite = panel.getChildAt(0) as Laya.Sprite;
-                sprite.graphics.clear();
+    private fillTexture(matrix: number[][], row: number, col: number, panel: Laya.Panel, callback: (cmd: Laya.DrawImageCmd, result: number) => void, isAsk: boolean = false): void {
+        try {
+            const sprite = panel.getChildAt(0) as Laya.Sprite;
+            sprite.graphics.clear();
 
-                const cmdWidth = panel.width / col;
-                const cmdHeight = panel.height / row;
-                const drawWidth = Math.min(cmdHeight, cmdWidth);
-                let maxIndex = 0;
-                let lastCmd: any = null
-                matrix.forEach((col: number[], colIndex: number) => {
-                    col.forEach((cell, cellIndex) => {
-                        maxIndex = Math.max(maxIndex, cellIndex);
-                        if (cell) {
-                            const cmd = new Laya.DrawImageCmd();
-                            cmd.width = drawWidth * 0.7;
-                            cmd.height = drawWidth * 0.7;
-                            cmd.x = colIndex * cmdWidth + cmdHeight / 2 - (drawWidth / 3);
-                            cmd.y = cellIndex * cmdHeight + cmdHeight / 2 - (drawWidth / 3);
-                            callback(cmd, cell);
-                            sprite.graphics.addCmd(cmd);
-                            lastCmd = cmd
-                        }
-                    });
+            const panelParent = panel.parent as Laya.Box
+            const cmdWidth = panelParent.width / col;
+            const cmdHeight = panelParent.height / row;
+            const drawWidth = Math.min(cmdHeight, cmdWidth);
+            let maxIndex = 0;
+            let lastCmd: Laya.DrawImageCmd | null = null;
+            panel.set_width(cmdWidth * (col - 1))
+
+            matrix.forEach((col: number[], colIndex: number) => {
+                maxIndex = Math.max(maxIndex, colIndex);
+                col.forEach((cell, cellIndex) => {
+                    if (cell) {
+                        const cmd = new Laya.DrawImageCmd();
+                        cmd.width = drawWidth * 0.8;
+                        cmd.height = drawWidth * 0.8;
+                        cmd.x = colIndex * cmdWidth + cmdWidth / 2 - (drawWidth / 2.5);
+                        cmd.y = cellIndex * cmdHeight + cmdHeight / 2 - (drawWidth / 2.5);
+                        callback(cmd, cell);
+                        sprite.graphics.addCmd(cmd);
+                        lastCmd = cmd
+                    }
                 });
+            });
 
-                if (lastCmd && isAsk) {
-                    let isVisible: boolean = true;
-                    const toggle = () => {
-                        if (isVisible) {
-                            sprite.graphics.removeCmd(lastCmd)
-                        } else {
-                            sprite.graphics.addCmd(lastCmd)
-                        }
-                        isVisible = !isVisible
-                    }
-
-                    const start = () => {
-                        Laya.timer.loop(500, this, toggle)
-                        Laya.timer.once(5000, this, stop);
-                    }
-
-                    const stop = () => {
-                        Laya.timer.clear(this, toggle);
+            if (lastCmd && isAsk) {
+                let isVisible: boolean = true;
+                const toggle = () => {
+                    if (isVisible) {
                         sprite.graphics.removeCmd(lastCmd)
+                    } else {
+                        sprite.graphics.addCmd(lastCmd)
                     }
-
-                    start()
+                    isVisible = !isVisible
                 }
 
-                sprite.width = maxIndex * cmdWidth;
-                Laya.timer.frameOnce(1, this, () => {
-                    try {
-                        panel.refresh();
-                        const scrollBar = panel.hScrollBar;
-                        if (scrollBar) {
-                            scrollBar.value = scrollBar.max;
-                        }
-                        resolve();
-                    } catch (error) {
-                        reject(error);
-                    }
-                });
-            } catch (error) {
-                reject(error);
-            }
-        });
-    }
+                const start = () => {
+                    Laya.timer.loop(500, this, toggle)
+                    Laya.timer.once(5000, this, stop);
+                }
 
+                const stop = () => {
+                    Laya.timer.clear(this, toggle);
+                    sprite.graphics.removeCmd(lastCmd)
+                }
+
+                start()
+            }
+
+            sprite.width = maxIndex * cmdWidth
+            Laya.timer.frameOnce(10, this, () => {
+                try {
+                    console.log(panel.width,sprite.width)
+                    // sprite.size((maxIndex * cmdWidth), panel.height);
+                    panel.refresh();
+                    const scrollBar = panel.hScrollBar;
+                    if (scrollBar) {
+                        scrollBar.value = scrollBar.max;
+                    }
+                    // console.log(maxIndex+1,scrollBar.value,scrollBar.min,scrollBar.max)
+                } catch (error) {
+                    console.log(error)
+                }
+            });
+        } catch (error) {
+            console.log(error)
+        }
+    }    
 }

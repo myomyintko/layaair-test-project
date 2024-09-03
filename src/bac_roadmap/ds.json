@@ -1,243 +1,336 @@
 {
     "resultObjArr": [
         {
-            "gameNo": 113904200,
+            "gameNo": 113906540,
             "gameNoRound": 1,
-            "result": 33,
-            "resultContent": "b:71,53,67;p:24,6,51"
+            "result": 84,
+            "resultContent": "b:45,61,;p:3,3,"
         },
         {
-            "gameNo": 113904200,
+            "gameNo": 113906540,
             "gameNoRound": 2,
             "result": 33,
-            "resultContent": "b:25,32,;p:47,23,33"
+            "resultContent": "b:64,31,24;p:6,21,"
         },
         {
-            "gameNo": 113904200,
+            "gameNo": 113906540,
             "gameNoRound": 3,
-            "result": 49,
-            "resultContent": "b:5,62,;p:27,47,7"
+            "result": 36,
+            "resultContent": "b:3,11,8;p:31,61,70"
         },
         {
-            "gameNo": 113904200,
+            "gameNo": 113906540,
             "gameNoRound": 4,
-            "result": 338,
-            "resultContent": "b:50,12,;p:44,4,"
+            "result": 44,
+            "resultContent": "b:12,72,71;p:24,46,50"
         },
         {
-            "gameNo": 113904200,
+            "gameNo": 113906540,
             "gameNoRound": 5,
-            "result": 34,
-            "resultContent": "b:33,30,30;p:5,41,"
+            "result": 33,
+            "resultContent": "b:72,66,7;p:31,44,46"
         },
         {
-            "gameNo": 113904200,
+            "gameNo": 113906540,
             "gameNoRound": 6,
-            "result": 322,
-            "resultContent": "b:24,50,;p:8,50,"
+            "result": 65,
+            "resultContent": "b:69,48,;p:10,26,"
         },
         {
-            "gameNo": 113904200,
+            "gameNo": 113906540,
             "gameNoRound": 7,
-            "result": 193,
-            "resultContent": "b:49,53,;p:27,61,"
+            "result": 68,
+            "resultContent": "b:66,12,;p:10,26,"
         },
         {
-            "gameNo": 113904200,
+            "gameNo": 113906540,
             "gameNoRound": 8,
-            "result": 322,
-            "resultContent": "b:22,64,;p:28,50,"
+            "result": 34,
+            "resultContent": "b:61,69,10;p:48,7,73"
         },
         {
-            "gameNo": 113904200,
+            "gameNo": 113906540,
             "gameNoRound": 9,
             "result": 34,
-            "resultContent": "b:67,5,51;p:71,65,53"
+            "resultContent": "b:48,27,32;p:1,71,47"
         },
         {
-            "gameNo": 113904200,
+            "gameNo": 113906540,
             "gameNoRound": 10,
-            "result": 33,
-            "resultContent": "b:52,25,3;p:33,6,"
+            "result": 34,
+            "resultContent": "b:22,13,11;p:6,47,51"
         },
         {
-            "gameNo": 113904200,
+            "gameNo": 113906540,
             "gameNoRound": 11,
-            "result": 34,
-            "resultContent": "b:33,31,10;p:69,23,50"
-        },
-        {
-            "gameNo": 113904200,
-            "gameNoRound": 12,
-            "result": 34,
-            "resultContent": "b:67,6,48;p:32,45,43"
-        },
-        {
-            "gameNo": 113904200,
-            "gameNoRound": 13,
-            "result": 68,
-            "resultContent": "b:65,44,;p:32,9,"
-        },
-        {
-            "gameNo": 113904200,
-            "gameNoRound": 14,
             "result": 193,
-            "resultContent": "b:2,27,;p:7,10,"
+            "resultContent": "b:33,9,;p:73,67,"
         },
         {
-            "gameNo": 113904200,
+            "gameNo": 113906540,
+            "gameNoRound": 12,
+            "result": 33,
+            "resultContent": "b:33,51,68;p:21,44,48"
+        },
+        {
+            "gameNo": 113906540,
+            "gameNoRound": 13,
+            "result": 193,
+            "resultContent": "b:9,73,;p:30,52,"
+        },
+        {
+            "gameNo": 113906540,
+            "gameNoRound": 14,
+            "result": 68,
+            "resultContent": "b:73,49,;p:26,63,"
+        },
+        {
+            "gameNo": 113906540,
             "gameNoRound": 15,
             "result": 193,
-            "resultContent": "b:25,44,;p:42,1,"
+            "resultContent": "b:51,28,;p:64,71,"
         },
         {
-            "gameNo": 113904200,
+            "gameNo": 113906540,
             "gameNoRound": 16,
-            "result": 34,
-            "resultContent": "b:22,71,51;p:26,51,"
+            "result": 322,
+            "resultContent": "b:27,69,;p:71,49,"
         },
         {
-            "gameNo": 113904200,
+            "gameNo": 113906540,
             "gameNoRound": 17,
-            "result": 68,
-            "resultContent": "b:71,49,;p:1,8,"
+            "result": 41,
+            "resultContent": "b:72,12,28;p:23,32,13"
         },
         {
-            "gameNo": 113904200,
+            "gameNo": 113906540,
             "gameNoRound": 18,
-            "result": 34,
-            "resultContent": "b:25,30,68;p:10,26,"
+            "result": 42,
+            "resultContent": "b:1,41,53;p:29,7,"
         },
         {
-            "gameNo": 113904200,
+            "gameNo": 113906540,
             "gameNoRound": 19,
-            "result": 34,
-            "resultContent": "b:12,11,50;p:26,61,"
+            "result": 193,
+            "resultContent": "b:62,7,;p:50,32,"
         },
         {
-            "gameNo": 113904200,
+            "gameNo": 113906540,
             "gameNoRound": 20,
-            "result": 33,
-            "resultContent": "b:21,46,;p:24,1,9"
+            "result": 36,
+            "resultContent": "b:53,25,;p:70,45,53"
         },
         {
-            "gameNo": 113904200,
+            "gameNo": 113906540,
             "gameNoRound": 21,
-            "result": 330,
-            "resultContent": "b:53,13,;p:8,72,"
+            "result": 193,
+            "resultContent": "b:42,6,;p:1,13,"
         },
         {
-            "gameNo": 113904200,
+            "gameNo": 113906540,
             "gameNoRound": 22,
-            "result": 44,
-            "resultContent": "b:30,70,73;p:49,43,28"
+            "result": 76,
+            "resultContent": "b:29,49,;p:42,46,"
         },
         {
-            "gameNo": 113904200,
+            "gameNo": 113906540,
             "gameNoRound": 23,
-            "result": 84,
-            "resultContent": "b:62,26,;p:69,69,"
+            "result": 34,
+            "resultContent": "b:62,68,5;p:51,44,45"
         },
         {
-            "gameNo": 113904200,
+            "gameNo": 113906540,
             "gameNoRound": 24,
             "result": 193,
-            "resultContent": "b:49,73,;p:61,2,"
+            "resultContent": "b:73,29,;p:65,71,"
         },
         {
-            "gameNo": 113904200,
+            "gameNo": 113906540,
             "gameNoRound": 25,
-            "result": 44,
-            "resultContent": "b:11,11,9;p:66,47,66"
+            "result": 193,
+            "resultContent": "b:9,50,;p:24,6,"
+        },
+        {
+            "gameNo": 113906540,
+            "gameNoRound": 26,
+            "result": 193,
+            "resultContent": "b:9,70,;p:43,42,"
+        },
+        {
+            "gameNo": 113906540,
+            "gameNoRound": 27,
+            "result": 33,
+            "resultContent": "b:28,43,52;p:47,3,52"
+        },
+        {
+            "gameNo": 113906540,
+            "gameNoRound": 28,
+            "result": 322,
+            "resultContent": "b:31,62,;p:65,63,"
+        },
+        {
+            "gameNo": 113906540,
+            "gameNoRound": 29,
+            "result": 33,
+            "resultContent": "b:67,50,;p:64,10,33"
+        },
+        {
+            "gameNo": 113906540,
+            "gameNoRound": 30,
+            "result": 33,
+            "resultContent": "b:63,2,;p:67,44,52"
+        },
+        {
+            "gameNo": 113906540,
+            "gameNoRound": 31,
+            "result": 193,
+            "resultContent": "b:66,2,;p:44,51,"
+        },
+        {
+            "gameNo": 113906540,
+            "gameNoRound": 32,
+            "result": 52,
+            "resultContent": "b:21,13,2;p:65,25,23"
+        },
+        {
+            "gameNo": 113906540,
+            "gameNoRound": 33,
+            "result": 50,
+            "resultContent": "b:71,2,41;p:22,22,12"
+        },
+        {
+            "gameNo": 113906540,
+            "gameNoRound": 34,
+            "result": 193,
+            "resultContent": "b:12,49,;p:63,10,"
+        },
+        {
+            "gameNo": 113906540,
+            "gameNoRound": 35,
+            "result": 49,
+            "resultContent": "b:8,5,24;p:65,5,5"
+        },
+        {
+            "gameNo": 113906540,
+            "gameNoRound": 36,
+            "result": 68,
+            "resultContent": "b:41,48,;p:9,11,"
+        },
+        {
+            "gameNo": 113906540,
+            "gameNoRound": 37,
+            "result": 33,
+            "resultContent": "b:5,53,;p:61,72,30"
+        },
+        {
+            "gameNo": 113906540,
+            "gameNoRound": 38,
+            "result": 33,
+            "resultContent": "b:13,45,;p:32,11,62"
         }
     ],
-    "historyStatus": 0,
+    "historyStatus": 1,
     "dataArr1": [
-        33,
-        33,
-        49,
-        338,
-        34,
-        322,
-        193,
-        322,
-        34,
-        33,
-        34,
-        34,
-        68,
-        193,
-        193,
-        34,
-        68,
-        34,
-        34,
-        33,
-        330,
-        44,
         84,
+        33,
+        36,
+        44,
+        33,
+        65,
+        68,
+        34,
+        34,
+        34,
         193,
-        44
+        33,
+        193,
+        68,
+        193,
+        322,
+        41,
+        42,
+        193,
+        36,
+        193,
+        76,
+        34,
+        193,
+        193,
+        193,
+        33,
+        322,
+        33,
+        33,
+        193,
+        52,
+        50,
+        193,
+        49,
+        68,
+        33,
+        33
     ],
     "dataArr2": [
         [
+            37,
             33,
-            33,
-            49
+            69
         ],
         [
-            338,
             34,
-            322
-        ],
-        [
-            193
-        ],
-        [
-            322,
+            34,
             34
-        ],
-        [
-            33
-        ],
-        [
-            34,
-            38
         ],
         [
             193,
+            33,
+            197,
             193
         ],
         [
-            38,
-            34,
+            322
+        ],
+        [
+            41
+        ],
+        [
+            42
+        ],
+        [
+            197,
+            197
+        ],
+        [
             34
         ],
         [
+            193,
+            193,
+            193,
             33
         ],
         [
-            334
+            322
         ],
         [
+            33,
+            33,
             197
+        ],
+        [
+            50
+        ],
+        [
+            193,
+            53,
+            33,
+            33
         ]
     ],
     "dataArr3": [
         [
             1,
             1,
-            1
-        ],
-        [
-            2,
-            2,
-            2,
-            2,
-            2,
-            2
-        ],
-        [
             1,
             1,
             1
@@ -248,11 +341,60 @@
             2
         ],
         [
+            1,
+            1
+        ],
+        [
+            2,
+            2,
+            2,
+            2
+        ],
+        [
+            1,
+            1
+        ],
+        [
+            2,
+            2,
+            2
+        ],
+        [
+            1
+        ],
+        [
+            2,
+            2,
+            2
+        ],
+        [
+            1,
             1
         ]
     ],
     "dataArr4": [
         [
+            1,
+            1
+        ],
+        [
+            2,
+            2,
+            2,
+            2
+        ],
+        [
+            1
+        ],
+        [
+            2,
+            2
+        ],
+        [
+            1,
+            1
+        ],
+        [
             2
         ],
         [
@@ -267,27 +409,29 @@
             1
         ],
         [
-            2,
             2
         ],
         [
+            1,
+            1,
             1
         ],
         [
-            2,
-            2,
-            2,
             2
         ]
     ],
     "dataArr5": [
         [
+            2,
+            2,
+            2,
+            2,
+            2
+        ],
+        [
             1
         ],
         [
-            2,
-            2,
-            2,
             2
         ],
         [
@@ -295,6 +439,8 @@
             1
         ],
         [
+            2,
+            2,
             2
         ],
         [
@@ -304,50 +450,67 @@
             2,
             2,
             2
+        ],
+        [
+            1,
+            1
         ]
     ],
     "dataArr6": [
-        3307,
-        3305,
-        4917,
-        33880,
-        3460,
-        32284,
-        19389,
-        32286,
-        3452,
-        3368,
-        3420,
-        3481,
-        6899,
-        19379,
-        19339,
-        3462,
-        6899,
-        3463,
-        3470,
-        3347,
-        33080,
+        8466,
+        3378,
+        3611,
         4400,
-        8488,
+        3303,
+        6567,
+        6866,
+        3450,
+        3485,
+        3432,
+        19379,
+        3338,
+        19309,
+        6899,
+        19348,
+        32296,
+        4138,
+        4262,
+        19309,
+        3655,
+        19318,
+        7688,
+        3495,
+        19359,
+        19309,
+        19359,
+        3301,
+        32282,
+        3347,
+        3315,
+        19348,
+        5233,
+        5043,
         19339,
-        4499
+        4957,
+        6899,
+        3315,
+        3325
     ],
-    "bankerCount": 9,
-    "playerCount": 11,
-    "tieCount": 5,
-    "bankerPairCount": 3,
-    "playerPairCount": 3,
-    "bigCount": 14,
-    "smallCount": 11,
-    "bankerGodCount": 4,
-    "playerGodCount": 4,
+    "bankerCount": 21,
+    "playerCount": 8,
+    "tieCount": 9,
+    "bankerPairCount": 4,
+    "playerPairCount": 4,
+    "bigCount": 20,
+    "smallCount": 18,
+    "bankerGodCount": 10,
+    "playerGodCount": 2,
     "super6Count": 0,
-    "totalCount": 25,
-    "bankerAsk3": 2,
-    "bankerAsk4": 2,
+    "totalCount": 38,
+    "bankerAsk3": 1,
+    "bankerAsk4": 1,
     "bankerAsk5": 1,
-    "playerAsk3": 1,
-    "playerAsk4": 1,
+    "playerAsk3": 2,
+    "playerAsk4": 2,
     "playerAsk5": 2
 }
