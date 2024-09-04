@@ -92,18 +92,18 @@ const bacResultImgData: bacResultImgs = {
 
 const basePathMap: { [key: number]: string } = {
     1: "cr1",
-    9: "cr6",
-    17: "cr11",
+    9: "cr11",
+    17: "cr6",
     25: "cr16",
 
     2: "cr2",
-    10: "cr7",
-    18: "cr12",
+    10: "cr12",
+    18: "cr7",
     26: "cr17",
 
     4: "cr3",
-    12: "cr8",
-    20: "cr13",
+    12: "cr13",
+    20: "cr8",
     28: "cr18"
 };
 
@@ -122,21 +122,13 @@ export class BacRoadmap extends BacRoadmapBase {
     private bigEyeRoadCols: number = 20
     private smallRoadCols: number = 10
     private cockroachRoadCols: number = 10
+    private isResetting: boolean = false
 
     onEnable(): void {
         Laya.loader.load("resources/game_icons.atlas").then((res) => {
             this.setupRoadmapUI()
-            if (this.currentUI === "icon") {
-                this.GetHistoryFragment1(historyData.dataArr1, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem1)
-            } else if (this.currentUI === "point") {
-                this.GetHistoryFragment1(historyData.dataArr6, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem6)
-            }
-            this.GetHistoryFragment2(historyData.dataArr2, this.bigRoadCols, this.roadmapRows, this.big_road_panel, this.SetHistoryItem2)
-            this.GetHistoryFragment2(historyData.dataArr3, this.bigEyeRoadCols, this.roadmapRows, this.big_eye_road_panel, this.SetHistoryItem3)
-            this.GetHistoryFragment2(historyData.dataArr4, this.smallRoadCols, this.roadmapRows, this.small_road_panel, this.SetHistoryItem4)
-            this.GetHistoryFragment2(historyData.dataArr5, this.cockroachRoadCols, this.roadmapRows, this.cockroach_road_panel, this.SetHistoryItem5)
+            this.SetHistoryData()
             this.setWenluData()
-
             this.switchBtn.clickHandler = new Laya.Handler(this, () => {
                 this.currentUI = this.currentUI === "icon" ? "point" : "icon"
                 if (this.currentUI === "point") {
@@ -146,6 +138,22 @@ export class BacRoadmap extends BacRoadmapBase {
                 }
             })
         })
+    }
+
+    Reset() {
+        this.SetHistoryData()
+    }
+
+    SetHistoryData() {
+        if (this.currentUI === "icon") {
+            this.GetHistoryFragment1(historyData.dataArr1, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem1)
+        } else if (this.currentUI === "point") {
+            this.GetHistoryFragment1(historyData.dataArr6, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem6)
+        }
+        this.GetHistoryFragment2(historyData.dataArr2, this.bigRoadCols, this.roadmapRows, this.big_road_panel, this.SetHistoryItem2)
+        this.GetHistoryFragment2(historyData.dataArr3, this.bigEyeRoadCols, this.roadmapRows, this.big_eye_road_panel, this.SetHistoryItem3)
+        this.GetHistoryFragment2(historyData.dataArr4, this.smallRoadCols, this.roadmapRows, this.small_road_panel, this.SetHistoryItem4)
+        this.GetHistoryFragment2(historyData.dataArr5, this.cockroachRoadCols, this.roadmapRows, this.cockroach_road_panel, this.SetHistoryItem5)
     }
 
     private setupRoadmapUI(): void {
@@ -391,7 +399,7 @@ export class BacRoadmap extends BacRoadmapBase {
         }
         const lastX = matrix.length - 1;
         const lastY = matrix[lastX].length - 1
-        this.fillTexture(matrix, row, col, panel, callback, isAsk,lastX,lastY)
+        this.fillTexture(matrix, row, col, panel, callback, isAsk, lastX, lastY)
     }
 
     GetHistoryFragment2(arr: number[][], col: number, row: number, panel: Laya.Panel, callback: (cmd: Laya.DrawImageCmd, result: number) => void, isAsk: boolean = false): void {
@@ -413,7 +421,7 @@ export class BacRoadmap extends BacRoadmapBase {
         this.fillTexture(matrix, row, col, panel, callback, isAsk, x, y)
     }
 
-    private fillTexture(matrix: number[][], row: number, col: number, panel: Laya.Panel, callback: (cmd: Laya.DrawImageCmd, result: number) => void, isAsk: boolean = false, lastX: number, lastY: number): void {
+    private fillTexture(matrix: number[][], row: number, col: number, panel: Laya.Panel, callback: (cmd: Laya.DrawImageCmd, result: number) => void, isAsk: boolean, lastX: number = -1, lastY: number = -1): void {
         try {
             const sprite = panel.getChildAt(0) as Laya.Sprite;
             sprite.graphics.clear();
@@ -461,6 +469,13 @@ export class BacRoadmap extends BacRoadmapBase {
                 const stop = () => {
                     Laya.timer.clear(this, toggle);
                     sprite.graphics.removeCmd(lastCmd)
+                    if (!this.isResetting) {
+                        this.isResetting = true
+                        this.Reset()
+                        Laya.timer.once(1000, this, () => {
+                            this.isResetting = false
+                        })
+                    }
                 }
 
                 start()
@@ -470,10 +485,7 @@ export class BacRoadmap extends BacRoadmapBase {
             Laya.timer.frameOnce(1, this, () => {
                 try {
                     panel.refresh();
-                    const scrollBar = panel.hScrollBar;
-                    if (scrollBar) {
-                        scrollBar.value = scrollBar.max;
-                    }
+                    panel.scrollTo((lastX - 4) * cmdWidth)
                 } catch (error) {
                     console.log(error)
                 }
