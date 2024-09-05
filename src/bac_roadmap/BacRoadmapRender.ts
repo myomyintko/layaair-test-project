@@ -117,11 +117,11 @@ export class BacRoadmapRender extends BacRoadmapRenderBase {
     private defaultUI: "icon" | "point" = "icon"
     private currentUI = this.defaultUI
     private roadmapRows: number = 6
-    private breadPlateCols: number = 6
-    private bigRoadCols: number = 16
-    private bigEyeRoadCols: number = 20
-    private smallRoadCols: number = 10
-    private cockroachRoadCols: number = 10
+    private breadPlateCols: number = 8
+    private bigRoadCols: number = 20
+    private bigEyeRoadCols: number = 40
+    private smallRoadCols: number = 20
+    private cockroachRoadCols: number = 20
     private isResetting: boolean = false
 
     onEnable(): void {
@@ -129,14 +129,7 @@ export class BacRoadmapRender extends BacRoadmapRenderBase {
             this.setupRoadmapUI()
             this.SetHistoryData()
             this.setWenluData()
-            this.switchBtn.clickHandler = new Laya.Handler(this, () => {
-                this.currentUI = this.currentUI === "icon" ? "point" : "icon"
-                if (this.currentUI === "point") {
-                    this.GetHistoryFragment1(historyData.dataArr6, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem6)
-                } else if (this.currentUI === "icon") {
-                    this.GetHistoryFragment1(historyData.dataArr1, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem1)
-                }
-            })
+            this.setupSwitchBtn()
         })
     }
 
@@ -256,8 +249,7 @@ export class BacRoadmapRender extends BacRoadmapRenderBase {
     }
 
     private setWenluData(): void {
-        const wenluXianRoadBox = this.wenlu_Xian.getChildByName("road_box") as Laya.Box
-        wenluXianRoadBox.on(Laya.Event.CLICK, this, () => {
+        this.wenlu_Xian.on(Laya.Event.CLICK, this, () => {
             Laya.timer.clearAll(this)
             const dataArr1PlayerAsk = historyData.dataArr1.slice()
             dataArr1PlayerAsk.push(2)
@@ -279,15 +271,15 @@ export class BacRoadmapRender extends BacRoadmapRenderBase {
             this.GetHistoryFragment2(dataArr5PlayerAsk, this.cockroachRoadCols, this.roadmapRows, this.cockroach_road_panel, this.SetHistoryItem5, true)
         })
 
+        const wenluXianRoadBox = this.wenlu_Xian.getChildByName("road_box") as Laya.Box
         const playerAsk3 = wenluXianRoadBox.getChildByName("wenlu3") as Laya.Image
-        playerAsk3.skin = historyData.playerAsk3 === 1 ? "resources/game_icons/type85.png" : "resources/game_icons/type86.png"
+        playerAsk3.skin = historyData.playerAsk3 === 1 ? "resources/game_icons/type01.png" : "resources/game_icons/type09.png"
         const playerAsk4 = wenluXianRoadBox.getChildByName("wenlu4") as Laya.Image
         playerAsk4.skin = historyData.playerAsk4 === 1 ? "resources/game_icons/type81.png" : "resources/game_icons/type82.png"
         const playerAsk5 = wenluXianRoadBox.getChildByName("wenlu5") as Laya.Image
         playerAsk5.skin = historyData.playerAsk5 === 1 ? "resources/game_icons/type83.png" : "resources/game_icons/type84.png"
 
-        const wenluZhuangRoadBox = this.wenlu_Zhuang.getChildByName("road_box") as Laya.Box
-        wenluZhuangRoadBox.on(Laya.Event.CLICK, this, () => {
+        this.wenlu_Zhuang.on(Laya.Event.CLICK, this, () => {
             Laya.timer.clearAll(this)
 
             const dataArr1BankerAsk = historyData.dataArr1.slice()
@@ -309,13 +301,27 @@ export class BacRoadmapRender extends BacRoadmapRenderBase {
             this.GetHistoryFragment2(dataArr4BankerAsk, this.smallRoadCols, this.roadmapRows, this.small_road_panel, this.SetHistoryItem4, true)
             this.GetHistoryFragment2(dataArr5BankerAsk, this.cockroachRoadCols, this.roadmapRows, this.cockroach_road_panel, this.SetHistoryItem5, true)
         })
-
+        const wenluZhuangRoadBox = this.wenlu_Zhuang.getChildByName("road_box") as Laya.Box
         const bankerAsk3 = wenluZhuangRoadBox.getChildByName("wenlu3") as Laya.Image
-        bankerAsk3.skin = historyData.bankerAsk3 === 1 ? "resources/game_icons/type85.png" : "resources/game_icons/type86.png"
+        bankerAsk3.skin = historyData.bankerAsk3 === 1 ? "resources/game_icons/type01.png" : "resources/game_icons/type09.png"
         const bankerAsk4 = wenluZhuangRoadBox.getChildByName("wenlu4") as Laya.Image
         bankerAsk4.skin = historyData.bankerAsk4 === 1 ? "resources/game_icons/type81.png" : "resources/game_icons/type82.png"
         const bankerAsk5 = wenluZhuangRoadBox.getChildByName("wenlu5") as Laya.Image
         bankerAsk5.skin = historyData.bankerAsk5 === 1 ? "resources/game_icons/type83.png" : "resources/game_icons/type84.png"
+    }
+
+    private setupSwitchBtn(): void {
+        this.switchBtn.skin = this.currentUI === "icon" ? "resources/point_switch.png" : "resources/symbol_switch.png"
+        this.switchBtn.clickHandler = new Laya.Handler(this, () => {
+            this.currentUI = this.currentUI === "icon" ? "point" : "icon"
+            if (this.currentUI === "point") {
+                this.GetHistoryFragment1(historyData.dataArr6, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem6)
+            } else if (this.currentUI === "icon") {
+                this.GetHistoryFragment1(historyData.dataArr1, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem1)
+            }
+
+            this.switchBtn.skin = this.currentUI === "icon" ? "resources/point_switch.png" : "resources/symbol_switch.png"
+        })
     }
 
     SetHistoryItem1(cmd: Laya.DrawImageCmd, result: number) {

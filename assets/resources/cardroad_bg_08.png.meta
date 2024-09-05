@@ -3,6 +3,10 @@
   "importer": {
     "textureType": 2,
     "sRGB": true,
-    "generateMipmap": true
+    "generateMipmap": true,
+    "platformDefault": {
+      "format": 10,
+      "quality": 2
+    }
   }
 }

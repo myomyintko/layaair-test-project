@@ -2,7 +2,7 @@
 
 
 /**
- * dgtgRoadmap.lh
+ * bacRoadmap.lh
  */
 export class BacRoadmapRenderBase extends Laya.Box {
     public bead_plate_road_box!: Laya.Box;
@@ -11,6 +11,7 @@ export class BacRoadmapRenderBase extends Laya.Box {
     public big_road_box!: Laya.Box;
     public big_road_panel!: Laya.Panel;
     public big_road_sprite!: Laya.Sprite;
+    public three_road_box!: Laya.Box;
     public big_eye_road_box!: Laya.Box;
     public big_eye_road_panel!: Laya.Panel;
     public big_eye_road_sprite!: Laya.Sprite;
@@ -20,8 +21,8 @@ export class BacRoadmapRenderBase extends Laya.Box {
     public cockroach_road_box!: Laya.Box;
     public cockroach_road_panel!: Laya.Panel;
     public cockroach_road_sprite!: Laya.Sprite;
-    public wenlu_Xian!: Laya.Box;
     public wenlu_Zhuang!: Laya.Box;
+    public wenlu_Xian!: Laya.Box;
     public switchBtn!: Laya.Button;
 }
 

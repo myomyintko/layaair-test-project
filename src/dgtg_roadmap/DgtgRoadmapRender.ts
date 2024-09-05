@@ -58,26 +58,238 @@ export class DgtgRoadmapRender extends DgtgRoadmapRenderBase {
     private defaultUI: "icon" | "point" = "icon"
     private currentUI = this.defaultUI
     private roadmapRows: number = 6
-    private breadPlateCols: number = 6
-    private bigRoadCols: number = 16
-    private bigEyeRoadCols: number = 20
-    private smallRoadCols: number = 10
-    private cockroachRoadCols: number = 10
+    private breadPlateCols: number
+    private bigRoadCols: number
+    private bigEyeRoadCols: number
+    private smallRoadCols: number
+    private cockroachRoadCols: number
     private isResetting: boolean = false
 
     onEnable(): void {
-        Laya.loader.load("resources/game_icons.atlas").then((res) => {
-            this.setupRoadmapUI()
-            this.SetHistoryData()
-            this.setWenluData()
-            this.switchBtn.clickHandler = new Laya.Handler(this, () => {
-                this.currentUI = this.currentUI === "icon" ? "point" : "icon"
-                if (this.currentUI === "point") {
-                    this.GetHistoryFragment1(historyData.dataArr6, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem6)
-                } else if (this.currentUI === "icon") {
-                    this.GetHistoryFragment1(historyData.dataArr1, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem1)
-                }
+        this.layoutUI2().then(() => {
+            Laya.loader.load("resources/game_icons.atlas").then((res) => {
+                this.setupRoadmapUI()
+                this.SetHistoryData()
+                this.setWenluData()
+                this.switchBtn.clickHandler = new Laya.Handler(this, () => {
+                    this.currentUI = this.currentUI === "icon" ? "point" : "icon"
+                    if (this.currentUI === "point") {
+                        this.GetHistoryFragment1(historyData.dataArr6, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem6)
+                    } else if (this.currentUI === "icon") {
+                        this.GetHistoryFragment1(historyData.dataArr1, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem1)
+                    }
+                })
             })
+        })
+    }
+
+    private layoutUI1(): Promise<void> {
+        return new Promise((resolve) => {
+            this.size(896, 281);
+            this.bgColor = "#A9A9A8"
+
+            const widthPercent = (percent: number, mainWidth: number) => mainWidth * (percent / 100);
+            const heightPercent = (percent: number, mainHeight: number) => mainHeight * (percent / 100);
+
+            this.roadmap.size(this.width, this.height);
+            this.roadmap.pos(0, 0)
+            // breadplate box
+            this.breadPlateCols = 8
+            this.bead_plate_road_box.size(widthPercent(38.62, this.roadmap.width), this.roadmap.height);
+            this.bead_plate_road_box.pos(0, 0)
+            let bgImg = this.bead_plate_road_box.getChildByName("Image") as Laya.Image
+            bgImg.skin = `resources/cardroad_bg_${this.breadPlateCols.toString().padStart(2, '0')}.png`
+            // bigroad box
+            this.bigRoadCols = 20
+            this.big_road_box.size(widthPercent(61.27, this.roadmap.width), heightPercent(49.82, this.roadmap.height))
+            this.big_road_box.pos(this.bead_plate_road_box.width + 1, 0)
+            bgImg = this.big_road_box.getChildByName("Image") as Laya.Image
+            bgImg.skin = `resources/cardroad_bg_${this.bigRoadCols.toString().padStart(2, '0')}.png`
+            // threebox
+            this.three_road_box.size(widthPercent(61.27, this.roadmap.width), heightPercent(49.82, this.roadmap.height))
+            this.three_road_box.pos(this.bead_plate_road_box.width + 1, this.big_road_box.height)
+            bgImg = this.three_road_box.getChildByName("Image") as Laya.Image
+            bgImg.skin = `resources/cardroad_bg_${this.bigRoadCols.toString().padStart(2, '0')}.png`
+            // bigeyebox
+            this.bigEyeRoadCols = 40
+            this.big_eye_road_box.size(this.three_road_box.width, heightPercent(50, this.three_road_box.height))
+            this.big_eye_road_box.pos(0, 0)
+            //smallbox
+            this.smallRoadCols = 20
+            this.small_road_box.size(widthPercent(50.09, this.three_road_box.width), heightPercent(50, this.three_road_box.height))
+            this.small_road_box.pos(0, this.big_eye_road_box.height)
+            // cockroachbox
+            this.cockroachRoadCols = 20
+            this.cockroach_road_box.size(widthPercent(50.09, this.three_road_box.width), heightPercent(50, this.three_road_box.height))
+            this.cockroach_road_box.pos(this.small_road_box.width, this.big_eye_road_box.height)
+
+            // prediction box
+            this.predictions.visible = false
+            // this.predictions.size(widthPercent(8.28, this.width), heightPercent(84.34, this.height));
+            // this.predictions.pos(this.roadmap.width + 1, 0)
+            // this.wenlu_Xian.size(this.predictions.width, heightPercent(50, this.predictions.height - 1))
+            // this.wenlu_Xian.pos(0, 0)
+            // this.wenlu_Zhuang.size(this.predictions.width, heightPercent(50, this.predictions.height - 1))
+            // this.wenlu_Zhuang.pos(0, this.wenlu_Xian.height + 1)
+            // switch box
+            this.switchBtn.visible = false
+            // this.switchBtn.size(widthPercent(8.28, this.width), heightPercent(15.30, this.height));
+            // this.switchBtn.pos(this.roadmap.width + 1, this.predictions.height + 1)
+            resolve()
+        })
+    }
+
+    private layoutUI2(): Promise<void> {
+        return new Promise((resolve) => {
+            this.size(978, 281);
+            this.bgColor = "#A9A9A8"
+
+            const widthPercent = (percent: number, mainWidth: number) => mainWidth * (percent / 100);
+            const heightPercent = (percent: number, mainHeight: number) => mainHeight * (percent / 100);
+
+            this.roadmap.size(widthPercent(91.63, this.width), this.height);
+            this.roadmap.pos(0, 0)
+            // breadplate box
+            this.breadPlateCols = 8
+            this.bead_plate_road_box.size(widthPercent(38.62, this.roadmap.width), this.roadmap.height);
+            this.bead_plate_road_box.pos(0, 0)
+            let bgImg = this.bead_plate_road_box.getChildByName("Image") as Laya.Image
+            bgImg.skin = `resources/cardroad_bg_${this.breadPlateCols.toString().padStart(2, '0')}.png`
+            // bigroad box
+            this.bigRoadCols = 20
+            this.big_road_box.size(widthPercent(61.27, this.roadmap.width), heightPercent(49.82, this.roadmap.height))
+            this.big_road_box.pos(this.bead_plate_road_box.width + 1, 0)
+            bgImg = this.big_road_box.getChildByName("Image") as Laya.Image
+            bgImg.skin = `resources/cardroad_bg_${this.bigRoadCols.toString().padStart(2, '0')}.png`
+            // threebox
+            this.three_road_box.size(widthPercent(61.27, this.roadmap.width), heightPercent(49.82, this.roadmap.height))
+            this.three_road_box.pos(this.bead_plate_road_box.width + 1, this.big_road_box.height)
+            bgImg = this.three_road_box.getChildByName("Image") as Laya.Image
+            bgImg.skin = `resources/cardroad_bg_${this.bigRoadCols.toString().padStart(2, '0')}.png`
+            // bigeyebox
+            this.bigEyeRoadCols = 40
+            this.big_eye_road_box.size(this.three_road_box.width, heightPercent(50, this.three_road_box.height))
+            this.big_eye_road_box.pos(0, 0)
+            //smallbox
+            this.smallRoadCols = 20
+            this.small_road_box.size(widthPercent(50.09, this.three_road_box.width), heightPercent(50, this.three_road_box.height))
+            this.small_road_box.pos(0, this.big_eye_road_box.height)
+            // cockroachbox
+            this.cockroachRoadCols = 20
+            this.cockroach_road_box.size(widthPercent(50.09, this.three_road_box.width), heightPercent(50, this.three_road_box.height))
+            this.cockroach_road_box.pos(this.small_road_box.width, this.big_eye_road_box.height)
+
+            // prediction box
+            this.predictions.size(widthPercent(8.28, this.width), heightPercent(84.34, this.height));
+            this.predictions.pos(this.roadmap.width + 1, 0)
+            this.wenlu_Xian.size(this.predictions.width, heightPercent(50, this.predictions.height - 1))
+            this.wenlu_Xian.pos(0, 0)
+            this.wenlu_Zhuang.size(this.predictions.width, heightPercent(50, this.predictions.height - 1))
+            this.wenlu_Zhuang.pos(0, this.wenlu_Xian.height + 1)
+            // switch box
+            this.switchBtn.size(widthPercent(8.28, this.width), heightPercent(15.30, this.height));
+            this.switchBtn.pos(this.roadmap.width + 1, this.predictions.height + 1)
+            resolve()
+        })
+    }
+
+    private layoutUI3(): Promise<void> {
+        return new Promise((resolve) => {
+            this.size(1299, 216);
+            this.bgColor = "#A9A9A8"
+
+            const widthPercent = (percent: number, mainWidth: number) => mainWidth * (percent / 100);
+            const heightPercent = (percent: number, mainHeight: number) => mainHeight * (percent / 100);
+
+            this.roadmap.size(widthPercent(87.99, this.width), this.height);
+            this.roadmap.pos(0, 0)
+            // breadplate box
+            this.breadPlateCols = 12
+            this.bead_plate_road_box.size(widthPercent(36.93, this.roadmap.width), this.roadmap.height);
+            this.bead_plate_road_box.pos(0, 0)
+            let bgImg = this.bead_plate_road_box.getChildByName("Image") as Laya.Image
+            bgImg.skin = `resources/cardroad_bg_${this.breadPlateCols.toString().padStart(2, '0')}.png`
+            // bigroad box
+            this.bigRoadCols = 33
+            this.big_road_box.size(widthPercent(63.16, this.roadmap.width), heightPercent(50, this.roadmap.height))
+            this.big_road_box.pos(this.bead_plate_road_box.width, 0)
+            bgImg = this.big_road_box.getChildByName("Image") as Laya.Image
+            bgImg.skin = `resources/cardroad_bg_${this.bigRoadCols.toString().padStart(2, '0')}.png`
+            // threebox
+            this.three_road_box.size(widthPercent(63.16, this.roadmap.width), heightPercent(50, this.roadmap.height))
+            this.three_road_box.pos(this.bead_plate_road_box.width, this.big_road_box.height)
+            bgImg = this.three_road_box.getChildByName("Image") as Laya.Image
+            bgImg.skin = `resources/cardroad_bg_${this.bigRoadCols.toString().padStart(2, '0')}.png`
+            // bigeyebox
+            this.bigEyeRoadCols = 11
+            this.big_eye_road_box.size(widthPercent(33.33, this.three_road_box.width), this.three_road_box.height)
+            this.big_eye_road_box.pos(0, 0)
+            //smallbox
+            this.smallRoadCols = 11
+            this.small_road_box.size(widthPercent(33.33, this.three_road_box.width), this.three_road_box.height)
+            this.small_road_box.pos(this.big_eye_road_box.width, 0)
+            // cockroachbox
+            this.cockroachRoadCols = 11
+            this.cockroach_road_box.size(widthPercent(33.33, this.three_road_box.width), this.three_road_box.height)
+            this.cockroach_road_box.pos(this.small_road_box.width * 2, 0)
+
+            // prediction box
+            this.predictions.size(widthPercent(11.85, this.width), this.height);
+            this.predictions.pos(this.roadmap.width + 1, 0)
+
+            this.wenlu_Xian.size(this.predictions.width, heightPercent(50, this.predictions.height - 1))
+            this.wenlu_Xian.pos(0, 0)
+            let wenluLbl = this.wenlu_Xian.getChildByName("titleLbl") as Laya.Label
+            wenluLbl.rotation = 0
+            wenluLbl.centerX = 0
+            wenluLbl.y = 20
+
+            let wenluBox = this.wenlu_Xian.getChildByName("road_box") as Laya.Sprite
+            wenluBox.size(120, 30)
+            wenluBox.pos((this.wenlu_Xian.width - wenluBox.width) / 2, this.wenlu_Xian.height - wenluBox.height - 15)
+            let wenluImg3 = wenluBox.getChildAt(0) as Laya.Image
+            wenluImg3.size(15, 15)
+            wenluImg3.centerY = 0
+            wenluImg3.left = 14
+
+            let wenluImg4 = wenluBox.getChildAt(1) as Laya.Image
+            wenluImg4.size(15, 15)
+            wenluImg4.centerY = 0
+            wenluImg4.centerX = 0
+
+            let wenluImg5 = wenluBox.getChildAt(2) as Laya.Image
+            wenluImg5.size(15, 15)
+            wenluImg5.centerY = 0
+            wenluImg5.right = 14
+
+            this.wenlu_Zhuang.size(this.predictions.width, heightPercent(50, this.predictions.height - 1))
+            this.wenlu_Zhuang.pos(0, this.wenlu_Xian.height + 1)
+            wenluLbl = this.wenlu_Zhuang.getChildByName("titleLbl") as Laya.Label
+            wenluLbl.rotation = 0
+            wenluLbl.centerX = 0
+            wenluLbl.y = 20
+
+            wenluBox = this.wenlu_Zhuang.getChildByName("road_box") as Laya.Sprite
+            wenluBox.size(120, 30)
+            wenluBox.pos((this.wenlu_Zhuang.width - wenluBox.width) / 2, this.wenlu_Zhuang.height - wenluBox.height - 15)
+            wenluImg3 = wenluBox.getChildAt(0) as Laya.Image
+            wenluImg3.size(15, 15)
+            wenluImg3.centerY = 0
+            wenluImg3.left = 14
+
+            wenluImg4 = wenluBox.getChildAt(1) as Laya.Image
+            wenluImg4.size(15, 15)
+            wenluImg4.centerY = 0
+            wenluImg4.centerX = 0
+
+            wenluImg5 = wenluBox.getChildAt(2) as Laya.Image
+            wenluImg5.size(15, 15)
+            wenluImg5.centerY = 0
+            wenluImg5.right = 14
+
+            // switch box
+            this.switchBtn.visible = false
+            resolve()
         })
     }
 

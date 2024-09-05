@@ -19,22 +19,22 @@
       "_$prefab": "6bfd8042-496f-4a43-b5eb-57bd063eece9",
       "name": "bacRoadmap",
       "active": true,
-      "x": 618,
-      "y": 390,
-      "visible": false,
-      "centerX": 0,
-      "centerY": 0
+      "x": 471,
+      "y": 150,
+      "visible": true,
+      "top": 150,
+      "centerX": 0
     },
     {
-      "_$id": "6bwq9i7f",
+      "_$id": "llo94yb8",
       "_$prefab": "7dd8fd02-b33b-4e22-ae35-32b34c0360dd",
       "name": "dgtgRoadmap",
       "active": true,
       "x": 618,
-      "y": 390,
+      "y": 630,
       "visible": true,
-      "centerX": 0,
-      "centerY": 0
+      "bottom": 150,
+      "centerX": 0
     }
   ]
 }
