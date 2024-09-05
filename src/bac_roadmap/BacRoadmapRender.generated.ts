@@ -2,9 +2,9 @@
 
 
 /**
- * bacRoadmap.lh
+ * dgtgRoadmap.lh
  */
-export class BacRoadmapBase extends Laya.Box {
+export class BacRoadmapRenderBase extends Laya.Box {
     public bead_plate_road_box!: Laya.Box;
     public bead_plate_road_panel!: Laya.Panel;
     public bead_plate_road_sprite!: Laya.Sprite;

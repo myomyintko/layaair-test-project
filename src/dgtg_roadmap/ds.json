@@ -1,0 +1,163 @@
+{
+    "resultObjArr": [
+        {
+            "gameNo": 113908795,
+            "gameNoRound": 1,
+            "result": 1,
+            "resultContent": "d:45;t:4"
+        },
+        {
+            "gameNo": 113908795,
+            "gameNoRound": 2,
+            "result": 1,
+            "resultContent": "d:9;t:63"
+        },
+        {
+            "gameNo": 113908795,
+            "gameNoRound": 3,
+            "result": 4,
+            "resultContent": "d:42;t:22"
+        },
+        {
+            "gameNo": 113908795,
+            "gameNoRound": 4,
+            "result": 1,
+            "resultContent": "d:10;t:47"
+        },
+        {
+            "gameNo": 113908795,
+            "gameNoRound": 5,
+            "result": 1,
+            "resultContent": "d:29;t:21"
+        },
+        {
+            "gameNo": 113908795,
+            "gameNoRound": 6,
+            "result": 1,
+            "resultContent": "d:27;t:43"
+        },
+        {
+            "gameNo": 113908795,
+            "gameNoRound": 7,
+            "result": 4,
+            "resultContent": "d:41;t:61"
+        },
+        {
+            "gameNo": 113908795,
+            "gameNoRound": 8,
+            "result": 1,
+            "resultContent": "d:52;t:2"
+        },
+        {
+            "gameNo": 113908795,
+            "gameNoRound": 9,
+            "result": 2,
+            "resultContent": "d:66;t:13"
+        },
+        {
+            "gameNo": 113908795,
+            "gameNoRound": 10,
+            "result": 1,
+            "resultContent": "d:7;t:62"
+        },
+        {
+            "gameNo": 113908795,
+            "gameNoRound": 11,
+            "result": 2,
+            "resultContent": "d:3;t:7"
+        },
+        {
+            "gameNo": 113908795,
+            "gameNoRound": 12,
+            "result": 1,
+            "resultContent": "d:46;t:25"
+        }
+    ],
+    "historyStatus": 4,
+    "dataArr1": [
+        1,
+        1,
+        4,
+        1,
+        1,
+        1,
+        4,
+        1,
+        2,
+        1,
+        2,
+        1
+    ],
+    "dataArr2": [
+        [
+            1,
+            5,
+            1,
+            1,
+            5,
+            1
+        ],
+        [
+            2
+        ],
+        [
+            1
+        ],
+        [
+            2
+        ],
+        [
+            1
+        ]
+    ],
+    "dataArr3": [
+        [
+            2
+        ],
+        [
+            1,
+            1
+        ]
+    ],
+    "dataArr4": [
+        [
+            2
+        ],
+        [
+            1
+        ]
+    ],
+    "dataArr5": [
+        [
+            2
+        ]
+    ],
+    "dataArr6": [
+        10405,
+        10309,
+        40202,
+        10710,
+        10109,
+        10307,
+        40101,
+        10212,
+        21306,
+        10207,
+        20703,
+        10506
+    ],
+    "dragonCount": 8,
+    "tigerCount": 2,
+    "tieCount": 2,
+    "dragonOddCount": 7,
+    "dragonEvenCount": 5,
+    "tigerOddCount": 8,
+    "tigerEvenCount": 4,
+    "totalCount": 12,
+    "dragonAsk3": 2,
+    "dragonAsk4": 2,
+    "dragonAsk5": 2,
+    "tigerAsk3": 1,
+    "tigerAsk4": 1,
+    "tigerAsk5": 1
+}

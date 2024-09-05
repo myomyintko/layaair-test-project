@@ -1,0 +1,447 @@
+{
+  "_$ver": 1,
+  "_$id": "cu91nwmk",
+  "_$runtime": "res://139619ef-debd-49e4-8bdf-50519a946a0a",
+  "_$type": "Box",
+  "name": "Box",
+  "x": 618,
+  "y": 390,
+  "width": 684,
+  "height": 300,
+  "_mouseState": 2,
+  "centerX": 0,
+  "centerY": 0,
+  "_$child": [
+    {
+      "_$id": "q3xsqgdj",
+      "_$type": "Box",
+      "name": "roadmap",
+      "width": 684,
+      "height": 128,
+      "_mouseState": 2,
+      "left": 0,
+      "right": 0,
+      "top": 0,
+      "_$child": [
+        {
+          "_$id": "mrs28rt3",
+          "_$var": true,
+          "_$type": "Box",
+          "name": "bead_plate_road_box",
+          "width": 128,
+          "height": 128,
+          "_mouseState": 2,
+          "left": 0,
+          "top": 0,
+          "bottom": 0,
+          "_$child": [
+            {
+              "_$id": "97e214rx",
+              "_$type": "Image",
+              "name": "Image",
+              "width": 128,
+              "height": 128,
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0,
+              "skin": "res://3fad476c-4884-47a2-8fad-390a033ced7a",
+              "color": "#ffffff"
+            },
+            {
+              "_$id": "n6t1557m",
+              "_$var": true,
+              "_$type": "Panel",
+              "name": "bead_plate_road_panel",
+              "width": 128,
+              "height": 128,
+              "_mouseState": 2,
+              "left": 0,
+              "top": 0,
+              "bottom": 0,
+              "_$child": [
+                {
+                  "_$id": "itm0q813",
+                  "_$var": true,
+                  "_$type": "Sprite",
+                  "name": "bead_plate_road_sprite",
+                  "width": 128,
+                  "height": 128
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "_$id": "y12i1dsp",
+          "_$var": true,
+          "_$type": "Box",
+          "name": "big_road_box",
+          "x": 129,
+          "width": 341,
+          "height": 128,
+          "left": 129,
+          "top": 0,
+          "_$child": [
+            {
+              "_$id": "gw440dwy",
+              "_$type": "Image",
+              "name": "Image",
+              "width": 341,
+              "height": 128,
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0,
+              "skin": "res://d576f3d7-5553-4f5e-9656-5a3e564dbf35",
+              "color": "#ffffff"
+            },
+            {
+              "_$id": "ganhsbou",
+              "_$var": true,
+              "_$type": "Panel",
+              "name": "big_road_panel",
+              "width": 341,
+              "height": 128,
+              "left": 0,
+              "top": 0,
+              "bottom": 0,
+              "_$child": [
+                {
+                  "_$id": "e6tm5bug",
+                  "_$var": true,
+                  "_$type": "Sprite",
+                  "name": "big_road_sprite",
+                  "x": 1,
+                  "width": 176,
+                  "height": 64
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "_$id": "j16k9ig3",
+          "_$type": "Box",
+          "name": "three_road_box",
+          "x": 471,
+          "width": 213,
+          "height": 128,
+          "right": 0,
+          "top": 0,
+          "bottom": 0,
+          "_$child": [
+            {
+              "_$id": "xzxqinsd",
+              "_$type": "Image",
+              "name": "Image",
+              "width": 213,
+              "height": 128,
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0,
+              "skin": "res://d464df07-0942-45bd-9e2b-71157ac75ecd",
+              "color": "#ffffff"
+            },
+            {
+              "_$id": "jf4pl80x",
+              "_$var": true,
+              "_$type": "Box",
+              "name": "big_eye_road_box",
+              "width": 213,
+              "height": 64,
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "_$child": [
+                {
+                  "_$id": "1102qz3w",
+                  "_$var": true,
+                  "_$type": "Panel",
+                  "name": "big_eye_road_panel",
+                  "width": 213,
+                  "height": 64,
+                  "left": 0,
+                  "top": 0,
+                  "bottom": 0,
+                  "_$child": [
+                    {
+                      "_$id": "xlzxon5x",
+                      "_$var": true,
+                      "_$type": "Sprite",
+                      "name": "big_eye_road_sprite",
+                      "width": 178,
+                      "height": 32
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "_$id": "gegb2k7g",
+              "_$var": true,
+              "_$type": "Box",
+              "name": "small_road_box",
+              "y": 64,
+              "width": 106,
+              "height": 64,
+              "left": 0,
+              "bottom": 0,
+              "_$child": [
+                {
+                  "_$id": "wb553twz",
+                  "_$var": true,
+                  "_$type": "Panel",
+                  "name": "small_road_panel",
+                  "width": 106,
+                  "height": 64,
+                  "left": 0,
+                  "top": 0,
+                  "bottom": 0,
+                  "_$child": [
+                    {
+                      "_$id": "kkkj5451",
+                      "_$var": true,
+                      "_$type": "Sprite",
+                      "name": "small_road_sprite",
+                      "width": 89,
+                      "height": 32
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "_$id": "6jw65bgi",
+              "_$var": true,
+              "_$type": "Box",
+              "name": "cockroach_road_box",
+              "x": 107,
+              "y": 64,
+              "width": 106,
+              "height": 64,
+              "right": 0,
+              "bottom": 0,
+              "_$child": [
+                {
+                  "_$id": "xsu6bkdh",
+                  "_$var": true,
+                  "_$type": "Panel",
+                  "name": "cockroach_road_panel",
+                  "width": 106,
+                  "height": 64,
+                  "left": 0,
+                  "top": 0,
+                  "bottom": 0,
+                  "_$child": [
+                    {
+                      "_$id": "fh2hg0x2",
+                      "_$var": true,
+                      "_$type": "Sprite",
+                      "name": "cockroach_road_sprite",
+                      "x": -2,
+                      "width": 89,
+                      "height": 32
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_$id": "3xiq4gkh",
+      "_$type": "Box",
+      "name": "predictions",
+      "x": 192,
+      "y": 144,
+      "width": 300,
+      "height": 50,
+      "centerX": 0,
+      "_$child": [
+        {
+          "_$id": "oouk344l",
+          "_$var": true,
+          "_$type": "Box",
+          "name": "wenlu_Xian",
+          "width": 120,
+          "height": 50,
+          "left": 0,
+          "top": 0,
+          "bottom": 0,
+          "bgColor": "rgba(255, 255, 255, 1)",
+          "_$child": [
+            {
+              "_$id": "im93kfr4",
+              "_$type": "Label",
+              "name": "Label",
+              "width": 120,
+              "height": 20,
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "text": "Next Dragon",
+              "fontSize": 16,
+              "color": "rgba(14, 85, 178, 1)",
+              "bold": true,
+              "align": "center",
+              "valign": "middle",
+              "padding": "0,0,0,0"
+            },
+            {
+              "_$id": "yjzdyb8k",
+              "_$type": "Box",
+              "name": "road_box",
+              "y": 20,
+              "width": 120,
+              "height": 30,
+              "_mouseState": 2,
+              "left": 0,
+              "right": 0,
+              "bottom": 0,
+              "_$child": [
+                {
+                  "_$id": "d2kiltrn",
+                  "_$type": "Image",
+                  "name": "wenlu3",
+                  "x": 10,
+                  "y": 5,
+                  "width": 20,
+                  "height": 20,
+                  "left": 10,
+                  "centerY": 0,
+                  "color": "#ffffff"
+                },
+                {
+                  "_$id": "knjdb0ix",
+                  "_$type": "Image",
+                  "name": "wenlu4",
+                  "x": 50,
+                  "y": 5,
+                  "width": 20,
+                  "height": 20,
+                  "centerX": 0,
+                  "centerY": 0,
+                  "color": "#ffffff"
+                },
+                {
+                  "_$id": "monocnxm",
+                  "_$type": "Image",
+                  "name": "wenlu5",
+                  "x": 90,
+                  "y": 5,
+                  "width": 20,
+                  "height": 20,
+                  "right": 10,
+                  "centerY": 0,
+                  "color": "#ffffff"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "_$id": "eijb1adr",
+          "_$var": true,
+          "_$type": "Box",
+          "name": "wenlu_Zhuang",
+          "x": 180,
+          "width": 120,
+          "height": 50,
+          "right": 0,
+          "top": 0,
+          "bottom": 0,
+          "bgColor": "rgba(255, 255, 255, 1)",
+          "_$child": [
+            {
+              "_$id": "anjc3h1r",
+              "_$type": "Label",
+              "name": "Label",
+              "width": 120,
+              "height": 20,
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "text": "Next Tiger",
+              "fontSize": 16,
+              "color": "rgba(240, 30, 27, 1)",
+              "bold": true,
+              "align": "center",
+              "valign": "middle",
+              "padding": "0,0,0,0"
+            },
+            {
+              "_$id": "v7gqcqsi",
+              "_$type": "Box",
+              "name": "road_box",
+              "y": 20,
+              "width": 120,
+              "height": 30,
+              "_mouseState": 2,
+              "left": 0,
+              "right": 0,
+              "bottom": 0,
+              "_$child": [
+                {
+                  "_$id": "ole8heml",
+                  "_$type": "Image",
+                  "name": "wenlu3",
+                  "x": 10,
+                  "y": 5,
+                  "width": 20,
+                  "height": 20,
+                  "left": 10,
+                  "centerY": 0,
+                  "color": "#ffffff"
+                },
+                {
+                  "_$id": "98d5ikwc",
+                  "_$type": "Image",
+                  "name": "wenlu4",
+                  "x": 50,
+                  "y": 5,
+                  "width": 20,
+                  "height": 20,
+                  "centerX": 0,
+                  "centerY": 0,
+                  "color": "#ffffff"
+                },
+                {
+                  "_$id": "api0mx8g",
+                  "_$type": "Image",
+                  "name": "wenlu5",
+                  "x": 90,
+                  "y": 5,
+                  "width": 20,
+                  "height": 20,
+                  "right": 10,
+                  "centerY": 0,
+                  "color": "#ffffff"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_$id": "l4vethco",
+      "_$var": true,
+      "_$type": "Button",
+      "name": "switchBtn",
+      "x": 44,
+      "y": 149,
+      "width": 120,
+      "height": 40,
+      "_mouseState": 2,
+      "skin": "res://d4cfd6a8-0d0a-475b-ac93-d85eaa646936",
+      "label": "Switch UI",
+      "labelSize": 20,
+      "labelAlign": "center",
+      "labelVAlign": "middle"
+    }
+  ]
+}

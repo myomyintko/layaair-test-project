@@ -1,23 +1,22 @@
 import * as data from "./ds.json"
+type resultType = "dragon" | "tiger" | "tie"
 
-type bacResultType = "player" | "banker" | "tie"
-
-interface bacResultTypeMap {
-    [key: number]: bacResultType
+interface resultTypeMap {
+    [key: number]: resultType
 }
 
-class BacRoadmapUtils {
-    private resultTypes: bacResultTypeMap
+class DgtgRoadmapUtils {
+    private resultTypes: resultTypeMap
 
     constructor() {
         this.resultTypes = {
-            1: 'banker', 9: 'banker', 17: 'banker', 25: 'banker', 5: 'banker', 13: 'banker', 21: 'banker', 29: 'banker',
-            2: 'player', 10: 'player', 18: 'player', 26: 'player', 6: 'player', 14: 'player', 22: 'player', 30: 'player',
-            4: 'tie', 12: 'tie', 20: 'tie', 28: 'tie',
+            1: 'dragon', 5: 'dragon',
+            2: 'tiger', 6: 'tiger',
+            4: 'tie',
         }
     }
 
-    Key2ResultType(result: number): bacResultType | null {
+    Key2ResultType(result: number): resultType | null {
         return this.resultTypes[result & 31] || null;
     }
 
@@ -72,28 +71,29 @@ class BacRoadmapUtils {
     }
 }
 
-class BacRoadmap extends BacRoadmapUtils {
+class DgtgRoadmap extends DgtgRoadmapUtils {
     results: number[] = [];
-    breadplate: BacBreadPlate;
-    bigRoad: BacBigRoad;
-    bigEyeBoy: BacBigEyeBoy;
-    smallRoad: BacSmallRoad;
-    cockroachPig: BacCockroachPig;
+    breadplate: DgtgBreadPlate;
+    bigRoad: DgtgBigRoad;
+    bigEyeBoy: DgtgBigEyeBoy;
+    smallRoad: DgtgSmallRoad;
+    cockroachPig: DgtgCockroachPig;
 
     constructor(_results: number[] = []) {
         super()
         this.results = _results || []
-        this.breadplate = new BacBreadPlate(this.results)
-        this.bigRoad = new BacBigRoad(this.results)
-        this.bigEyeBoy = new BacBigEyeBoy(this.bigRoad.matrix2)
-        this.smallRoad = new BacSmallRoad(this.bigRoad.matrix2)
-        this.cockroachPig = new BacCockroachPig(this.bigRoad.matrix2)
+        this.breadplate = new DgtgBreadPlate(this.results)
+        this.bigRoad = new DgtgBigRoad(this.results)
+        this.bigEyeBoy = new DgtgBigEyeBoy(this.bigRoad.matrix2)
+        this.smallRoad = new DgtgSmallRoad(this.bigRoad.matrix2)
+        this.cockroachPig = new DgtgCockroachPig(this.bigRoad.matrix2)
     }
 
     push(key: number): void {
         this.results.push(key)
         this.breadplate.push(key)
         this.bigRoad.push(key)
+
         this.bigRoad.format()
 
         this.bigEyeBoy.reset()
@@ -129,11 +129,10 @@ class BacRoadmap extends BacRoadmapUtils {
     }
 }
 
-class BacBreadPlate extends BacRoadmapUtils {
+class DgtgBreadPlate extends DgtgRoadmapUtils {
     results: number[] = []
     matrix: number[] = []
     matrix2: number[] = []
-    previousIdentity: bacResultType | null = null
 
     constructor(_results: number[] = []) {
         super()
@@ -144,7 +143,7 @@ class BacBreadPlate extends BacRoadmapUtils {
     push(key: number): void {
         const keyStr = key.toString()
         if (keyStr.length >= 4) {
-            key = parseInt(keyStr.slice(0, keyStr.length - 2))
+            key = parseInt(keyStr.slice(0, keyStr.length - 4))
         }
 
         const identity = this.Key2ResultType(key)
@@ -154,23 +153,18 @@ class BacBreadPlate extends BacRoadmapUtils {
         }
         this.matrix2.push(Number(keyStr))
         this.matrix.push(key)
-
-        this.previousIdentity = identity
     }
 
     pop() {
         if (this.matrix.length > 0) {
             this.matrix.pop()
-            this.previousIdentity = this.Key2ResultType(this.matrix[this.matrix.length - 1])
-        } else {
-            this.previousIdentity = null
         }
     }
 }
 
-class BacBigRoad extends BacRoadmapUtils {
+class DgtgBigRoad extends DgtgRoadmapUtils {
     results: number[] = []
-    previousIdentity: bacResultType | null = null
+    previousIdentity: resultType | null = null
     matrix: number[][] = []
     matrix2: number[][] = []
     hasTieBeenAdded: boolean = false
@@ -263,7 +257,7 @@ class BacBigRoad extends BacRoadmapUtils {
     }
 }
 
-class BacBigEyeBoy extends BacRoadmapUtils {
+class DgtgBigEyeBoy extends DgtgRoadmapUtils {
     matrix: number[][] = []
     previousCoordinates: [number, number] = [-1, -1]
     previousIdentity: number = 0
@@ -326,7 +320,7 @@ class BacBigEyeBoy extends BacRoadmapUtils {
     }
 }
 
-class BacSmallRoad extends BacRoadmapUtils {
+class DgtgSmallRoad extends DgtgRoadmapUtils {
     previousIdentity: number = 0
     matrix: number[][] = []
     previousCoordinates: [number, number] = [-1, -1]
@@ -389,7 +383,7 @@ class BacSmallRoad extends BacRoadmapUtils {
     }
 }
 
-class BacCockroachPig extends BacRoadmapUtils {
+class DgtgCockroachPig extends DgtgRoadmapUtils {
     previousIdentity: number = 0;
     matrix: number[][] = []
     previousCoordinates: [number, number] = [-1, -1]
@@ -451,12 +445,12 @@ class BacCockroachPig extends BacRoadmapUtils {
     }
 }
 
-const roadmap = new BacRoadmap(data.dataArr1)
-console.log("breadplate:", roadmap.breadplate.matrix)
-console.log("breadplate2:", roadmap.breadplate.matrix2)
-console.log("bigroad:", roadmap.bigRoad.matrix, roadmap.bigRoad.previousIdentity)
-console.log("bigeyeboy:", roadmap.bigEyeBoy.matrix, roadmap.bigEyeBoy.previousCoordinates, roadmap.bigEyeBoy.previousIdentity)
-console.log("smallroad:", roadmap.smallRoad.matrix, roadmap.smallRoad.previousCoordinates, roadmap.smallRoad.previousIdentity)
-console.log("cockroachPig:", roadmap.cockroachPig.matrix, roadmap.cockroachPig.previousCoordinates, roadmap.cockroachPig.previousIdentity)
-console.log(roadmap.getPrediction(1))
-console.log(roadmap.getPrediction(2))
+const dgtgRoadmap = new DgtgRoadmap(data.dataArr1)
+console.log("breadplate:", dgtgRoadmap.breadplate.matrix)
+console.log("breadplate2:", dgtgRoadmap.breadplate.matrix2)
+console.log("bigroad:", dgtgRoadmap.bigRoad.matrix, dgtgRoadmap.bigRoad.previousIdentity)
+console.log("bigeyeboy:", dgtgRoadmap.bigEyeBoy.matrix, dgtgRoadmap.bigEyeBoy.previousCoordinates, dgtgRoadmap.bigEyeBoy.previousIdentity)
+console.log("smallroad:", dgtgRoadmap.smallRoad.matrix, dgtgRoadmap.smallRoad.previousCoordinates, dgtgRoadmap.smallRoad.previousIdentity)
+console.log("cockroachPig:", dgtgRoadmap.cockroachPig.matrix, dgtgRoadmap.cockroachPig.previousCoordinates, dgtgRoadmap.cockroachPig.previousIdentity)
+console.log(dgtgRoadmap.getPrediction(1))
+console.log(dgtgRoadmap.getPrediction(2))
