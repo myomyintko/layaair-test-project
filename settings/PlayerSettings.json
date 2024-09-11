@@ -12,18 +12,10 @@
   "3D": {
     "enableDynamicBatch": false,
     "enableUniformBufferObject": false,
-    "enableMultiLight": false,
-    "lightClusterCount": {
-      "x": 12,
-      "y": 12,
-      "z": 12
-    }
+    "enableMultiLight": false
   },
   "physics2D": {
-    "allowSleeping": false,
-    "gravity": {
-      "y": 9.8
-    }
+    "allowSleeping": false
   },
   "modules": {
     "laya.d3": true,
@@ -33,6 +25,5 @@
   "splash": {
     "enabled": false,
     "fit": "center"
-  },
-  "vConsole": true
+  }
 }

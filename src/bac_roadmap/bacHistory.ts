@@ -1,4 +1,3 @@
-import * as data from "./ds.json"
 
 interface card {
     value: string,
@@ -9,7 +8,7 @@ interface cardsMap {
     [key: number]: card
 }
 
-class BacHistory {
+export class BacHistory {
     private cards: cardsMap = {
         1: { value: "A", suit: "C" }, 2: { value: "2", suit: "C" }, 3: { value: "3", suit: "C" }, 4: { value: "4", suit: "C" },
         5: { value: "5", suit: "C" }, 6: { value: "6", suit: "C" }, 7: { value: "7", suit: "C" }, 8: { value: "8", suit: "C" },
@@ -143,55 +142,55 @@ class BacHistory {
             k = isTwoCardHands ? 2 : 1;
             if (isBothPairs) {
                 suffix = 28;
-                result = "T:both";
+                result = "Tie both pair";
             } else if (bankerPair) {
                 suffix = 12;
-                result = "T:banker";
+                result = "Tie banker pair";
             } else if (playerPair) {
                 suffix = 20;
-                result = "T:player";
+                result = "Tie player pair";
             } else {
                 suffix = 4;
-                result = "T:";
+                result = "Tie";
             }
         } else if (isBankerWin) {
             k = isTwoCardHands ? 6 : 1;
             if (isBothPairs) {
                 suffix = 25;
-                result = "B:both";
+                result = "Banker both pair";
             } else if (bankerPair) {
                 suffix = 9;
-                result = "B:banker";
+                result = "Banker banker pair";
             } else if (playerPair) {
                 suffix = 17;
-                result = "B:player";
+                result = "B player pair";
             } else {
                 suffix = 1;
                 const bankerFirstHandValue = this.calculateHandValue(bankerCards.slice(0, 2));
-                result = bankerFirstHandValue >= 8 ? "B:natural" : "B:";
+                result = bankerFirstHandValue >= 8 ? "Banker natural" : "Banker";
             }
         } else if (isPlayerWin) {
             k = isTwoCardHands ? 10 : 1;
             if (isBothPairs) {
                 suffix = 26;
-                result = "P:both";
+                result = "Player both pair";
             } else if (bankerPair) {
                 suffix = 10;
-                result = "P:banker";
+                result = "P banker pair";
             } else if (playerPair) {
                 suffix = 18;
-                result = "P:player";
+                result = "P player pair";
             } else {
                 suffix = 2;
                 const playerFirstHandValue = this.calculateHandValue(playerCards.slice(0, 2));
-                result = playerFirstHandValue >= 8 ? "P:natural" : "P:";
+                result = playerFirstHandValue >= 8 ? "Player natural" : "Player";
             }
         }
 
         return { k, suffix, result };
     }
 
-    CalculateHistoryResult(bankerCardValues: card[], playerCardValues: card[]) {
+    CalculateHistoryResult(bankerCardValues: card[], playerCardValues: card[]): number {
         // calculate pairs
         const bankerPair = this.hasPair(bankerCardValues, "face");
         const playerPair = this.hasPair(playerCardValues, "face");
@@ -225,11 +224,23 @@ class BacHistory {
             bankerPair,
             playerPair
         );
+
+        console.log(`
+            --------------------start--------------------
+            Cards: {
+                    Dragon: ${JSON.stringify(bankerCardValues)} (${bankerHandValue}),
+                    Tiger: ${JSON.stringify(playerCardValues)} (${playerHandValue}),
+                },
+            Winner: ${result}, ${k * 32 + suffix},${playerHandValue}${bankerHandValue},
+            PerfectPair: ${perfectPair},
+            EitherPair: ${eitherPair},
+            Super6: ${super6},
+            DragonBonus: ${dragonBonusType},
+            smallOrBig: ${smallOrBig},
+            --------------------end--------------------
+        `)
+
+        // return Number(`${k * 32 + suffix}${playerHandValue}${bankerHandValue}`)
+        return k * 32 + suffix
     }
 }
-
-const bacHistory = new BacHistory()
-data.resultObjArr.forEach(result => {
-    const { bankerCardValues, playerCardValues } = bacHistory.ParseResultContent(result.resultContent);
-    bacHistory.CalculateHistoryResult(bankerCardValues, playerCardValues);
-})

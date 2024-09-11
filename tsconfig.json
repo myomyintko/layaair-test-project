@@ -23,5 +23,5 @@
     "./assets",
     "./src",
     "./engine"
-  ]
+, "test2222.js"  ]
 }

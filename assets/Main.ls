@@ -15,26 +15,15 @@
   ],
   "_$child": [
     {
-      "_$id": "c5rusp1k",
-      "_$prefab": "6bfd8042-496f-4a43-b5eb-57bd063eece9",
-      "name": "bacRoadmap",
+      "_$id": "rrpfl100",
+      "_$prefab": "025514b0-a230-4b1a-b2c1-a287bb50f103",
+      "name": "BacRoadmapV2",
       "active": true,
       "x": 471,
-      "y": 150,
+      "y": 240,
       "visible": true,
-      "top": 150,
-      "centerX": 0
-    },
-    {
-      "_$id": "llo94yb8",
-      "_$prefab": "7dd8fd02-b33b-4e22-ae35-32b34c0360dd",
-      "name": "dgtgRoadmap",
-      "active": true,
-      "x": 618,
-      "y": 630,
-      "visible": true,
-      "bottom": 150,
-      "centerX": 0
+      "centerX": 0,
+      "centerY": 0
     }
   ]
 }

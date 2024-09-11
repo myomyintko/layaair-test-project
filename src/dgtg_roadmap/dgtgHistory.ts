@@ -108,6 +108,7 @@ class DgtgHistory {
 
         // Log the result
         console.log(`
+            --------------------start--------------------
             Cards: {
                 Dragon: ${JSON.stringify(dragonCardValue)} (${dragonValue}),
                 Tiger: ${JSON.stringify(tigerCardValue)} (${tigerValue}),
@@ -120,6 +121,7 @@ class DgtgHistory {
             Tiger Odd: ${isTigerOdd},
             Tiger Even: ${!isTigerOdd},
             Tiger Color: ${tigerColor}
+            --------------------end--------------------
         `);
     }
 }

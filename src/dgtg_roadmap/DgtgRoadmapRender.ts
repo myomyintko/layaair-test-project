@@ -66,7 +66,7 @@ export class DgtgRoadmapRender extends DgtgRoadmapRenderBase {
     private isResetting: boolean = false
 
     onEnable(): void {
-        this.layoutUI2().then(() => {
+        this.layoutUI3().then(() => {
             Laya.loader.load("resources/game_icons.atlas").then((res) => {
                 this.setupRoadmapUI()
                 this.SetHistoryData()

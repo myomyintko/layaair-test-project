@@ -1,12 +1,10 @@
-import * as data from "./ds.json"
-
 type bacResultType = "player" | "banker" | "tie"
 
 interface bacResultTypeMap {
     [key: number]: bacResultType
 }
 
-class BacRoadmapUtils {
+export class BacRoadmapUtils {
     private resultTypes: bacResultTypeMap
 
     constructor() {
@@ -17,7 +15,7 @@ class BacRoadmapUtils {
         }
     }
 
-    Key2ResultType(result: number): bacResultType | null {
+    Number2ResultType(result: number): bacResultType | null {
         return this.resultTypes[result & 31] || null;
     }
 
@@ -54,10 +52,10 @@ class BacRoadmapUtils {
                              */
                             const tempIdx = margin - 1
                             const leftColLowerIndex = this.IsValidIndex(bigRoadMatrix[colIndex - tempIdx], cellIndex)
-                            const leftColLowerIdentity = this.Key2ResultType(bigRoadMatrix[colIndex - tempIdx][cellIndex])
+                            const leftColLowerIdentity = this.Number2ResultType(bigRoadMatrix[colIndex - tempIdx][cellIndex])
 
                             const leftColUpperIndex = this.IsValidIndex(bigRoadMatrix[colIndex - tempIdx], cellIndex - 1)
-                            const leftColUpperIdentity = this.Key2ResultType(bigRoadMatrix[colIndex - tempIdx][cellIndex - 1])
+                            const leftColUpperIdentity = this.Number2ResultType(bigRoadMatrix[colIndex - tempIdx][cellIndex - 1])
 
                             const isMatch = [
                                 leftColLowerIndex === leftColUpperIndex,
@@ -72,7 +70,7 @@ class BacRoadmapUtils {
     }
 }
 
-class BacRoadmap extends BacRoadmapUtils {
+export class BacRoadmap extends BacRoadmapUtils {
     results: number[] = [];
     breadplate: BacBreadPlate;
     bigRoad: BacBigRoad;
@@ -129,7 +127,7 @@ class BacRoadmap extends BacRoadmapUtils {
     }
 }
 
-class BacBreadPlate extends BacRoadmapUtils {
+export class BacBreadPlate extends BacRoadmapUtils {
     results: number[] = []
     matrix: number[] = []
     matrix2: number[] = []
@@ -147,7 +145,7 @@ class BacBreadPlate extends BacRoadmapUtils {
             key = parseInt(keyStr.slice(0, keyStr.length - 2))
         }
 
-        const identity = this.Key2ResultType(key)
+        const identity = this.Number2ResultType(key)
         if (!identity) {
             console.warn(`${key} is not a valid key`)
             return
@@ -161,14 +159,14 @@ class BacBreadPlate extends BacRoadmapUtils {
     pop() {
         if (this.matrix.length > 0) {
             this.matrix.pop()
-            this.previousIdentity = this.Key2ResultType(this.matrix[this.matrix.length - 1])
+            this.previousIdentity = this.Number2ResultType(this.matrix[this.matrix.length - 1])
         } else {
             this.previousIdentity = null
         }
     }
 }
 
-class BacBigRoad extends BacRoadmapUtils {
+export class BacBigRoad extends BacRoadmapUtils {
     results: number[] = []
     previousIdentity: bacResultType | null = null
     matrix: number[][] = []
@@ -206,12 +204,14 @@ class BacBigRoad extends BacRoadmapUtils {
     }
 
     push(key: number): void {
+        console.log(key)
         const keyStr = key.toString()
         if (keyStr.length >= 4) {
             key = parseInt(keyStr.slice(0, keyStr.length - 2))
+            console.log('keyStr.length=>4', key)
         }
 
-        const identity = this.Key2ResultType(key);
+        const identity = this.Number2ResultType(key);
         if (!identity) {
             console.warn(`${key} is not a valid key`);
             return;
@@ -235,7 +235,7 @@ class BacBigRoad extends BacRoadmapUtils {
 
         // Update the previousIdentity
         if (this.matrix.length > 0 && this.matrix[this.matrix.length - 1].length > 0) {
-            this.previousIdentity = this.Key2ResultType(
+            this.previousIdentity = this.Number2ResultType(
                 this.matrix[this.matrix.length - 1][this.matrix[this.matrix.length - 1].length - 1]
             );
         } else {
@@ -256,14 +256,14 @@ class BacBigRoad extends BacRoadmapUtils {
         // Update previousIdentity
         if (this.matrix.length > 0 && this.matrix[this.matrix.length - 1].length > 0) {
             const lastRow = this.matrix[this.matrix.length - 1];
-            this.previousIdentity = this.Key2ResultType(lastRow[lastRow.length - 1]);
+            this.previousIdentity = this.Number2ResultType(lastRow[lastRow.length - 1]);
         } else {
             this.previousIdentity = null;
         }
     }
 }
 
-class BacBigEyeBoy extends BacRoadmapUtils {
+export class BacBigEyeBoy extends BacRoadmapUtils {
     matrix: number[][] = []
     previousCoordinates: [number, number] = [-1, -1]
     previousIdentity: number = 0
@@ -326,7 +326,7 @@ class BacBigEyeBoy extends BacRoadmapUtils {
     }
 }
 
-class BacSmallRoad extends BacRoadmapUtils {
+export class BacSmallRoad extends BacRoadmapUtils {
     previousIdentity: number = 0
     matrix: number[][] = []
     previousCoordinates: [number, number] = [-1, -1]
@@ -389,7 +389,7 @@ class BacSmallRoad extends BacRoadmapUtils {
     }
 }
 
-class BacCockroachPig extends BacRoadmapUtils {
+export class BacCockroachPig extends BacRoadmapUtils {
     previousIdentity: number = 0;
     matrix: number[][] = []
     previousCoordinates: [number, number] = [-1, -1]
@@ -451,12 +451,12 @@ class BacCockroachPig extends BacRoadmapUtils {
     }
 }
 
-const roadmap = new BacRoadmap(data.dataArr1)
-console.log("breadplate:", roadmap.breadplate.matrix)
-console.log("breadplate2:", roadmap.breadplate.matrix2)
-console.log("bigroad:", roadmap.bigRoad.matrix, roadmap.bigRoad.previousIdentity)
-console.log("bigeyeboy:", roadmap.bigEyeBoy.matrix, roadmap.bigEyeBoy.previousCoordinates, roadmap.bigEyeBoy.previousIdentity)
-console.log("smallroad:", roadmap.smallRoad.matrix, roadmap.smallRoad.previousCoordinates, roadmap.smallRoad.previousIdentity)
-console.log("cockroachPig:", roadmap.cockroachPig.matrix, roadmap.cockroachPig.previousCoordinates, roadmap.cockroachPig.previousIdentity)
-console.log(roadmap.getPrediction(1))
-console.log(roadmap.getPrediction(2))
+// const roadmap = new BacRoadmap(historyData.dataArr1)
+// console.log("breadplate:", roadmap.breadplate.matrix)
+// console.log("breadplate2:", roadmap.breadplate.matrix2)
+// console.log("bigroad:", roadmap.bigRoad.matrix, roadmap.bigRoad.previousIdentity)
+// console.log("bigeyeboy:", roadmap.bigEyeBoy.matrix, roadmap.bigEyeBoy.previousCoordinates, roadmap.bigEyeBoy.previousIdentity)
+// console.log("smallroad:", roadmap.smallRoad.matrix, roadmap.smallRoad.previousCoordinates, roadmap.smallRoad.previousIdentity)
+// console.log("cockroachPig:", roadmap.cockroachPig.matrix, roadmap.cockroachPig.previousCoordinates, roadmap.cockroachPig.previousIdentity)
+// console.log("banker:",roadmap.getPrediction(1))
+// console.log("player:",roadmap.getPrediction(2))

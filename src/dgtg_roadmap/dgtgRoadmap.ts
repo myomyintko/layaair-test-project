@@ -452,5 +452,5 @@ console.log("bigroad:", dgtgRoadmap.bigRoad.matrix, dgtgRoadmap.bigRoad.previous
 console.log("bigeyeboy:", dgtgRoadmap.bigEyeBoy.matrix, dgtgRoadmap.bigEyeBoy.previousCoordinates, dgtgRoadmap.bigEyeBoy.previousIdentity)
 console.log("smallroad:", dgtgRoadmap.smallRoad.matrix, dgtgRoadmap.smallRoad.previousCoordinates, dgtgRoadmap.smallRoad.previousIdentity)
 console.log("cockroachPig:", dgtgRoadmap.cockroachPig.matrix, dgtgRoadmap.cockroachPig.previousCoordinates, dgtgRoadmap.cockroachPig.previousIdentity)
-console.log(dgtgRoadmap.getPrediction(1))
-console.log(dgtgRoadmap.getPrediction(2))
+console.log("dragon:",dgtgRoadmap.getPrediction(1))
+console.log("tiger:",dgtgRoadmap.getPrediction(2))
