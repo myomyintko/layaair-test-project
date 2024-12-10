@@ -15,15 +15,17 @@
   ],
   "_$child": [
     {
-      "_$id": "rrpfl100",
-      "_$prefab": "025514b0-a230-4b1a-b2c1-a287bb50f103",
-      "name": "BacRoadmapV2",
+      "_$id": "fgd37o9h",
+      "_$prefab": "57abb653-aba3-41b8-a178-8f9198115124",
+      "name": "SDKPlayer",
       "active": true,
-      "x": 471,
-      "y": 240,
+      "x": 0,
+      "y": 0,
       "visible": true,
-      "centerX": 0,
-      "centerY": 0
+      "left": 0,
+      "right": 0,
+      "top": 0,
+      "bottom": 0
     }
   ]
 }

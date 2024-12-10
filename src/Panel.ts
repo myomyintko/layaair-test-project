@@ -12,6 +12,7 @@ export class Panel extends Laya.Script {
     private items: Laya.Box[] = [];
     private itemCount: number = 0
     scale: number = 1
+    private lastScrollTop: number = -1;
 
     onEnable(): void {
         this.addFirstBtn = this.owner.getChildByName("addFirst") as Laya.Button;
@@ -20,6 +21,7 @@ export class Panel extends Laya.Script {
         this.addLastBtn.clickHandler = new Laya.Handler(this, this.addLastFunc);
         this.panel = this.owner.getChildByName("Panel") as Laya.Panel;
         this.panel.scrollType = Laya.ScrollType.Vertical;
+        this.panel.vScrollBar.changeHandler = new Laya.Handler(this, this.onScrollChange);
         this.scale = ((this.panel.width / 2) - this.space) / this.itemWidth
 
         this.addFirstFunc = this.addFirstFunc.bind(this);
@@ -99,19 +101,63 @@ export class Panel extends Laya.Script {
             const row = Math.floor(i / 2);
             const col = i % 2;
             const x = col * (this.itemWidth * this.scale + this.space * this.scale)
-            const y =  row * (this.itemHeight * this.scale + this.space * this.scale);
+            const y = row * (this.itemHeight * this.scale + this.space * this.scale);
             positions.push({ x, y });
         }
         return positions;
     }
 
     private layoutItems(): void {
+        console.clear()
+        const scrollTop = this.panel.vScrollBar.value;
+        const scrollBottom = scrollTop + this.panel.height;
+
         this.items.forEach((item, i) => {
             const row = Math.floor(i / 2);
             const col = i % 2;
-            item.x = col * (this.itemWidth * this.scale + this.space * this.scale)
-            item.y =  row * (this.itemHeight * this.scale + this.space * this.scale);
-        })
+
+            const itemX = col * (this.itemWidth * this.scale + this.space * this.scale);
+            const itemY = row * (this.itemHeight * this.scale + this.space * this.scale);
+
+            if (item.x !== itemX) item.x = itemX;
+            if (item.y !== itemY) item.y = itemY;
+
+            const itemBottom = itemY + this.itemHeight * this.scale;
+            const isVisibleVertically = itemBottom >= scrollTop && itemY <= scrollBottom;
+
+            if (item.visible !== isVisibleVertically) {
+                item.visible = isVisibleVertically;
+            }
+
+            console.log(`Item: ${item.name}, Visible: ${isVisibleVertically}`);
+        });
+
         this.resetPanle();
     }
+
+
+    private onScrollChange(): void {
+        const scrollTop = this.panel.vScrollBar.value;
+
+        if (scrollTop !== this.lastScrollTop) {
+            console.clear()
+
+            this.lastScrollTop = scrollTop;
+
+            const scrollBottom = scrollTop + this.panel.height;
+
+            this.items.forEach((item) => {
+                const itemTop = item.y;
+                const itemBottom = itemTop + this.itemHeight * this.scale;
+                const isVisibleVertically = itemBottom >= scrollTop && itemTop <= scrollBottom;
+
+                if (item.visible !== isVisibleVertically) {
+                    item.visible = isVisibleVertically;
+                }
+
+                console.log(`Item: ${item.name}, Visible: ${isVisibleVertically}`);
+            });
+        }
+    }
+
 }

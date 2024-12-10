@@ -112,10 +112,10 @@ export class CustomVideoTexture extends Laya.BaseTexture {
         this._width = this.element.videoWidth;
         this._height = this.element.videoHeight;
         if (Laya.Browser.onLayaRuntime) {
-            this._texture = Laya.LayaGL.textureContext.createTextureInternal(this._dimension, this.element.videoWidth, this.element.videoHeight, Laya.TextureFormat.R8G8B8A8, false, false);
+            this._texture = Laya.LayaGL.textureContext.createTextureInternal(this._dimension, this.element.videoWidth, this.element.videoHeight, Laya.TextureFormat.R8G8B8A8, false, false,false);
         }
         else {
-            this._texture = Laya.LayaGL.textureContext.createTextureInternal(this._dimension, this.element.videoWidth, this.element.videoHeight, Laya.TextureFormat.R8G8B8, false, false);
+            this._texture = Laya.LayaGL.textureContext.createTextureInternal(this._dimension, this.element.videoWidth, this.element.videoHeight, Laya.TextureFormat.R8G8B8, false, false,false);
         }
         this.wrapModeU = Laya.WrapMode.Clamp;
         this.wrapModeV = Laya.WrapMode.Clamp;

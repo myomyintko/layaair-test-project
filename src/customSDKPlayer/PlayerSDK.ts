@@ -36,26 +36,48 @@ export class VideoSDK {
                 const offer = await self.pc.createOffer();
                 await self.pc.setLocalDescription(offer);
 
-                const response = await fetch(url, {
+                // const response = await fetch(url, {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-type': 'application/sdp'
+                //     },
+                //     body: offer.sdp
+                // });
+
+                const sessionid = Math.random().toString().substr(2, 22)
+                const response = await fetch('https://kx-stream.eijdjs.cn/webrtc/v1/pullstream', {
                     method: 'POST',
                     headers: {
                         'Content-type': 'application/sdp'
                     },
-                    body: offer.sdp
+                    body: JSON.stringify(
+                        {
+                            clientinfo: "Windows NT 10.0;Chrome 131.0.0.0",
+                            localsdp: {
+                                sdp: offer.sdp,
+                                type: "offer",
+
+                            },
+                            sessionid,
+                            streamurl: "webrtc://kx-stream.eijdjs.cn/live112/720p?txSecret=39ea7e06fc1185c3e62e6259e6004196&txTime=675955ef"
+                        }
+                    )
                 });
 
                 if (!response.ok) {
                     throw new Error(`Failed to fetch: ${response.status} ${response.statusText}`);
                 }
 
-                const answer = await response.text();
+                const responseText = await response.text();
+                const responseJSON = JSON.parse(responseText);
+                console.log(responseJSON)
                 await self.pc.setRemoteDescription(
                     new RTCSessionDescription({
-                        type: 'answer', sdp: answer
+                        type: 'answer', sdp: responseJSON.remotesdp.sdp
                     })
                 );
 
-                return self.__internal.parseId(offer.sdp, answer);
+                return self.__internal.parseId(offer.sdp, responseJSON.remotesdp.sdp);
             },
             close: function () {
                 self.pc && self.pc.close();

@@ -15,6 +15,9 @@ export class BacRoadmapV2Base extends Laya.Box {
     public big_eye_road_box!: Laya.Box;
     public big_eye_road_panel!: Laya.Panel;
     public big_eye_road_sprite!: Laya.Sprite;
+    public thee_star_road_box!: Laya.Box;
+    public thee_star_road_panel!: Laya.Panel;
+    public thee_star_road_sprite!: Laya.Sprite;
     public small_road_box!: Laya.Box;
     public small_road_panel!: Laya.Panel;
     public small_road_sprite!: Laya.Sprite;

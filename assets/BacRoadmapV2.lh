@@ -4,8 +4,6 @@
   "_$runtime": "res://b41e9f40-2808-45c5-b19e-68bbaa66a280",
   "_$type": "Box",
   "name": "Box",
-  "x": 471,
-  "y": 400,
   "width": 978,
   "height": 600,
   "_mouseState": 2,
@@ -146,10 +144,9 @@
               "_$var": true,
               "_$type": "Box",
               "name": "big_eye_road_box",
-              "width": 549,
+              "width": 275,
               "height": 70,
               "left": 0,
-              "right": 0,
               "top": 0,
               "_$child": [
                 {
@@ -157,9 +154,10 @@
                   "_$var": true,
                   "_$type": "Panel",
                   "name": "big_eye_road_panel",
-                  "width": 549,
+                  "width": 275,
                   "height": 70,
                   "left": 0,
+                  "right": 0,
                   "top": 0,
                   "bottom": 0,
                   "_$child": [
@@ -169,6 +167,40 @@
                       "_$type": "Sprite",
                       "name": "big_eye_road_sprite",
                       "width": 178,
+                      "height": 32
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "_$id": "sa9kxj22",
+              "_$var": true,
+              "_$type": "Box",
+              "name": "thee_star_road_box",
+              "x": 274,
+              "width": 275,
+              "height": 70,
+              "right": 0,
+              "top": 0,
+              "_$child": [
+                {
+                  "_$id": "g4tmp2tn",
+                  "_$var": true,
+                  "_$type": "Panel",
+                  "name": "thee_star_road_panel",
+                  "width": 275,
+                  "height": 70,
+                  "left": 0,
+                  "top": 0,
+                  "bottom": 0,
+                  "_$child": [
+                    {
+                      "_$id": "53sbr6ml",
+                      "_$var": true,
+                      "_$type": "Sprite",
+                      "name": "thee_star_road_sprite",
+                      "width": 89,
                       "height": 32
                     }
                   ]
@@ -254,7 +286,6 @@
       "x": 897,
       "width": 81,
       "height": 237,
-      "visible": false,
       "left": 897,
       "top": 0,
       "_$child": [
@@ -485,8 +516,6 @@
       "width": 978,
       "height": 320,
       "_mouseState": 2,
-      "left": 0,
-      "right": 0,
       "bottom": 0,
       "_$child": [
         {

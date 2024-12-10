@@ -1,0 +1,223 @@
+{
+  "_$ver": 1,
+  "_$id": "5rqexvs6",
+  "_$runtime": "res://d558165b-faf9-479c-8f3f-608ee377500b",
+  "_$type": "Sprite",
+  "name": "Sprite",
+  "width": 398,
+  "height": 217,
+  "texture": {
+    "_$uuid": "67481486-c1b9-433d-9cce-031eeb4fbbcc",
+    "_$type": "Texture"
+  },
+  "_$child": [
+    {
+      "_$id": "lhf9y6ez",
+      "_$var": true,
+      "_$type": "Box",
+      "name": "firstBox",
+      "width": 199,
+      "height": 217,
+      "left": 0,
+      "top": 0,
+      "bottom": 0,
+      "_$child": [
+        {
+          "_$id": "brzrjkw7",
+          "_$var": true,
+          "_$type": "Label",
+          "name": "firstNameLbl",
+          "width": 44,
+          "height": 44,
+          "top": 0,
+          "text": "P",
+          "fontSize": 24,
+          "color": "#FFFFFF",
+          "bold": true,
+          "align": "center",
+          "valign": "middle",
+          "padding": "0,0,0,0"
+        },
+        {
+          "_$id": "wjnn1zg0",
+          "_$var": true,
+          "_$type": "Label",
+          "name": "firstGoalLbl",
+          "x": 125,
+          "width": 44,
+          "height": 44,
+          "right": 30,
+          "top": 0,
+          "text": "P",
+          "fontSize": 24,
+          "color": "#FFFFFF",
+          "bold": true,
+          "align": "center",
+          "valign": "middle",
+          "padding": "0,0,0,0"
+        },
+        {
+          "_$id": "ogezmddb",
+          "_$type": "Box",
+          "name": "cardBox",
+          "y": 44,
+          "width": 199,
+          "height": 173,
+          "left": 0,
+          "right": 0,
+          "top": 44,
+          "bottom": 0,
+          "_$child": [
+            {
+              "_$id": "l4eqxree",
+              "_$var": true,
+              "_$type": "Sprite",
+              "name": "card1",
+              "x": 4,
+              "y": 48,
+              "width": 62,
+              "height": 76,
+              "texture": {
+                "_$uuid": "5045b7ff-dee1-4a63-8e26-02503e3c5ccc",
+                "_$type": "Texture"
+              }
+            },
+            {
+              "_$id": "zkrp0z42",
+              "_$var": true,
+              "_$type": "Sprite",
+              "name": "card3",
+              "x": 69,
+              "y": 48,
+              "width": 62,
+              "height": 76,
+              "texture": {
+                "_$uuid": "5045b7ff-dee1-4a63-8e26-02503e3c5ccc",
+                "_$type": "Texture"
+              }
+            },
+            {
+              "_$id": "d3tdoa4e",
+              "_$var": true,
+              "_$type": "Sprite",
+              "name": "card5",
+              "x": 134,
+              "y": 48,
+              "width": 62,
+              "height": 76,
+              "texture": {
+                "_$uuid": "5045b7ff-dee1-4a63-8e26-02503e3c5ccc",
+                "_$type": "Texture"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_$id": "k3llaehk",
+      "_$type": "Box",
+      "name": "secondBox",
+      "x": 199,
+      "width": 199,
+      "height": 217,
+      "right": 0,
+      "top": 0,
+      "bottom": 0,
+      "_$child": [
+        {
+          "_$id": "l3tzph7g",
+          "_$var": true,
+          "_$type": "Label",
+          "name": "secondNameLbl",
+          "x": 155,
+          "width": 44,
+          "height": 44,
+          "right": 0,
+          "top": 0,
+          "text": "D",
+          "fontSize": 24,
+          "color": "#FFFFFF",
+          "bold": true,
+          "align": "center",
+          "valign": "middle",
+          "padding": "0,0,0,0"
+        },
+        {
+          "_$id": "oujydsnu",
+          "_$var": true,
+          "_$type": "Label",
+          "name": "secondGoalLbl",
+          "x": 30,
+          "width": 44,
+          "height": 44,
+          "left": 30,
+          "top": 0,
+          "text": "P",
+          "fontSize": 24,
+          "color": "#FFFFFF",
+          "bold": true,
+          "align": "center",
+          "valign": "middle",
+          "padding": "0,0,0,0"
+        },
+        {
+          "_$id": "nw4y5bvb",
+          "_$type": "Box",
+          "name": "cardBox",
+          "y": 44,
+          "width": 199,
+          "height": 173,
+          "left": 0,
+          "right": 0,
+          "top": 44,
+          "bottom": 0,
+          "_$child": [
+            {
+              "_$id": "0s1y5bow",
+              "_$var": true,
+              "_$type": "Sprite",
+              "name": "card2",
+              "x": 4,
+              "y": 48,
+              "width": 62,
+              "height": 76,
+              "texture": {
+                "_$uuid": "18bd9d6d-6520-493e-99fd-3bdaacb9df56",
+                "_$type": "Texture"
+              }
+            },
+            {
+              "_$id": "17p7mit6",
+              "_$var": true,
+              "_$type": "Sprite",
+              "name": "card4",
+              "x": 69,
+              "y": 48,
+              "width": 62,
+              "height": 76,
+              "texture": {
+                "_$uuid": "18bd9d6d-6520-493e-99fd-3bdaacb9df56",
+                "_$type": "Texture"
+              }
+            },
+            {
+              "_$id": "x4ws9u40",
+              "_$var": true,
+              "_$type": "Sprite",
+              "name": "card6",
+              "x": 134,
+              "y": 48,
+              "width": 62,
+              "height": 76,
+              "texture": {
+                "_$uuid": "18bd9d6d-6520-493e-99fd-3bdaacb9df56",
+                "_$type": "Texture"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
