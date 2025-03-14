@@ -1,4 +1,5 @@
 const { regClass } = Laya;
+import { BaccaratRoadmaps, ResultInfo } from "xcore-casino/dist/games/baccarat/types";
 import { BacRoadmapWASMBase } from "./BacRoadmapWASM.generated";
 import { WasmLoader, BaccaratGame } from "xcore-casino";
 
@@ -89,6 +90,7 @@ export class BacRoadmapWASM extends BacRoadmapWASMBase {
     private cockroachRoadCols: number = 20
     private isResetting: boolean;
     private baccaratGame: BaccaratGame
+    private historyData: number[] = []
 
     onEnable(): void {
         Laya.loader.load("resources/game_icons.atlas").then((res) => {
@@ -96,10 +98,13 @@ export class BacRoadmapWASM extends BacRoadmapWASMBase {
             // Init WASM
             WasmLoader.debug = true
             WasmLoader.asyncLoad().then(() => {
+                this.historyData = Array.from({ length: 30 }, () => Math.floor(Math.random() * 201))
+
                 this.baccaratGame = new BaccaratGame()
-                this.baccaratGame.info().then(res => {
-                    console.log(res)
-                })
+                // this.baccaratGame.info().then(res => {
+                //     console.log(res)
+                // })
+                this.setupControls()
                 this.setupRoadmapUI()
                 this.SetHistoryData()
             })
@@ -154,6 +159,377 @@ export class BacRoadmapWASM extends BacRoadmapWASMBase {
         const { width: cockroachRoadWidth, height: cockroachRoadHeight } = this.cockroach_road_panel
         this.bead_plate_road_sprite.size(cockroachRoadWidth, cockroachRoadHeight)
         this.setupControl(this.cockroach_road_panel, this.roadmapRows, this.cockroachRoadCols)
+    }
+
+    private setupControls(): void {
+        // Initialize resultInfo as an object
+        let resultInfo: ResultInfo = {
+            win: "banker",
+            player_pair: false,
+            banker_pair: false,
+            player_natural: false,
+            banker_natural: false,
+            player_dragon_bonus: false,
+            banker_dragon_bonus: false,
+            super_6: false,
+            size: "big",
+            player_dragon_bonus_count: 0,
+            banker_dragon_bonus_count: 0,
+            perfect_pair: false,
+            super_6_count: 0,
+            any_pair: false
+        };
+
+        // Track active buttons for visual highlight state
+        const activeButtons: { [key: string]: Laya.Button } = {};
+
+        // Set default active state for required categories
+        this.setButtonActive(this.bankerBtn, true);
+        this.setButtonActive(this.bigBtn, true);
+        activeButtons['win'] = this.bankerBtn;
+        activeButtons['size'] = this.bigBtn;
+
+        // Helper function to update resultInfo status in UI
+        const updateStatusText = () => {
+            let statusText = "";
+            if (resultInfo.win) statusText += `Win: ${resultInfo.win.toUpperCase()} | `;
+            if (resultInfo.player_pair) statusText += "Player Pair | ";
+            if (resultInfo.banker_pair) statusText += "Banker Pair | ";
+            if (resultInfo.super_6) {
+                if (resultInfo.super_6_count === 12) {
+                    statusText += "Super 6 (2 cards/Small) x12 | ";
+                } else if (resultInfo.super_6_count === 18) {
+                    statusText += "Super 6 (3 cards/Big) x18 | ";
+                }
+            }
+            if (resultInfo.size) statusText += `Size: ${resultInfo.size.toUpperCase()} | `;
+
+            this.resultLbl.text = statusText.replace(/\| $/, ""); // Remove trailing pipe
+        };
+
+        // Helper function to reset resultInfo to default values
+        const resetResultInfo = () => {
+            resultInfo.win = "banker";
+            resultInfo.player_pair = false;
+            resultInfo.banker_pair = false;
+            resultInfo.player_natural = false;
+            resultInfo.banker_natural = false;
+            resultInfo.player_dragon_bonus = false;
+            resultInfo.banker_dragon_bonus = false;
+            resultInfo.super_6 = false;
+            resultInfo.size = "big";
+            resultInfo.player_dragon_bonus_count = 0;
+            resultInfo.banker_dragon_bonus_count = 0;
+            resultInfo.perfect_pair = false;
+            resultInfo.super_6_count = 0;
+            resultInfo.any_pair = false;
+
+            // Reset UI button states
+            this.resetAllButtonStates();
+            this.setButtonActive(this.bankerBtn, true);
+            this.setButtonActive(this.bigBtn, true);
+            activeButtons['win'] = this.bankerBtn;
+            activeButtons['size'] = this.bigBtn;
+            activeButtons['super_6'] = null;
+
+            updateStatusText();
+        };
+
+        // Toggle button for options that can be on/off
+        const setupToggleButton = (button: Laya.Button, property: keyof ResultInfo) => {
+            button.clickHandler = new Laya.Handler(this, () => {
+                if (typeof resultInfo[property] === 'boolean') {
+                    // Cast to boolean property to fix type issues
+                    const prop = property as keyof Pick<ResultInfo, { [K in keyof ResultInfo]: ResultInfo[K] extends boolean ? K : never }[keyof ResultInfo]>;
+                    resultInfo[prop] = !resultInfo[prop];
+                    this.setButtonActive(button, resultInfo[prop]);
+
+                    // Show visual feedback with animation
+                    this.showButtonFeedback(button);
+
+                    // Update status display
+                    updateStatusText();
+                }
+            });
+        };
+
+        // Special toggle function for Super 6 buttons that allows toggling off and ensures mutual exclusivity
+        const setupSuper6ToggleButton = (button: Laya.Button, value: number) => {
+            button.clickHandler = new Laya.Handler(this, () => {
+                // Determine if this button is already active
+                const isActive = activeButtons['super_6'] === button;
+
+                // If already active, toggle off
+                if (isActive) {
+                    resultInfo.super_6 = false;
+                    resultInfo.super_6_count = 0;
+                    this.setButtonActive(button, false);
+                    activeButtons['super_6'] = null;
+                } else {
+                    // If another super_6 button is active, deactivate it first
+                    if (activeButtons['super_6']) {
+                        this.setButtonActive(activeButtons['super_6'], false);
+                    }
+                    
+                    // Set this button as active
+                    resultInfo.super_6 = true;
+                    resultInfo.super_6_count = value;
+                    this.setButtonActive(button, true);
+                    activeButtons['super_6'] = button;
+                    
+                    // Super 6 can only happen when banker/dealer wins, so set win to banker
+                    // and update the win button UI if it's not already set to banker
+                    if (resultInfo.win !== 'banker') {
+                        resultInfo.win = 'banker';
+                        
+                        // Update UI for win buttons
+                        if (activeButtons['win']) {
+                            this.setButtonActive(activeButtons['win'], false);
+                        }
+                        this.setButtonActive(this.bankerBtn, true);
+                        activeButtons['win'] = this.bankerBtn;
+                    }
+                    
+                    // Set size based on card count:
+                    // 2 cards (12x) = small, 3 cards (18x) = big
+                    const newSize = value === 12 ? 'small' : 'big';
+                    
+                    // Only update if different from current size
+                    if (resultInfo.size !== newSize) {
+                        resultInfo.size = newSize;
+                        
+                        // Update UI for size buttons
+                        if (activeButtons['size']) {
+                            this.setButtonActive(activeButtons['size'], false);
+                        }
+                        
+                        // Set the appropriate size button as active
+                        if (newSize === 'small') {
+                            this.setButtonActive(this.smallBtn, true);
+                            activeButtons['size'] = this.smallBtn;
+                        } else {
+                            this.setButtonActive(this.bigBtn, true);
+                            activeButtons['size'] = this.bigBtn;
+                        }
+                    }
+                }
+
+                // Show visual feedback with animation
+                this.showButtonFeedback(button);
+
+                // Update status display
+                updateStatusText();
+            });
+        };
+
+        // Radio button for mutually exclusive options (win, size)
+        const setupRadioButton = (button: Laya.Button, property: 'win' | 'size' | 'super_6', value: string, groupName: string) => {
+            button.clickHandler = new Laya.Handler(this, () => {
+                // Deactivate previous active button in this group
+                if (activeButtons[groupName]) {
+                    this.setButtonActive(activeButtons[groupName], false);
+                }
+
+                // Type-safe assignment based on property
+                if (property === 'win') {
+                    resultInfo.win = value as 'banker' | 'player' | 'tie';
+                    
+                    // If player or tie is selected, disable Super 6 since it requires banker
+                    if ((value === 'player' || value === 'tie') && resultInfo.super_6) {
+                        resultInfo.super_6 = false;
+                        resultInfo.super_6_count = 0;
+                        
+                        // Deactivate super 6 button UI
+                        if (activeButtons['super_6']) {
+                            this.setButtonActive(activeButtons['super_6'], false);
+                            activeButtons['super_6'] = null;
+                        }
+                    }
+                } else if (property === 'size') {
+                    resultInfo.size = value as 'big' | 'small';
+                } else if (property === 'super_6') {
+                    resultInfo.super_6 = true
+                    resultInfo.super_6_count = value === 'super_6_12' ? 1 : 2
+                }
+
+                this.setButtonActive(button, true);
+                activeButtons[groupName] = button;
+
+                // Show visual feedback with animation
+                this.showButtonFeedback(button);
+
+                // Update status display
+                updateStatusText();
+            });
+        };
+
+        // Setup win type buttons (mutually exclusive)
+        setupRadioButton(this.playerBtn, 'win', 'player', 'win');
+        setupRadioButton(this.bankerBtn, 'win', 'banker', 'win');
+        setupRadioButton(this.tieBtn, 'win', 'tie', 'win');
+
+        // Setup pair buttons (can be toggled)
+        setupToggleButton(this.playerPairBtn, 'player_pair');
+        setupToggleButton(this.bankerPairBtn, 'banker_pair');
+
+        // Setup super 6 button
+        setupSuper6ToggleButton(this.super6x12Btn, 12);
+        setupSuper6ToggleButton(this.super6x18Btn, 18);
+
+        // Setup size buttons (mutually exclusive)
+        this.bigBtn.clickHandler = new Laya.Handler(this, () => {
+            // Deactivate previous size button
+            if (activeButtons['size']) {
+                this.setButtonActive(activeButtons['size'], false);
+            }
+            
+            resultInfo.size = 'big';
+            
+            // If Super 6 is active but with wrong card count, update it
+            if (resultInfo.super_6 && resultInfo.super_6_count === 12) {
+                // Change from 2 cards to 3 cards
+                resultInfo.super_6_count = 18;
+                
+                // Update Super 6 button UI
+                if (activeButtons['super_6']) {
+                    this.setButtonActive(activeButtons['super_6'], false);
+                }
+                this.setButtonActive(this.super6x18Btn, true);
+                activeButtons['super_6'] = this.super6x18Btn;
+            }
+            
+            this.setButtonActive(this.bigBtn, true);
+            activeButtons['size'] = this.bigBtn;
+            
+            // Show visual feedback and update status
+            this.showButtonFeedback(this.bigBtn);
+            updateStatusText();
+        });
+        
+        this.smallBtn.clickHandler = new Laya.Handler(this, () => {
+            // Deactivate previous size button
+            if (activeButtons['size']) {
+                this.setButtonActive(activeButtons['size'], false);
+            }
+            
+            resultInfo.size = 'small';
+            
+            // If Super 6 is active but with wrong card count, update it
+            if (resultInfo.super_6 && resultInfo.super_6_count === 18) {
+                // Change from 3 cards to 2 cards
+                resultInfo.super_6_count = 12;
+                
+                // Update Super 6 button UI
+                if (activeButtons['super_6']) {
+                    this.setButtonActive(activeButtons['super_6'], false);
+                }
+                this.setButtonActive(this.super6x12Btn, true);
+                activeButtons['super_6'] = this.super6x12Btn;
+            }
+            
+            this.setButtonActive(this.smallBtn, true);
+            activeButtons['size'] = this.smallBtn;
+            
+            // Show visual feedback and update status
+            this.showButtonFeedback(this.smallBtn);
+            updateStatusText();
+        });
+
+        // Clear button - reset everything
+        this.clearBtn.clickHandler = new Laya.Handler(this, () => {
+            resetResultInfo();
+            this.Reset();
+            this.showInfoMessage("All data cleared", "#FF9900");
+        });
+
+        // Cancel button - reset form
+        this.cancelBtn.clickHandler = new Laya.Handler(this, () => {
+            resetResultInfo();
+            this.showInfoMessage("Form reset", "#0099FF");
+        });
+
+        // Confirm button - submit data
+        this.confirmBtn.clickHandler = new Laya.Handler(this, () => {
+            // Disable button during processing
+            this.confirmBtn.disabled = true;
+            this.showInfoMessage("Processing...", "#FFFFFF");
+            console.log(resultInfo)
+            this.baccaratGame.resultInfoToIdx(resultInfo).then(res => {
+                this.historyData.push(res.data);
+                this.SetHistoryData();
+                resetResultInfo();
+                this.showInfoMessage("Result added successfully!", "#00CC00");
+            }).catch(err => {
+                this.showInfoMessage("Error: " + err.message, "#FF0000");
+            }).finally(() => {
+                // Re-enable button after processing
+                this.confirmBtn.disabled = false;
+            });
+        });
+
+        // Initialize UI with current state
+        updateStatusText();
+    }
+
+    // Helper method to show temporary information messages
+    private showInfoMessage(message: string, color: string = "#FFFFFF", duration: number = 2000): void {
+        this.resultLbl.color = color;
+        this.resultLbl.text = message;
+
+        // Clear any existing timer
+        Laya.timer.clear(this, this.clearInfoMessage);
+
+        // Set timer to clear message
+        Laya.timer.once(duration, this, this.clearInfoMessage);
+    }
+
+    // Helper to clear the info message
+    private clearInfoMessage(): void {
+        this.resultLbl.color = "#FFFFFF";
+        this.resultLbl.text = "";
+    }
+
+    // Helper method to set button active/inactive state
+    private setButtonActive(button: Laya.Button, active: boolean): void {
+        if (!button) return;
+
+        // Change appearance based on state
+        button.alpha = active ? 1.0 : 0.7;
+
+        // Optional: add a visual indicator like a border or highlight
+        const glowFilter = active ?
+            new Laya.GlowFilter("#FFFF00", 8, 0, 0) :
+            null;
+
+        button.filters = active ? [glowFilter] : null;
+    }
+
+    // Helper to show button press feedback
+    private showButtonFeedback(button: Laya.Button): void {
+        // Save original scale
+        const originalScaleX = button.scaleX;
+        const originalScaleY = button.scaleY;
+
+        // Slightly enlarge button
+        button.scale(originalScaleX * 1.1, originalScaleY * 1.1);
+
+        // Return to original size after short delay
+        Laya.timer.once(100, this, () => {
+            button.scale(originalScaleX, originalScaleY);
+        });
+    }
+
+    // Reset all button visual states
+    private resetAllButtonStates(): void {
+        const allButtons = [
+            this.playerBtn, this.bankerBtn, this.tieBtn,
+            this.playerPairBtn, this.bankerPairBtn,
+            this.super6x12Btn, this.super6x18Btn, this.bigBtn, this.smallBtn
+        ];
+
+        allButtons.forEach(button => {
+            if (button) this.setButtonActive(button, false);
+        });
     }
 
     private setupControl(roadmapPanel: Laya.Panel, rows: number, cols: number): void {
@@ -257,9 +633,7 @@ export class BacRoadmapWASM extends BacRoadmapWASMBase {
     }
 
     SetHistoryData() {
-        let testHistoryData = Array.from({ length: 30 }, () => Math.floor(Math.random() * 201))
-        console.log(testHistoryData)
-        this.baccaratGame.roadmaps(testHistoryData).then(res => {
+        this.baccaratGame.roadmaps(this.historyData).then(res => {
             if (res.code != 0) {
                 throw new Error(res.message)
             }
@@ -271,6 +645,7 @@ export class BacRoadmapWASM extends BacRoadmapWASMBase {
             this.GetHistoryFragment2(roadmap.smallroad, this.smallRoadCols, this.roadmapRows, this.small_road_panel, this.SetHistoryItem4.bind(this))
             this.GetHistoryFragment2(roadmap.cockroach, this.cockroachRoadCols, this.roadmapRows, this.cockroach_road_panel, this.SetHistoryItem5.bind(this))
             this.GetHistoryFragment2(roadmap.three_road, this.threestarRoadCols, 3, this.thee_star_road_panel, this.SetHistoryItem2.bind(this))
+            this.setWenluData(roadmap)
         })
 
     }
@@ -324,7 +699,7 @@ export class BacRoadmapWASM extends BacRoadmapWASMBase {
                     console.warn(`Texture not loaded for ${imgUrl} (key: ${lookupKey})`);
                 }
             } else {
-                console.warn(`No image URL found for key: ${lookupKey} (main: ${main}, pair: ${pair}, tieCount: ${tieCount})`);
+                console.warn(`Result: ${result}; No image URL found for key: ${lookupKey} (main: ${main}, pair: ${pair}, tieCount: ${tieCount})`);
             }
         } catch (error) {
             console.error("Error in SetHistoryItem2:", error, "Result:", result);
@@ -520,5 +895,69 @@ export class BacRoadmapWASM extends BacRoadmapWASMBase {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    private AddOneResultToArr2(arr: any, ask: number) {
+        arr = arr.slice();
+        if (0 != ask)
+            if (0 == arr.length) arr.push([ask]);
+            else {
+                var c = arr[arr.length - 1];
+                0 != (c[c.length - 1] & ask)
+                    ? ((c = c.slice()), c.push(ask), (arr[arr.length - 1] = c))
+                    : arr.push([ask]);
+            }
+        return arr;
+    }
+
+    private setWenluData(roadmap: BaccaratRoadmaps): void {
+        this.wenlu_Xian.on(Laya.Event.CLICK, this, () => {
+            Laya.timer.clearAll(this)
+            const dataArr1PlayerAsk = roadmap.history.slice()
+            dataArr1PlayerAsk.push(BaccaratResult32.PLAYER)
+            const dataArr2PlayerAsk = this.AddOneResultToArr2(roadmap.bigroad, BaccaratResult32.PLAYER * 100)
+            const dataArr3PlayerAsk = this.AddOneResultToArr2(roadmap.bigeyeboy, parseInt(roadmap.prediction.player_prediction.bigeyeboy.value))
+            const dataArr4PlayerAsk = this.AddOneResultToArr2(roadmap.smallroad, parseInt(roadmap.prediction.player_prediction.smallroad.value))
+            const dataArr5PlayerAsk = this.AddOneResultToArr2(roadmap.cockroach, parseInt(roadmap.prediction.player_prediction.cockroach.value))
+
+            this.GetHistoryFragment1(dataArr1PlayerAsk, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem1.bind(this), true)
+            this.GetHistoryFragment2(dataArr2PlayerAsk, this.bigRoadCols, this.roadmapRows, this.big_road_panel, this.SetHistoryItem2.bind(this), true)
+            this.GetHistoryFragment2(dataArr3PlayerAsk, this.bigEyeRoadCols, this.roadmapRows, this.big_eye_road_panel, this.SetHistoryItem3.bind(this), true)
+            this.GetHistoryFragment2(dataArr4PlayerAsk, this.smallRoadCols, this.roadmapRows, this.small_road_panel, this.SetHistoryItem4.bind(this), true)
+            this.GetHistoryFragment2(dataArr5PlayerAsk, this.cockroachRoadCols, this.roadmapRows, this.cockroach_road_panel, this.SetHistoryItem5.bind(this), true)
+        })
+
+        const wenluXianRoadBox = this.wenlu_Xian.getChildByName("road_box") as Laya.Box
+        const playerAsk3 = wenluXianRoadBox.getChildByName("wenlu3") as Laya.Image
+        playerAsk3.skin = roadmap.prediction.player_prediction.bigeyeboy.value === "1" ? "resources/game_icons/type01.png" : roadmap.prediction.player_prediction.bigeyeboy.value === "2" ? "resources/game_icons/type09.png" : ""
+        const playerAsk4 = wenluXianRoadBox.getChildByName("wenlu4") as Laya.Image
+        playerAsk4.skin = roadmap.prediction.player_prediction.smallroad.value === "1" ? "resources/game_icons/type81.png" : roadmap.prediction.player_prediction.smallroad.value === "2" ? "resources/game_icons/type82.png" : ""
+        const playerAsk5 = wenluXianRoadBox.getChildByName("wenlu5") as Laya.Image
+        playerAsk5.skin = roadmap.prediction.player_prediction.cockroach.value === "1" ? "resources/game_icons/type83.png" : roadmap.prediction.player_prediction.cockroach.value === "2" ? "resources/game_icons/type84.png" : ""
+
+        this.wenlu_Zhuang.on(Laya.Event.CLICK, this, () => {
+            Laya.timer.clearAll(this)
+
+            const dataArr1BankerAsk = roadmap.history.slice()
+            dataArr1BankerAsk.push(BaccaratResult32.BANKER)
+            const dataArr2BankerAsk = this.AddOneResultToArr2(roadmap.bigroad, BaccaratResult32.BANKER * 100)
+            const dataArr3BankerAsk = this.AddOneResultToArr2(roadmap.bigeyeboy, parseInt(roadmap.prediction.banker_prediction.bigeyeboy.value))
+            const dataArr4BankerAsk = this.AddOneResultToArr2(roadmap.smallroad, parseInt(roadmap.prediction.banker_prediction.smallroad.value))
+            const dataArr5BankerAsk = this.AddOneResultToArr2(roadmap.cockroach, parseInt(roadmap.prediction.banker_prediction.cockroach.value))
+
+            this.GetHistoryFragment1(dataArr1BankerAsk, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem1.bind(this), true)
+            this.GetHistoryFragment2(dataArr2BankerAsk, this.bigRoadCols, this.roadmapRows, this.big_road_panel, this.SetHistoryItem2.bind(this), true)
+            this.GetHistoryFragment2(dataArr3BankerAsk, this.bigEyeRoadCols, this.roadmapRows, this.big_eye_road_panel, this.SetHistoryItem3.bind(this), true)
+            this.GetHistoryFragment2(dataArr4BankerAsk, this.smallRoadCols, this.roadmapRows, this.small_road_panel, this.SetHistoryItem4.bind(this), true)
+            this.GetHistoryFragment2(dataArr5BankerAsk, this.cockroachRoadCols, this.roadmapRows, this.cockroach_road_panel, this.SetHistoryItem5.bind(this), true)
+        })
+
+        const wenluZhuangRoadBox = this.wenlu_Zhuang.getChildByName("road_box") as Laya.Box
+        const bankerAsk3 = wenluZhuangRoadBox.getChildByName("wenlu3") as Laya.Image
+        bankerAsk3.skin = roadmap.prediction.banker_prediction.bigeyeboy.value === "1" ? "resources/game_icons/type01.png" : roadmap.prediction.banker_prediction.bigeyeboy.value === "2" ? "resources/game_icons/type09.png" : ""
+        const bankerAsk4 = wenluZhuangRoadBox.getChildByName("wenlu4") as Laya.Image
+        bankerAsk4.skin = roadmap.prediction.banker_prediction.smallroad.value === "1" ? "resources/game_icons/type81.png" : roadmap.prediction.banker_prediction.smallroad.value === "2" ? "resources/game_icons/type82.png" : ""
+        const bankerAsk5 = wenluZhuangRoadBox.getChildByName("wenlu5") as Laya.Image
+        bankerAsk5.skin = roadmap.prediction.banker_prediction.cockroach.value === "1" ? "resources/game_icons/type83.png" : roadmap.prediction.banker_prediction.cockroach.value === "2" ? "resources/game_icons/type84.png" : ""
     }
 }

@@ -34,11 +34,8 @@ export class BacRoadmapWASMBase extends Laya.Box {
     public tieBtn!: Laya.Button;
     public bankerBtn!: Laya.Button;
     public bankerPairBtn!: Laya.Button;
-    public playerBonusBtn!: Laya.Button;
-    public super6Btn!: Laya.Button;
-    public bankerBonusBtn!: Laya.Button;
-    public playerNaturalBtn!: Laya.Button;
-    public bankerNaturalBtn!: Laya.Button;
+    public super6x12Btn!: Laya.Button;
+    public super6x18Btn!: Laya.Button;
     public smallBtn!: Laya.Button;
     public bigBtn!: Laya.Button;
     public cancelBtn!: Laya.Button;

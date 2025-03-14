@@ -25,7 +25,17 @@
       "y": 240,
       "visible": true,
       "centerX": 0,
-      "centerY": 0
+      "centerY": 0,
+      "_$child": [
+        {
+          "_$override": "0dowvrtx",
+          "text": "Next P"
+        },
+        {
+          "_$override": "vavyq9kz",
+          "visible": true
+        }
+      ]
     },
     {
       "_$id": "zx4p48lt",
