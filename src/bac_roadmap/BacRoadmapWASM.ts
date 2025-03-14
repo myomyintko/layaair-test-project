@@ -164,7 +164,7 @@ export class BacRoadmapWASM extends BacRoadmapWASMBase {
     private setupControls(): void {
         // Initialize resultInfo as an object
         let resultInfo: ResultInfo = {
-            win: "banker",
+            win: "banker", // Keep default values for type-safety
             player_pair: false,
             banker_pair: false,
             player_natural: false,
@@ -172,7 +172,7 @@ export class BacRoadmapWASM extends BacRoadmapWASMBase {
             player_dragon_bonus: false,
             banker_dragon_bonus: false,
             super_6: false,
-            size: "big",
+            size: "big", // Keep default values for type-safety
             player_dragon_bonus_count: 0,
             banker_dragon_bonus_count: 0,
             perfect_pair: false,
@@ -183,33 +183,79 @@ export class BacRoadmapWASM extends BacRoadmapWASMBase {
         // Track active buttons for visual highlight state
         const activeButtons: { [key: string]: Laya.Button } = {};
 
-        // Set default active state for required categories
-        this.setButtonActive(this.bankerBtn, true);
-        this.setButtonActive(this.bigBtn, true);
-        activeButtons['win'] = this.bankerBtn;
-        activeButtons['size'] = this.bigBtn;
+        // No buttons selected by default - remove the default active state
+        // Initialize all active button references as null
+        activeButtons['win'] = null;
+        activeButtons['size'] = null;
+        activeButtons['super_6'] = null;
+
+        // Helper function to ensure any_pair is consistent with player_pair and banker_pair
+        const updateAnyPair = () => {
+            resultInfo.any_pair = !!(resultInfo.player_pair || resultInfo.banker_pair);
+        };
 
         // Helper function to update resultInfo status in UI
         const updateStatusText = () => {
             let statusText = "";
-            if (resultInfo.win) statusText += `Win: ${resultInfo.win.toUpperCase()} | `;
-            if (resultInfo.player_pair) statusText += "Player Pair | ";
-            if (resultInfo.banker_pair) statusText += "Banker Pair | ";
-            if (resultInfo.super_6) {
-                if (resultInfo.super_6_count === 12) {
-                    statusText += "Super 6 (2 cards/Small) x12 | ";
-                } else if (resultInfo.super_6_count === 18) {
-                    statusText += "Super 6 (3 cards/Big) x18 | ";
+            
+            // Only show status for selected items
+            const anyButtonSelected = !!(activeButtons['win'] || activeButtons['size'] || activeButtons['super_6'] || 
+                                      resultInfo.player_pair || resultInfo.banker_pair);
+                
+            if (anyButtonSelected) {
+                // Only show win if a win button is selected
+                if (activeButtons['win'] && resultInfo.win) {
+                    statusText += `Win: ${resultInfo.win.toUpperCase()} | `;
+                }
+                
+                if (resultInfo.player_pair) {
+                    statusText += "Player Pair | ";
+                }
+                
+                if (resultInfo.banker_pair) {
+                    statusText += "Banker Pair | ";
+                }
+                
+                if (resultInfo.any_pair) {
+                    statusText += "Any Pair | ";
+                }
+                
+                if (resultInfo.super_6) {
+                    if (resultInfo.super_6_count === 12) {
+                        statusText += "Super 6 (2 cards/Small) x12 | ";
+                    } else if (resultInfo.super_6_count === 18) {
+                        statusText += "Super 6 (3 cards/Big) x18 | ";
+                    }
+                }
+                
+                // Only show size if a size button is selected
+                if (activeButtons['size'] && resultInfo.size) {
+                    statusText += `Size: ${resultInfo.size.toUpperCase()} | `;
                 }
             }
-            if (resultInfo.size) statusText += `Size: ${resultInfo.size.toUpperCase()} | `;
 
             this.resultLbl.text = statusText.replace(/\| $/, ""); // Remove trailing pipe
+            
+            // Update confirm button state
+            updateConfirmButtonState(anyButtonSelected);
         };
+        
+        // Helper function to update confirm button state based on selection
+        const updateConfirmButtonState = (enabled: boolean) => {
+            // Visual indication that the button can/cannot be used
+            this.confirmBtn.alpha = enabled ? 1.0 : 0.5;
+            
+            // Optional: add a tooltip or hint
+            this.confirmBtn.toolTip = enabled ? "" : "Please make a selection first";
+        };
+
+        // Ensure UI status is consistent with no buttons selected
+        updateStatusText();
 
         // Helper function to reset resultInfo to default values
         const resetResultInfo = () => {
-            resultInfo.win = "banker";
+            // Initialize with valid types but don't select UI buttons
+            resultInfo.win = "banker"; // Still need a valid value for the type
             resultInfo.player_pair = false;
             resultInfo.banker_pair = false;
             resultInfo.player_natural = false;
@@ -217,21 +263,22 @@ export class BacRoadmapWASM extends BacRoadmapWASMBase {
             resultInfo.player_dragon_bonus = false;
             resultInfo.banker_dragon_bonus = false;
             resultInfo.super_6 = false;
-            resultInfo.size = "big";
+            resultInfo.size = "big"; // Still need a valid value for the type
             resultInfo.player_dragon_bonus_count = 0;
             resultInfo.banker_dragon_bonus_count = 0;
             resultInfo.perfect_pair = false;
             resultInfo.super_6_count = 0;
             resultInfo.any_pair = false;
 
-            // Reset UI button states
+            // Reset UI button states - don't select any buttons
             this.resetAllButtonStates();
-            this.setButtonActive(this.bankerBtn, true);
-            this.setButtonActive(this.bigBtn, true);
-            activeButtons['win'] = this.bankerBtn;
-            activeButtons['size'] = this.bigBtn;
+            
+            // Clear all active button references
+            activeButtons['win'] = null;
+            activeButtons['size'] = null;
             activeButtons['super_6'] = null;
 
+            // Update status text and confirm button state
             updateStatusText();
         };
 
@@ -243,6 +290,11 @@ export class BacRoadmapWASM extends BacRoadmapWASMBase {
                     const prop = property as keyof Pick<ResultInfo, { [K in keyof ResultInfo]: ResultInfo[K] extends boolean ? K : never }[keyof ResultInfo]>;
                     resultInfo[prop] = !resultInfo[prop];
                     this.setButtonActive(button, resultInfo[prop]);
+                    
+                    // Update any_pair if player_pair or banker_pair changes
+                    if (property === 'player_pair' || property === 'banker_pair') {
+                        updateAnyPair();
+                    }
 
                     // Show visual feedback with animation
                     this.showButtonFeedback(button);
@@ -314,6 +366,9 @@ export class BacRoadmapWASM extends BacRoadmapWASMBase {
                     }
                 }
 
+                // Ensure any_pair is consistent
+                updateAnyPair();
+
                 // Show visual feedback with animation
                 this.showButtonFeedback(button);
 
@@ -351,6 +406,9 @@ export class BacRoadmapWASM extends BacRoadmapWASMBase {
                     resultInfo.super_6 = true
                     resultInfo.super_6_count = value === 'super_6_12' ? 1 : 2
                 }
+
+                // Ensure any_pair is consistent
+                updateAnyPair();
 
                 this.setButtonActive(button, true);
                 activeButtons[groupName] = button;
@@ -439,7 +497,7 @@ export class BacRoadmapWASM extends BacRoadmapWASMBase {
         this.clearBtn.clickHandler = new Laya.Handler(this, () => {
             resetResultInfo();
             this.Reset();
-            this.showInfoMessage("All data cleared", "#FF9900");
+            this.showInfoMessage("All data cleared and no buttons selected", "#FF9900");
         });
 
         // Cancel button - reset form
@@ -450,6 +508,16 @@ export class BacRoadmapWASM extends BacRoadmapWASMBase {
 
         // Confirm button - submit data
         this.confirmBtn.clickHandler = new Laya.Handler(this, () => {
+            // Check if any buttons are selected
+            const anyButtonSelected = !!(activeButtons['win'] || activeButtons['size'] || activeButtons['super_6'] || 
+                                      resultInfo.player_pair || resultInfo.banker_pair);
+            
+            // Don't proceed if no buttons are selected
+            if (!anyButtonSelected) {
+                this.showInfoMessage("Please make a selection first!", "#FF3333");
+                return;
+            }
+
             // Disable button during processing
             this.confirmBtn.disabled = true;
             this.showInfoMessage("Processing...", "#FFFFFF");
@@ -577,13 +645,73 @@ export class BacRoadmapWASM extends BacRoadmapWASMBase {
     }
 
     Reset() {
-        // this.SetHistoryData()
-        this.bead_plate_road_sprite.graphics.clear()
-        this.big_road_sprite.graphics.clear()
-        this.big_eye_road_sprite.graphics.clear()
-        this.small_road_sprite.graphics.clear()
-        this.cockroach_road_sprite.graphics.clear()
-        this.thee_star_road_sprite.graphics.clear()
+        // Clear history data array
+        this.historyData = [];
+
+        // Clear graphics for all sprites
+        this.bead_plate_road_sprite.graphics.clear();
+        this.big_road_sprite.graphics.clear();
+        this.big_eye_road_sprite.graphics.clear();
+        this.small_road_sprite.graphics.clear();
+        this.cockroach_road_sprite.graphics.clear();
+        this.thee_star_road_sprite.graphics.clear();
+
+        // Remove all tie count text elements from sprites
+        this.clearChildTextElements(this.bead_plate_road_sprite);
+        this.clearChildTextElements(this.big_road_sprite);
+        this.clearChildTextElements(this.big_eye_road_sprite);
+        this.clearChildTextElements(this.small_road_sprite);
+        this.clearChildTextElements(this.cockroach_road_sprite);
+        this.clearChildTextElements(this.thee_star_road_sprite);
+
+        // Reset Wenlu data
+        this.resetWenluData();
+        
+        // Clear any ongoing timers
+        Laya.timer.clearAll(this);
+    }
+
+    // Helper method to reset wenlu data
+    private resetWenluData(): void {
+        // Remove event listeners
+        this.wenlu_Xian.offAll();
+        this.wenlu_Zhuang.offAll();
+        
+        // Reset wenlu images for player prediction
+        const wenluXianRoadBox = this.wenlu_Xian.getChildByName("road_box") as Laya.Box;
+        if (wenluXianRoadBox) {
+            const playerAsk3 = wenluXianRoadBox.getChildByName("wenlu3") as Laya.Image;
+            const playerAsk4 = wenluXianRoadBox.getChildByName("wenlu4") as Laya.Image;
+            const playerAsk5 = wenluXianRoadBox.getChildByName("wenlu5") as Laya.Image;
+            
+            if (playerAsk3) playerAsk3.skin = "";
+            if (playerAsk4) playerAsk4.skin = "";
+            if (playerAsk5) playerAsk5.skin = "";
+        }
+        
+        // Reset wenlu images for banker prediction
+        const wenluZhuangRoadBox = this.wenlu_Zhuang.getChildByName("road_box") as Laya.Box;
+        if (wenluZhuangRoadBox) {
+            const bankerAsk3 = wenluZhuangRoadBox.getChildByName("wenlu3") as Laya.Image;
+            const bankerAsk4 = wenluZhuangRoadBox.getChildByName("wenlu4") as Laya.Image;
+            const bankerAsk5 = wenluZhuangRoadBox.getChildByName("wenlu5") as Laya.Image;
+            
+            if (bankerAsk3) bankerAsk3.skin = "";
+            if (bankerAsk4) bankerAsk4.skin = "";
+            if (bankerAsk5) bankerAsk5.skin = "";
+        }
+    }
+
+    // Helper method to clear all Text child elements from a sprite
+    private clearChildTextElements(sprite: Laya.Sprite): void {
+        if (!sprite) return;
+        
+        // Remove all Text elements from the sprite
+        for (let i = sprite.numChildren - 1; i >= 0; i--) {
+            if (sprite.getChildAt(i) instanceof Laya.Text) {
+                sprite.removeChildAt(i);
+            }
+        }
     }
 
     private extractResult(result: number) {
