@@ -1,7 +1,7 @@
 const { regClass } = Laya;
+import { BacRoadmap } from "./BacRoadmap";
 import { BacRoadmapRenderBase } from "./BacRoadmapRender.generated";
 import { BacHistory } from "./bacHistory";
-import { BacRoadmap } from "./bacRoadmap";
 
 interface bacResultImgs {
     bacData1ResultDom1: string
@@ -90,7 +90,6 @@ const bacResultImgData: bacResultImgs = {
     bacData5ResultDom1: "resources/game_icons/type83.png",
     bacData5ResultDom2: "resources/game_icons/type84.png",
 }
-
 interface bacResultImgs2 {
     bacData1ResultDom1: string
     bacData1ResultDom9: string

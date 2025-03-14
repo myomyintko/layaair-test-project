@@ -1,25 +1,32 @@
 const { regClass } = Laya;
-import { BacRoadmapV2Base } from "./BacRoadmapV2.generated";
+import { BacRoadmapV3Base } from "./BacRoadmapV3.generated";
 
 enum BaccaratResult {
-    Banker = 0b1,                 // 1
-    Player = 0b10,                // 2
-    Tie = 0b100,                  // 4
-    BankerPair = 0b1000,          // 8
-    PlayerPair = 0b10000,         // 16
-    Big = 0b100000,               // 32
-    Small = 0b1000000,            // 64
-    BankerNatural = 0b10000000,   // 128
-    PlayerNatural = 0b100000000,  // 256
-    SuperSix = 0b1000000000,      // 512
-    AnyPair = 0b10000000000,      // 1024
-    PerfectPair = 0b100000000000, // 2048
-    BankerDragonBonus = 0b1000000000000,  // 4096
-    PlayerDragonBonus = 0b10000000000000, // 8192
+    Banker = "B",
+    Player = "P",
+    Tie = "T",
+
+    BankerPair = "K",
+    PlayerPair = "L",
+
+    Big = "G",
+    Small = "S",
+
+    BankerNatural = "N",
+    PlayerNatural = "R",
+
+    SuperSix = "X",
+
+    AnyPair = "Y",
+
+    PerfectPair = "Z",
+
+    BankerDragonBonus = "D",
+    PlayerDragonBonus = "F"
 }
 
 interface bacResultImgs {
-    [key: number]: string
+    [key: string]: string
 }
 
 const bacResultBreadPlateImgData: bacResultImgs = {
@@ -63,21 +70,22 @@ const bacResultBigRoadmImgData: bacResultImgs = {
 }
 
 const bacResultBigEyeBoyImgData: bacResultImgs = {
-    1: "resources/game_icons/type85.png",
-    2: "resources/game_icons/type86.png",
+    "R": "resources/game_icons/type85.png",
+    "B": "resources/game_icons/type86.png",
 }
 
 const bacResultSmallRoadImgData: bacResultImgs = {
-    1: "resources/game_icons/type81.png",
-    2: "resources/game_icons/type82.png",
+    "R": "resources/game_icons/type81.png",
+    "B": "resources/game_icons/type82.png",
 }
 
 const bacResultCockroachPigImgData: bacResultImgs = {
-    1: "resources/game_icons/type83.png",
-    2: "resources/game_icons/type84.png",
+    "R": "resources/game_icons/type83.png",
+    "B": "resources/game_icons/type84.png",
 }
+
 @regClass()
-export class BacRoadmapV2 extends BacRoadmapV2Base {
+export class BacRoadmapV3 extends BacRoadmapV3Base {
     private roadmap: Roadmap
     private roadmapRows: number = 6
     private breadPlateCols: number = 8
@@ -88,65 +96,24 @@ export class BacRoadmapV2 extends BacRoadmapV2Base {
     private cockroachRoadCols: number = 20
     private isResetting: boolean = false
 
+
     onEnable(): void {
         Laya.loader.load("resources/game_icons.atlas").then((res) => {
             this.roadmap = new Roadmap([
-                1,
-                2,
-                1,
-                1,
-                1,
-                1,
-                4,
-                4,
-                12,
-                9,
-                10,
-                5634,
-                5634,
-                5634,
-                5634,
-                1,
-                2,
-                1,
-                1,
-                1,
-                1,
-                4,
-                4,
-                12,
-                9,
-                10,
-                5634,
-                5634,
-                5634,
-                5634,
-                1,
-                2,
-                1,
-                1,
-                1,
-                1,
-                4,
-                4,
-                12,
-                9,
-                10,
-                5634,
-                5634,
-                5634,
-                5634,
+                "B",
+                "B",
             ])
             this.setupControls()
             this.setupRoadmapUI()
             this.SetHistoryData()
+            console.log(this.roadmap)
         })
     }
 
     private setupControls(): void {
         this.resultLbl.text = ""
-        let resultNumber: number = 0;
-        let tempArray: number[] = [];
+        let resultNumber: string = "";
+        let tempArray: string[] = [];
 
         const buttons = {
             player: this.playerBtn,
@@ -165,13 +132,13 @@ export class BacRoadmapV2 extends BacRoadmapV2Base {
 
         type ButtonRef = Laya.Button;
         interface BetTypeGroups {
-            [key: number]: ButtonRef[];
+            [key: string]: ButtonRef[];
         }
 
         const betTypeGroups: BetTypeGroups = {
-            [BaccaratResult.Player]: [buttons.player, buttons.banker, buttons.tie, buttons.super6],
-            [BaccaratResult.Banker]: [buttons.banker, buttons.player, buttons.tie],
-            [BaccaratResult.Tie]: [buttons.tie, buttons.player, buttons.banker, buttons.super6,],
+            [BaccaratResult.Player]: [buttons.player, buttons.banker, buttons.tie, buttons.super6, buttons.bankerBonus, buttons.bankerNatural],
+            [BaccaratResult.Banker]: [buttons.banker, buttons.player, buttons.tie, buttons.playerBonus, buttons.playerNatural],
+            [BaccaratResult.Tie]: [buttons.tie, buttons.player, buttons.banker, buttons.super6, buttons.playerBonus, buttons.bankerBonus],
             [BaccaratResult.PlayerPair]: [buttons.playerPair],
             [BaccaratResult.BankerPair]: [buttons.bankerPair],
             [BaccaratResult.PlayerDragonBonus]: [buttons.playerBonus, buttons.bankerBonus],
@@ -180,7 +147,7 @@ export class BacRoadmapV2 extends BacRoadmapV2Base {
             [BaccaratResult.Small]: [buttons.small, buttons.big],
             [BaccaratResult.PlayerNatural]: [buttons.playerNatural],
             [BaccaratResult.BankerNatural]: [buttons.bankerNatural],
-            [BaccaratResult.SuperSix]: [buttons.super6, buttons.player]
+            [BaccaratResult.SuperSix]: [buttons.super6, buttons.player, buttons.playerBonus, buttons.playerNatural]
         };
 
         const disableButtons = (selectedBetType: BaccaratResult) => {
@@ -193,9 +160,9 @@ export class BacRoadmapV2 extends BacRoadmapV2Base {
         const betBtnHandler = (betType: BaccaratResult) => {
             return new Laya.Handler(this, () => {
                 disableButtons(betType);
-                const betTypeName = BaccaratResult[betType];
+                const betTypeName = betType;
                 this.resultLbl.text += " " + betTypeName;
-                resultNumber |= betType;
+                resultNumber += betType;
             })
         }
 
@@ -224,7 +191,7 @@ export class BacRoadmapV2 extends BacRoadmapV2Base {
         this.bankerNaturalBtn.clickHandler = betBtnHandler(BaccaratResult.BankerNatural)
 
         const reset = () => {
-            resultNumber = 0
+            resultNumber = ""
             this.resultLbl.text = ""
             Object.values(buttons).forEach(button => {
                 button.disabled = false;
@@ -237,15 +204,11 @@ export class BacRoadmapV2 extends BacRoadmapV2Base {
         })
 
         this.confirmBtn.clickHandler = new Laya.Handler(this, () => {
-            console.log("gg")
-            console.time("confirm")
             tempArray.push(resultNumber)
             this.roadmap.AddResult(resultNumber)
             console.log(this.roadmap)
             this.SetHistoryData()
             reset()
-            console.timeEnd("confirm")
-            console.log("gg")
         })
 
         this.clearBtn.clickHandler = new Laya.Handler(this, () => {
@@ -282,12 +245,12 @@ export class BacRoadmapV2 extends BacRoadmapV2Base {
         this.setupControl(this.big_eye_road_panel, this.roadmapRows, this.bigEyeRoadCols)
 
         // three star road
-        this.thee_star_road_panel.scrollType = Laya.ScrollType.Horizontal
-        this.thee_star_road_panel.elasticEnabled = true
-        this.thee_star_road_panel.mouseEnabled = true
-        const { width: threestarRoadWidth, height: threestarRoadHeight } = this.thee_star_road_panel
+        this.three_star_road_panel.scrollType = Laya.ScrollType.Horizontal
+        this.three_star_road_panel.elasticEnabled = true
+        this.three_star_road_panel.mouseEnabled = true
+        const { width: threestarRoadWidth, height: threestarRoadHeight } = this.three_star_road_panel
         this.bead_plate_road_sprite.size(threestarRoadWidth, threestarRoadHeight)
-        this.setupControl(this.thee_star_road_panel, this.roadmapRows, this.cockroachRoadCols)
+        this.setupControl(this.three_star_road_panel, this.roadmapRows, this.cockroachRoadCols)
 
         // small road
         this.small_road_panel.scrollType = Laya.ScrollType.Horizontal
@@ -353,14 +316,14 @@ export class BacRoadmapV2 extends BacRoadmapV2Base {
     SetHistoryData() {
         console.time("init")
 
-        for (let i = 0; i <= 1; i++) {
+        for (let i = 0; i <= 10; i++) {
             this.GetHistoryFragment1(this.roadmap.breadplateMatrix, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem1)
             this.GetHistoryFragment2(this.roadmap.bigRoadMatrix, this.bigRoadCols, this.roadmapRows, this.big_road_panel, this.SetHistoryItem2)
             this.GetHistoryFragment2(this.roadmap.bigEyeBoyMatrix, this.bigEyeRoadCols, this.roadmapRows, this.big_eye_road_panel, this.SetHistoryItem3)
             this.GetHistoryFragment2(this.roadmap.smallRoadMatrix, this.smallRoadCols, this.roadmapRows, this.small_road_panel, this.SetHistoryItem4)
             this.GetHistoryFragment2(this.roadmap.cockroachPigMatrix, this.cockroachRoadCols, this.roadmapRows, this.cockroach_road_panel, this.SetHistoryItem5)
-            this.GetHistoryFragment1(this.roadmap.threestarMatrix, this.threestarRoadCols, 3, this.thee_star_road_panel, this.SetHistoryItem2)
-            this.setWenluData()
+            this.GetHistoryFragment1(this.roadmap.threestarMatrix, this.threestarRoadCols, 3, this.three_star_road_panel, this.SetHistoryItem2)
+            // this.setWenluData()
         }
         console.timeEnd("init")
     }
@@ -372,7 +335,7 @@ export class BacRoadmapV2 extends BacRoadmapV2Base {
         this.big_eye_road_sprite.graphics.clear()
         this.small_road_sprite.graphics.clear()
         this.cockroach_road_sprite.graphics.clear()
-        this.thee_star_road_sprite.graphics.clear()
+        this.three_star_road_sprite.graphics.clear()
     }
 
     private static getBaccaratResults(key: number): BaccaratResult[] {
@@ -383,47 +346,50 @@ export class BacRoadmapV2 extends BacRoadmapV2Base {
                 continue;
             }
 
-            const value = Number(result);
-            if ((key & value) !== 0) {
-                results.push(value as BaccaratResult);
+            if ((key && result) !== null) {
+                results.push(result as BaccaratResult);
             }
         }
 
         return results;
     }
 
-    SetHistoryItem1(cmd: Laya.DrawImageCmd, result: number) {
+    SetHistoryItem1(cmd: Laya.DrawImageCmd, result: string) {
         if (cmd) {
-            const relevantResults = BaccaratResult.Banker |
-                BaccaratResult.Player |
-                BaccaratResult.Tie |
-                BaccaratResult.BankerPair |
-                BaccaratResult.PlayerPair;
+            const validResults = [BaccaratResult.Banker, BaccaratResult.Player, BaccaratResult.Tie, BaccaratResult.BankerPair, BaccaratResult.PlayerPair];
+            let resultKey = "";
 
-            result = result & relevantResults;
-            const imgUrl = bacResultBreadPlateImgData[result]
+            validResults.forEach((validResult) => {
+                if (result.includes(validResult)) {
+                    resultKey += validResult;
+                }
+            });
+
+            const imgUrl = bacResultBreadPlateImgData[resultKey];
+            if (imgUrl) {
+                cmd.texture = Laya.loader.getRes(imgUrl);
+            }
+        }
+    }
+
+    SetHistoryItem2(cmd: Laya.DrawImageCmd, result: string): void {
+        if (cmd) {
+            const validResults = [BaccaratResult.Banker, BaccaratResult.Player, BaccaratResult.Tie, BaccaratResult.BankerPair, BaccaratResult.PlayerPair];
+            let resultKey = "";
+
+            validResults.forEach((validResult) => {
+                if (result.includes(validResult)) {
+                    resultKey += validResult;
+                }
+            });
+            const imgUrl = bacResultBigRoadmImgData[resultKey]
             if (imgUrl) {
                 cmd.texture = Laya.loader.getRes(imgUrl)
             }
         }
     }
 
-    SetHistoryItem2(cmd: Laya.DrawImageCmd, result: number): void {
-        if (cmd) {
-            const relevantResults = BaccaratResult.Banker |
-                BaccaratResult.Player |
-                BaccaratResult.Tie |
-                BaccaratResult.BankerPair |
-                BaccaratResult.PlayerPair;
-            result = result & relevantResults;
-            const imgUrl = bacResultBigRoadmImgData[result]
-            if (imgUrl) {
-                cmd.texture = Laya.loader.getRes(imgUrl)
-            }
-        }
-    }
-
-    GetHistoryFragment1(arr: number[], col: number, row: number, panel: Laya.Panel, callback: (cmd: Laya.DrawImageCmd, result: number) => void, isAsk: boolean = false): void {
+    GetHistoryFragment1(arr: string[], col: number, row: number, panel: Laya.Panel, callback: (cmd: Laya.DrawImageCmd, result: string) => void, isAsk: boolean = false): void {
         const matrix = [];
         for (let i = 0; i < arr.length; i += row) {
             matrix.push(arr.slice(i, i + row));
@@ -433,7 +399,7 @@ export class BacRoadmapV2 extends BacRoadmapV2Base {
         this.fillTexture(matrix, row, col, panel, callback, isAsk, lastX, lastY)
     }
 
-    GetHistoryFragment2(arr: number[][], col: number, row: number, panel: Laya.Panel, callback: (cmd: Laya.DrawImageCmd, result: number) => void, isAsk: boolean = false): void {
+    GetHistoryFragment2(arr: string[][], col: number, row: number, panel: Laya.Panel, callback: (cmd: Laya.DrawImageCmd, result: string) => void, isAsk: boolean = false): void {
         const matrix = Array.from({ length: arr.length }, () => Array(row).fill(0));
         let available = row, x = -1, y = -1
         arr.forEach((row, i) => {
@@ -453,7 +419,7 @@ export class BacRoadmapV2 extends BacRoadmapV2Base {
         this.fillTexture(matrix, row, col, panel, callback, isAsk, x, y)
     }
 
-    SetHistoryItem3(cmd: Laya.DrawImageCmd, result: number): void {
+    SetHistoryItem3(cmd: Laya.DrawImageCmd, result: string): void {
         if (cmd) {
             const imgUrl = bacResultBigEyeBoyImgData[result]
             if (imgUrl) {
@@ -462,7 +428,7 @@ export class BacRoadmapV2 extends BacRoadmapV2Base {
         }
     }
 
-    SetHistoryItem4(cmd: Laya.DrawImageCmd, result: number): void {
+    SetHistoryItem4(cmd: Laya.DrawImageCmd, result: string): void {
         if (cmd) {
             const imgUrl = bacResultSmallRoadImgData[result]
             if (imgUrl) {
@@ -471,7 +437,7 @@ export class BacRoadmapV2 extends BacRoadmapV2Base {
         }
     }
 
-    SetHistoryItem5(cmd: Laya.DrawImageCmd, result: number): void {
+    SetHistoryItem5(cmd: Laya.DrawImageCmd, result: string): void {
         if (cmd) {
             const imgUrl = bacResultCockroachPigImgData[result]
             if (imgUrl) {
@@ -480,7 +446,7 @@ export class BacRoadmapV2 extends BacRoadmapV2Base {
         }
     }
 
-    private fillTexture(matrix: number[][], row: number, col: number, panel: Laya.Panel, callback: (cmd: Laya.DrawImageCmd, result: number) => void, isAsk: boolean, lastX: number = -1, lastY: number = -1): void {
+    private fillTexture(matrix: string[][], row: number, col: number, panel: Laya.Panel, callback: (cmd: Laya.DrawImageCmd, result: string) => void, isAsk: boolean, lastX: number = -1, lastY: number = -1): void {
         try {
             const sprite = panel.getChildAt(0) as Laya.Sprite;
             sprite.graphics.clear();
@@ -492,7 +458,7 @@ export class BacRoadmapV2 extends BacRoadmapV2Base {
             let lastCmd: Laya.DrawImageCmd | null = null;
             panel.set_width(cmdWidth * (col - 1))
 
-            matrix.forEach((col: number[], colIndex: number) => {
+            matrix.forEach((col: string[], colIndex: number) => {
                 col.forEach((cell, cellIndex) => {
                     if (cell) {
                         const cmd = new Laya.DrawImageCmd();
@@ -553,129 +519,76 @@ export class BacRoadmapV2 extends BacRoadmapV2Base {
             console.log(error)
         }
     }
-
-    private AddOneResultToArr2(arr: any, ask: number) {
-        arr = arr.slice();
-        if (0 != ask)
-            if (0 == arr.length) arr.push([ask]);
-            else {
-                var c = arr[arr.length - 1];
-                0 != (c[c.length - 1] & ask)
-                    ? ((c = c.slice()), c.push(ask), (arr[arr.length - 1] = c))
-                    : arr.push([ask]);
-            }
-        return arr;
-    }
-
-    private setWenluData(): void {
-        this.wenlu_Xian.on(Laya.Event.CLICK, this, () => {
-            Laya.timer.clearAll(this)
-            const dataArr1PlayerAsk = this.roadmap.breadplateMatrix.slice()
-            dataArr1PlayerAsk.push(2)
-            const dataArr2PlayerAsk = this.AddOneResultToArr2(this.roadmap.bigRoadMatrix, 2)
-            const dataArr3PlayerAsk = this.AddOneResultToArr2(this.roadmap.bigEyeBoyMatrix, this.roadmap.playerAsk3)
-            const dataArr4PlayerAsk = this.AddOneResultToArr2(this.roadmap.smallRoadMatrix, this.roadmap.playerAsk4)
-            const dataArr5PlayerAsk = this.AddOneResultToArr2(this.roadmap.cockroachPigMatrix, this.roadmap.playerAsk5)
-
-            this.GetHistoryFragment1(dataArr1PlayerAsk, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem1, true)
-
-            this.GetHistoryFragment2(dataArr2PlayerAsk, this.bigRoadCols, this.roadmapRows, this.big_road_panel, this.SetHistoryItem2, true)
-            this.GetHistoryFragment2(dataArr3PlayerAsk, this.bigEyeRoadCols, this.roadmapRows, this.big_eye_road_panel, this.SetHistoryItem3, true)
-            this.GetHistoryFragment2(dataArr4PlayerAsk, this.smallRoadCols, this.roadmapRows, this.small_road_panel, this.SetHistoryItem4, true)
-            this.GetHistoryFragment2(dataArr5PlayerAsk, this.cockroachRoadCols, this.roadmapRows, this.cockroach_road_panel, this.SetHistoryItem5, true)
-        })
-
-        const wenluXianRoadBox = this.wenlu_Xian.getChildByName("road_box") as Laya.Box
-        const playerAsk3 = wenluXianRoadBox.getChildByName("wenlu3") as Laya.Image
-        playerAsk3.skin = this.roadmap.playerAsk3 === 1 ? "resources/game_icons/type01.png" : this.roadmap.playerAsk3 === 2 ? "resources/game_icons/type09.png" : ""
-        const playerAsk4 = wenluXianRoadBox.getChildByName("wenlu4") as Laya.Image
-        playerAsk4.skin = this.roadmap.playerAsk4 === 1 ? "resources/game_icons/type81.png" : this.roadmap.playerAsk4 === 2 ? "resources/game_icons/type82.png" : ""
-        const playerAsk5 = wenluXianRoadBox.getChildByName("wenlu5") as Laya.Image
-        playerAsk5.skin = this.roadmap.playerAsk5 === 1 ? "resources/game_icons/type83.png" : this.roadmap.playerAsk5 === 2 ? "resources/game_icons/type84.png" : ""
-
-        this.wenlu_Zhuang.on(Laya.Event.CLICK, this, () => {
-            Laya.timer.clearAll(this)
-
-            const dataArr1BankerAsk = this.roadmap.breadplateMatrix.slice()
-            dataArr1BankerAsk.push(1)
-            const dataArr2BankerAsk = this.AddOneResultToArr2(this.roadmap.bigRoadMatrix, 1)
-            const dataArr3BankerAsk = this.AddOneResultToArr2(this.roadmap.bigEyeBoyMatrix, this.roadmap.bankerAsk3)
-            const dataArr4BankerAsk = this.AddOneResultToArr2(this.roadmap.smallRoadMatrix, this.roadmap.bankerAsk4)
-            const dataArr5BankerAsk = this.AddOneResultToArr2(this.roadmap.cockroachPigMatrix, this.roadmap.bankerAsk5)
-
-            this.GetHistoryFragment1(dataArr1BankerAsk, this.breadPlateCols, this.roadmapRows, this.bead_plate_road_panel, this.SetHistoryItem1, true)
-            this.GetHistoryFragment2(dataArr2BankerAsk, this.bigRoadCols, this.roadmapRows, this.big_road_panel, this.SetHistoryItem2, true)
-            this.GetHistoryFragment2(dataArr3BankerAsk, this.bigEyeRoadCols, this.roadmapRows, this.big_eye_road_panel, this.SetHistoryItem3, true)
-            this.GetHistoryFragment2(dataArr4BankerAsk, this.smallRoadCols, this.roadmapRows, this.small_road_panel, this.SetHistoryItem4, true)
-            this.GetHistoryFragment2(dataArr5BankerAsk, this.cockroachRoadCols, this.roadmapRows, this.cockroach_road_panel, this.SetHistoryItem5, true)
-        })
-        const wenluZhuangRoadBox = this.wenlu_Zhuang.getChildByName("road_box") as Laya.Box
-        const bankerAsk3 = wenluZhuangRoadBox.getChildByName("wenlu3") as Laya.Image
-        bankerAsk3.skin = this.roadmap.bankerAsk3 === 1 ? "resources/game_icons/type01.png" : this.roadmap.bankerAsk3 === 2 ? "resources/game_icons/type09.png" : ""
-        const bankerAsk4 = wenluZhuangRoadBox.getChildByName("wenlu4") as Laya.Image
-        bankerAsk4.skin = this.roadmap.bankerAsk4 === 1 ? "resources/game_icons/type81.png" : this.roadmap.bankerAsk4 === 2 ? "resources/game_icons/type82.png" : ""
-        const bankerAsk5 = wenluZhuangRoadBox.getChildByName("wenlu5") as Laya.Image
-        bankerAsk5.skin = this.roadmap.bankerAsk5 === 1 ? "resources/game_icons/type83.png" : this.roadmap.bankerAsk5 === 2 ? "resources/game_icons/type84.png" : ""
-    }
 }
 
 class Roadmap {
-    result: number[] = []
-    breadplateMatrix: number[] = []
-    bigRoadMatrix: number[][] = []
-    bigEyeBoyMatrix: number[][] = []
-    threestarMatrix: number[] = []
-    smallRoadMatrix: number[][] = []
-    cockroachPigMatrix: number[][] = []
+    result: string[] = []
+    breadplateMatrix: string[] = []
+    bigRoadMatrix: string[][] = []
+    bigEyeBoyMatrix: string[][] = []
+    threestarMatrix: string[] = []
+    smallRoadMatrix: string[][] = []
+    cockroachPigMatrix: string[][] = []
 
-    playerAsk3: number = 0
-    playerAsk4: number = 0
-    playerAsk5: number = 0
+    playerAsk3: string = ""
+    playerAsk4: string = ""
+    playerAsk5: string = ""
 
-    bankerAsk3: number = 0
-    bankerAsk4: number = 0
-    bankerAsk5: number = 0
+    bankerAsk3: string = ""
+    bankerAsk4: string = ""
+    bankerAsk5: string = ""
 
     private bigRoadPreviousIdentity: BaccaratResult = null
     private startWithTie: boolean = false
     private hasTieBeenAdded: boolean = false
-    private bigEyeRoadPreviousIdentity: BaccaratResult = null
-    private smallRoadPreviousIdentity: BaccaratResult = null
-    private cockraochRoadPreviousIdentity: BaccaratResult = null
+    private bigEyeRoadPreviousIdentity: string = ""
+    private smallRoadPreviousIdentity: string = ""
+    private cockraochRoadPreviousIdentity: string = ""
 
-    constructor(_results: number[] = []) {
+    constructor(_results: string[] = []) {
         this.result = _results
         this.result.forEach(this.AddResult.bind(this))
     }
 
-    private key2Result(key: number): BaccaratResult {
-        if ((key & BaccaratResult.Banker) !== 0) {
-            return BaccaratResult.Banker;
-        }
-        if ((key & BaccaratResult.Player) !== 0) {
-            return BaccaratResult.Player;
-        }
-        if ((key & BaccaratResult.Tie) !== 0) {
-            return BaccaratResult.Tie;
-        }
+    private key2Result(key: string): BaccaratResult {
+        if (!key) return
+        const validResults = [BaccaratResult.Banker, BaccaratResult.Player, BaccaratResult.Tie, BaccaratResult.BankerPair, BaccaratResult.PlayerPair];
+        let resultKey = "";
+
+        validResults.forEach((validResult) => {
+            if (key.includes(validResult)) {
+                resultKey += validResult;
+            }
+        });
+
+        return resultKey as BaccaratResult
+        // if ((key && BaccaratResult.Banker) === resultKey) {
+        //     return BaccaratResult.Banker;
+        // }
+        // if ((key && BaccaratResult.Player) === resultKey) {
+        //     return BaccaratResult.Player;
+        // }
+        // if ((key && BaccaratResult.Tie) === resultKey) {
+        //     return BaccaratResult.Tie;
+        // }
     }
 
-    AddResult(key: number): void {
+    AddResult(key: string): void {
         // console.clear()
         this.result.push(key)
         this.addBreadPlateRoad(key)
         this.addBigRoad(key)
+
         const formattedBigRoadMatrix = this.formatBigRoad()
-        
+
         this.bigEyeBoyMatrix = []
         this.bigEyeRoadPreviousIdentity = null
         this.traverseBigRoadScheme(formattedBigRoadMatrix, 0, 2, this.addBigEyeRoad.bind(this))
 
 
         this.threestarMatrix = []
-        this.threestarMatrix = formattedBigRoadMatrix.flat().filter(num => num !== 0)
-        console.log(this.threestarMatrix);
-        
+        this.threestarMatrix = formattedBigRoadMatrix.flat().filter(num => num)
+
         this.smallRoadMatrix = []
         this.smallRoadPreviousIdentity = null
         this.traverseBigRoadScheme(formattedBigRoadMatrix, 1, 3, this.addSmallRoad.bind(this))
@@ -701,7 +614,7 @@ class Roadmap {
         this.hasTieBeenAdded = false
     }
 
-    private addBreadPlateRoad(key: number): void {
+    private addBreadPlateRoad(key: string): void {
         this.breadplateMatrix.push(key)
     }
 
@@ -709,7 +622,7 @@ class Roadmap {
         this.breadplateMatrix.pop()
     }
 
-    private addBigRoad(key: number): void {
+    private addBigRoad(key: string): void {
         const identity = this.key2Result(key);
         if (!identity) {
             console.warn(`${key} is not a valid key`);
@@ -721,7 +634,7 @@ class Roadmap {
 
         // If current is not a tie but the previous was a tie, add the tie modifier to the key
         if (identity !== BaccaratResult.Tie && this.startWithTie && !this.hasTieBeenAdded) {
-            key |= BaccaratResult.Tie;
+            key += BaccaratResult.Tie;
             this.hasTieBeenAdded = true;
         }
 
@@ -735,7 +648,7 @@ class Roadmap {
             if (this.bigRoadPreviousIdentity !== BaccaratResult.Tie && !this.hasTieBeenAdded) {
                 // If the previous identity was not Tie and a Tie hasn't been added yet, add it to the last item
                 if (lastRow && lastRow.length > 0 && !this.startWithTie) {
-                    lastRow[lastRow.length - 1] |= BaccaratResult.Tie;
+                    lastRow[lastRow.length - 1] += BaccaratResult.Tie;
                     this.hasTieBeenAdded = true;
                 }
             }
@@ -786,10 +699,10 @@ class Roadmap {
         }
     }
 
-    private formatBigRoad(): number[][] {
+    private formatBigRoad(): string[][] {
         const col = 6
         let lastX = -1, lastY = -1, avaliableLength = col
-        const matrix: number[][] = Array.from({ length: this.bigRoadMatrix.length }, () => Array(col).fill(0))
+        const matrix: string[][] = Array.from({ length: this.bigRoadMatrix.length }, () => Array(col).fill(0))
 
         this.bigRoadMatrix.forEach((row, rowIndex) => {
             avaliableLength = matrix[rowIndex].filter(item => !item).length - 1
@@ -800,7 +713,7 @@ class Roadmap {
                     lastX = rowIndex + (colIndex - avaliableLength)
                     lastY = avaliableLength
                     if (!(matrix[lastX])) {
-                        matrix[lastX] = Array(col).fill(0)
+                        matrix[lastX] = Array(col).fill(null)
                     }
                 }
                 matrix[lastX][lastY] = col
@@ -813,11 +726,11 @@ class Roadmap {
         return index >= 0 && index < array.length;
     }
 
-    private getColumnLength(array: number[]): number {
-        return array.reduce((total, element) => total + (element === 0 ? 1 : 0), 0)
+    private getColumnLength(array: string[]): number {
+        return array.reduce((total, element) => total + (element === null ? 1 : 0), 0)
     }
 
-    private traverseBigRoadScheme(bigRoadMatrix: number[][], startIndex: number, margin: number, callback: (result: number) => void): void {
+    private traverseBigRoadScheme(bigRoadMatrix: string[][], startIndex: number, margin: number, callback: (result: string) => void): void {
         bigRoadMatrix.forEach((col, colIndex) => {
             if (colIndex > startIndex) {
                 col.forEach((cell, cellIndex) => {
@@ -835,7 +748,7 @@ class Roadmap {
                              * Get the ${margin} column to the right
                              */
                             const prevColBLength = this.getColumnLength(bigRoadMatrix[colIndex - margin])
-                            callback(prevColALength === prevColBLength ? 1 : 2)
+                            callback(prevColALength === prevColBLength ? "R" : "B")
                         } else {
                             /**
                              * If non first row, check the left col and the upper left column
@@ -851,7 +764,7 @@ class Roadmap {
                                 leftColLowerIndex === leftColUpperIndex,
                                 leftColLowerIdentity === leftColUpperIdentity
                             ].every(Boolean);
-                            callback(isMatch ? 1 : 2)
+                            callback(isMatch ? "R" : "B")
                         }
                     }
                 })
@@ -859,8 +772,8 @@ class Roadmap {
         })
     }
 
-    private addBigEyeRoad(key: number): void {
-        if (![1, 2].includes(key)) {
+    private addBigEyeRoad(key: string): void {
+        if (!["R", "B"].includes(key)) {
             console.warn(`${key} is not a valid color.`);
             return;
         }
@@ -877,8 +790,8 @@ class Roadmap {
         this.bigEyeRoadPreviousIdentity = key
     }
 
-    private addSmallRoad(key: number): void {
-        if (![1, 2].includes(key)) {
+    private addSmallRoad(key: string): void {
+        if (!["R", "B"].includes(key)) {
             console.warn(`${key} is not a valid color.`);
             return;
         }
@@ -895,8 +808,8 @@ class Roadmap {
         this.smallRoadPreviousIdentity = key
     }
 
-    private addCockroachRoad(key: number): void {
-        if (![1, 2].includes(key)) {
+    private addCockroachRoad(key: string): void {
+        if (!["R", "B"].includes(key)) {
             console.warn(`${key} is not a valid color.`);
             return;
         }
@@ -913,67 +826,67 @@ class Roadmap {
         this.cockraochRoadPreviousIdentity = key
     }
 
-    private setPrediction(result: BaccaratResult, prefix: 'player' | 'banker'): void {
-        const { ask3, ask4, ask5 } = this.getPrediction(result);
+    // private setPrediction(result: BaccaratResult, prefix: 'player' | 'banker'): void {
+    //     const { ask3, ask4, ask5 } = this.getPrediction(result);
 
-        if (prefix === 'player') {
-            this.playerAsk3 = ask3;
-            this.playerAsk4 = ask4;
-            this.playerAsk5 = ask5;
-        } else if (prefix === 'banker') {
-            this.bankerAsk3 = ask3;
-            this.bankerAsk4 = ask4;
-            this.bankerAsk5 = ask5;
-        }
-    }
+    //     if (prefix === 'player') {
+    //         this.playerAsk3 = ask3;
+    //         this.playerAsk4 = ask4;
+    //         this.playerAsk5 = ask5;
+    //     } else if (prefix === 'banker') {
+    //         this.bankerAsk3 = ask3;
+    //         this.bankerAsk4 = ask4;
+    //         this.bankerAsk5 = ask5;
+    //     }
+    // }
 
-    private getPrediction(winner: BaccaratResult) {
-        this.addBreadPlateRoad(winner);
-        this.addBigRoad(winner);
+    // private getPrediction(winner: BaccaratResult) {
+    //     this.addBreadPlateRoad(winner);
+    //     this.addBigRoad(winner);
 
-        const ask3 = this.predictRoad(this.bigRoadMatrix, 0, 1);
-        const ask4 = this.predictRoad(this.bigRoadMatrix, 1, 2);
-        const ask5 = this.predictRoad(this.bigRoadMatrix, 2, 3);
+    //     const ask3 = this.predictRoad(this.bigRoadMatrix, 0, 1);
+    //     const ask4 = this.predictRoad(this.bigRoadMatrix, 1, 2);
+    //     const ask5 = this.predictRoad(this.bigRoadMatrix, 2, 3);
 
-        console.log(this.breadplateMatrix);
-        console.log(ask3, ask4, ask5);
+    //     console.log(this.breadplateMatrix);
+    //     console.log(ask3, ask4, ask5);
 
-        this.popBreadPlateRoad();
-        this.popBigRoad();
+    //     this.popBreadPlateRoad();
+    //     this.popBigRoad();
 
-        return { ask3, ask4, ask5 }; // Return the predictions directly
-    }
+    //     return { ask3, ask4, ask5 }; // Return the predictions directly
+    // }
 
-    private predictRoad(matrix: number[][], startIndex: number, margin: number) {
-        let x = matrix.length - 1;
-        let y = matrix[x].length - 1;
-        if (x > startIndex) {
-            if (!(x === margin && y === 0) && matrix[x][y] !== 0) {
-                if (y === 0) {
-                    if (this.isValidIndex(matrix[x - (margin + 1)], 0) && matrix[x - 1].length === matrix[x - (margin + 1)].length) {
-                        return 1;
-                    } else {
-                        return 2;
-                    }
-                } else {
-                    const valid1 = this.isValidIndex(matrix[x - margin], y);
-                    const valid2 = this.isValidIndex(matrix[x - margin], y - 1);
-                    if (!valid1 && !valid2) {
-                        return 1;
-                    } else if (
-                        valid1 &&
-                        valid2 &&
-                        this.key2Result(matrix[x - margin][y]) ===
-                        this.key2Result(matrix[x - margin][y - 1])
-                    ) {
-                        return 1;
-                    } else {
-                        return 2;
-                    }
-                }
-            }
-        }
-        return 0;
-    }
+    // private predictRoad(matrix: number[][], startIndex: number, margin: number) {
+    //     let x = matrix.length - 1;
+    //     let y = matrix[x].length - 1;
+    //     if (x > startIndex) {
+    //         if (!(x === margin && y === 0) && matrix[x][y] !== 0) {
+    //             if (y === 0) {
+    //                 if (this.isValidIndex(matrix[x - (margin + 1)], 0) && matrix[x - 1].length === matrix[x - (margin + 1)].length) {
+    //                     return 1;
+    //                 } else {
+    //                     return 2;
+    //                 }
+    //             } else {
+    //                 const valid1 = this.isValidIndex(matrix[x - margin], y);
+    //                 const valid2 = this.isValidIndex(matrix[x - margin], y - 1);
+    //                 if (!valid1 && !valid2) {
+    //                     return 1;
+    //                 } else if (
+    //                     valid1 &&
+    //                     valid2 &&
+    //                     this.key2Result(matrix[x - margin][y]) ===
+    //                     this.key2Result(matrix[x - margin][y - 1])
+    //                 ) {
+    //                     return 1;
+    //                 } else {
+    //                     return 2;
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     return 0;
+    // }
 
 }
