@@ -236,17 +236,34 @@ export class BacRoadmapWASM extends BacRoadmapWASMBase {
 
             this.resultLbl.text = statusText.replace(/\| $/, ""); // Remove trailing pipe
             
-            // Update confirm button state
+            // Update confirm button state - parameter is no longer used in the function
             updateConfirmButtonState(anyButtonSelected);
         };
         
         // Helper function to update confirm button state based on selection
         const updateConfirmButtonState = (enabled: boolean) => {
-            // Visual indication that the button can/cannot be used
-            this.confirmBtn.alpha = enabled ? 1.0 : 0.5;
+            // Both win and size must be selected
+            const winSelected = !!activeButtons['win'];
+            const sizeSelected = !!activeButtons['size'];
+            const allRequiredSelected = winSelected && sizeSelected;
             
-            // Optional: add a tooltip or hint
-            this.confirmBtn.toolTip = enabled ? "" : "Please make a selection first";
+            // Visual indication that the button can/cannot be used
+            this.confirmBtn.alpha = allRequiredSelected ? 1.0 : 0.5;
+            
+            // Set appropriate tooltip based on what's missing
+            if (!allRequiredSelected) {
+                let tooltip = "Please select ";
+                if (!winSelected && !sizeSelected) {
+                    tooltip += "Win (Player/Banker/Tie) and Size (Big/Small)";
+                } else if (!winSelected) {
+                    tooltip += "Win (Player/Banker/Tie)";
+                } else {
+                    tooltip += "Size (Big/Small)";
+                }
+                this.confirmBtn.toolTip = tooltip;
+            } else {
+                this.confirmBtn.toolTip = "";
+            }
         };
 
         // Ensure UI status is consistent with no buttons selected
@@ -508,13 +525,22 @@ export class BacRoadmapWASM extends BacRoadmapWASMBase {
 
         // Confirm button - submit data
         this.confirmBtn.clickHandler = new Laya.Handler(this, () => {
-            // Check if any buttons are selected
-            const anyButtonSelected = !!(activeButtons['win'] || activeButtons['size'] || activeButtons['super_6'] || 
-                                      resultInfo.player_pair || resultInfo.banker_pair);
+            // Check if both win and size are selected (both are required)
+            const winSelected = !!activeButtons['win'];
+            const sizeSelected = !!activeButtons['size'];
             
-            // Don't proceed if no buttons are selected
-            if (!anyButtonSelected) {
-                this.showInfoMessage("Please make a selection first!", "#FF3333");
+            // Check if all required selections are made
+            if (!winSelected || !sizeSelected) {
+                let errorMessage = "Please select ";
+                if (!winSelected && !sizeSelected) {
+                    errorMessage += "Win (Player/Banker/Tie) and Size (Big/Small)";
+                } else if (!winSelected) {
+                    errorMessage += "Win (Player/Banker/Tie)";
+                } else {
+                    errorMessage += "Size (Big/Small)";
+                }
+                
+                this.showInfoMessage(errorMessage, "#FF3333");
                 return;
             }
 
